@@ -22,6 +22,5 @@ void VertexBuffer::Bind() const
 
 void VertexBuffer::Unbind() const
 {
-	GLCall(glBindBuffer(GL_ARRAY_BUFFER,0)); //Unbind this VertexBuffer
-
+	GLCall(glBindBuffer(GL_ARRAY_BUFFER, 0)); //Unbind this VertexBuffer
 }

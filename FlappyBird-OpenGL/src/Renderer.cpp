@@ -18,7 +18,7 @@ bool GLLogCall(const char* function, const char* file, int line)
 	return true; //There was no error
 }
 
-void Renderer::Draw(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const
+void Renderer::Draw(const VertexArray& va, const IndexBuffer& ib, const Shader& shader)
 {
 	shader.Bind();
 
@@ -29,7 +29,7 @@ void Renderer::Draw(const VertexArray& va, const IndexBuffer& ib, const Shader& 
 	GLCall(glDrawElements(GL_TRIANGLES, ib.GetCount(), GL_UNSIGNED_INT, nullptr));
 }
 
-void Renderer::Clear() const
+void Renderer::Clear()
 {
 	GLCall(glClear(GL_COLOR_BUFFER_BIT));
 }
