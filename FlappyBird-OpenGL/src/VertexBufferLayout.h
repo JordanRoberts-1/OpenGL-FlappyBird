@@ -2,6 +2,7 @@
 #include <vector>
 #include <GL/glew.h>
 #include "Renderer.h"
+#include "Debug.h"
 
 struct VertexBufferElement {
 	unsigned int type; //The type that this is e.g GL_FLOAT, GL_UNSIGNED_INT, GL_UNSIGNED_BYTE

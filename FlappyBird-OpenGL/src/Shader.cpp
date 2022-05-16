@@ -22,7 +22,7 @@ Shader::Shader(const std::string& filepath)
 
 Shader::~Shader()
 {
-	GLCall(glDeleteProgram(m_RendererID));
+	glDeleteProgram(m_RendererID);
 }
 
 //create a file, vertexShader is a string of the source code of the Vertex Shader, fragmentShader is the same but
@@ -33,42 +33,42 @@ unsigned int Shader::CreateShader(const std::string& vertexShader, const std::st
 	unsigned int vs = CompileShader(vertexShader, GL_VERTEX_SHADER); //Compile the vertex shader source code as a vertex shader
 	unsigned int fs = CompileShader(fragmentShader, GL_FRAGMENT_SHADER); //Compile the fragment shader source code as a fragment shader
 
-	GLCall(glAttachShader(program, vs)); //Attach the shaders compiled above to the program
-	GLCall(glAttachShader(program, fs));
+	glAttachShader(program, vs); //Attach the shaders compiled above to the program
+	glAttachShader(program, fs);
 
-	GLCall(glLinkProgram(program)); //Link the program
-	GLCall(glValidateProgram(program)); //Validate that it is linked
+	glLinkProgram(program); //Link the program
+	glValidateProgram(program); //Validate that it is linked
 
-	GLCall(glDeleteShader(vs)); //delete the intermediate files created when compiling the shader
-	GLCall(glDeleteShader(fs));
+	glDeleteShader(vs); //delete the intermediate files created when compiling the shader
+	glDeleteShader(fs);
 
 	return program; //return the id assigned to the program
 }
 
 unsigned int Shader::CompileShader(const std::string& source, unsigned int type)
 {
-	GLCall(unsigned int id = glCreateShader(type)); //Create a new shader of the given type (GL_VERTEX_SHADER or GL_FRAGMENT_SHADER) in this case
+	unsigned int id = glCreateShader(type); //Create a new shader of the given type (GL_VERTEX_SHADER or GL_FRAGMENT_SHADER) in this case
 	const char* src = source.c_str(); //Turn the source code into a plain C String
-	GLCall(glShaderSource(id, 1, &src, nullptr)); //Set the source for the shader
-	GLCall(glCompileShader(id)); //Compile the shader with the given id
+	glShaderSource(id, 1, &src, nullptr); //Set the source for the shader
+	glCompileShader(id); //Compile the shader with the given id
 
 	/*Error Handling*/
 
 	int result; //Store the result of the shader process
-	GLCall(glGetShaderiv(id, GL_COMPILE_STATUS, &result));
+	glGetShaderiv(id, GL_COMPILE_STATUS, &result);
 
 	//If the shader failed to compile for some reason
 	if (result == GL_FALSE)
 	{
 		//Output the error message
 		int length;
-		GLCall(glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length));
+		glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length);
 		char* message = (char*)alloca(length * sizeof(char));
-		GLCall(glGetShaderInfoLog(id, length, &length, message));
+		glGetShaderInfoLog(id, length, &length, message);
 		std::cout << "Failure to compile " << (type == GL_VERTEX_SHADER ? "vertex" : "fragment") << std::endl;
 		std::cout << message << std::endl;
 
-		GLCall(glDeleteShader(id)); //delete the shader
+		glDeleteShader(id); //delete the shader
 		return 0; //return a failure state
 	}
 
@@ -116,27 +116,27 @@ ShaderProgramSource Shader::ParseShader(const std::string& filepath)
 
 void Shader::Bind() const
 {
-	GLCall(glUseProgram(m_RendererID));
+	glUseProgram(m_RendererID);
 }
 
 void Shader::Unbind() const
 {
-	GLCall(glUseProgram(0));
+	glUseProgram(0);
 }
 
 void Shader::SetUniform1i(const std::string& name, int value)
 {
-	GLCall(glUniform1i(GetUniformLocation(name), value));
+	glUniform1i(GetUniformLocation(name), value);
 }
 
 void Shader::SetUniformMat4f(const std::string& name, glm::mat4 mat)
 {
-	GLCall(glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, &mat[0][0]));
+	glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, &mat[0][0]);
 }
 
 void Shader::SetUniform4f(const std::string& name, float v0, float v1, float v2, float v3)
 {
-	GLCall(glUniform4f(GetUniformLocation(name), v0, v1, v2, v3));
+	glUniform4f(GetUniformLocation(name), v0, v1, v2, v3);
 }
 
 int Shader::GetUniformLocation(const std::string& name)
@@ -144,7 +144,7 @@ int Shader::GetUniformLocation(const std::string& name)
 	if (m_UniformLocationCache.find(name) != m_UniformLocationCache.end())
 		return m_UniformLocationCache[name];
 
-	GLCall(int location = glGetUniformLocation(m_RendererID, name.c_str()));
+	int location = glGetUniformLocation(m_RendererID, name.c_str());
 	if (location == -1)
 		std::cout << "Warning: uniform '" << name << "' doesn't exist!" << std::endl;
 

@@ -8,6 +8,7 @@
 #include "Shader.h"
 #include "Texture.h"
 #include "Renderable.h"
+#include "Debug.h"
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
@@ -140,9 +141,11 @@ GLFWwindow* SetupWindow()
 	if (!glfwInit())
 		return nullptr;
 
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
+
 
 	/* Create a windowed mode window and its OpenGL context */
 	GLFWwindow* window = glfwCreateWindow(960, 540, "Hello World", NULL, NULL);
@@ -152,8 +155,10 @@ GLFWwindow* SetupWindow()
 		return nullptr;
 	}
 
+
 	/* Make the window's context current */
 	glfwMakeContextCurrent(window);
+
 
 	//turn on V-Sync
 	glfwSwapInterval(1);
@@ -167,13 +172,23 @@ GLFWwindow* SetupWindow()
 	//Print out the version of OpenGL to the console
 	std::cout << glGetString(GL_VERSION) << std::endl;
 
-	GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
-	GLCall(glEnable(GL_BLEND));
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_BLEND);
 
 	ImGui::CreateContext();
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
 	ImGui_ImplOpenGL3_Init((char*)glGetString(GL_NUM_SHADING_LANGUAGE_VERSIONS));
 
 	ImGui::StyleColorsDark();
+
+	GLint flags;
+	glGetIntegerv(GL_CONTEXT_FLAGS, &flags);
+	if (flags & GL_CONTEXT_FLAG_DEBUG_BIT) {
+		printf("Debug context created! \n");
+		glEnable(GL_DEBUG_OUTPUT);
+		glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+		glDebugMessageCallback(Debug::glDebugOutput, nullptr);
+		glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, GL_TRUE);
+	}
 	return window;
 }
