@@ -63,11 +63,14 @@
     <ClCompile Include="src\vendor\stb_image\stb_image.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Renderable.cpp">
+    <ClCompile Include="src\TexturedQuad.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\EntryPoint.h">
       <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SceneManager.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -968,13 +971,16 @@
     <ClInclude Include="src\vendor\stb_image\stb_image.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Renderable.h">
+    <ClInclude Include="src\TexturedQuad.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Debug.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Application.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SceneManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

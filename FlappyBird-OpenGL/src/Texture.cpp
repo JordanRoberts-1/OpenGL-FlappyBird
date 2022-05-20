@@ -5,19 +5,21 @@ Texture::Texture(const std::string& path)
 	: m_RendererID(0), m_FilePath(path), m_localBuffer(nullptr),
 	m_Width(0), m_Height(0), m_BPP(0)
 {
-	stbi_set_flip_vertically_on_load(1);
-	m_localBuffer = stbi_load(path.c_str(), &m_Width, &m_Height, &m_BPP, 4);
+	SetupTexture(path);
 
-	glGenTextures(1, &m_RendererID);
-	glBindTexture(GL_TEXTURE_2D, m_RendererID);
+	if (m_localBuffer)
+	{
+		stbi_image_free(m_localBuffer);
+	}
+}
 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+Texture::Texture(const std::string& path, Shader& shader)
+{
+	SetupTexture(path);
 
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, m_Width, m_Height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_localBuffer);
-	glBindTexture(GL_TEXTURE_2D, 0);
+	shader.Bind();
+	Bind();
+	shader.SetUniform1i("u_Texture", 0);
 
 	if (m_localBuffer)
 	{
@@ -38,5 +40,22 @@ void Texture::Bind(unsigned int slot) const
 
 void Texture::Unbind() const
 {
+	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+void Texture::SetupTexture(const std::string& path)
+{
+	stbi_set_flip_vertically_on_load(1);
+	m_localBuffer = stbi_load(path.c_str(), &m_Width, &m_Height, &m_BPP, 4);
+
+	glGenTextures(1, &m_RendererID);
+	glBindTexture(GL_TEXTURE_2D, m_RendererID);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, m_Width, m_Height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_localBuffer);
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
