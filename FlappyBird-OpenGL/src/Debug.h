@@ -51,4 +51,16 @@ public:
 		} std::cout << std::endl;
 		std::cout << std::endl;
 	}
+
+	static void SetupDebug() {
+		GLint flags;
+		glGetIntegerv(GL_CONTEXT_FLAGS, &flags);
+		if (flags & GL_CONTEXT_FLAG_DEBUG_BIT) {
+			printf("Debug context created! \n");
+			glEnable(GL_DEBUG_OUTPUT);
+			glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+			glDebugMessageCallback(Debug::glDebugOutput, nullptr);
+			glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, GL_TRUE);
+		}
+	}
 };
