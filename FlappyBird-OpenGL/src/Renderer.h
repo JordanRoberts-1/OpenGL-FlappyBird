@@ -7,16 +7,19 @@
 #include "ImGUI/imgui_impl_glfw.h"
 #include "ImGUI/imgui_impl_opengl3.h"
 
-#include "VertexArray.h"
-#include "IndexBuffer.h"
-#include "Shader.h"
+class TexturedQuad;
+class VertexArray;
+class IndexBuffer;
+class Shader;
 
-class Renderer {
+class Renderer
+{
 public:
 	static void Draw(const VertexArray& va, const IndexBuffer& ib, const Shader& shader);
 	static void ClearRendering();
-	static void RenderGeometry(VertexArray& vao, IndexBuffer& ib, Shader& shader);
+	static void RenderGeometry();
 	static void RenderGUI();
 private:
 	static void Clear();
+	static std::array<float, 16> BuildVertices(TexturedQuad object);
 };

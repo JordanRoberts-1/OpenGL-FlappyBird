@@ -8,22 +8,26 @@
 
 class TexturedQuad
 {
+public:
+	TexturedQuad(const std::string& texture, const std::string& shader, glm::vec2 pos);
 
 public:
-	TexturedQuad(glm::vec2 position, glm::vec2 size, const std::string& texturePath, Shader& shader);
-	TexturedQuad(const std::string& texturePath, Shader& shader);
-	TexturedQuad(float scaleFactor, const std::string& texturePath, Shader& shader);
-
 	void SetSceneID(int id);
 	int GetSceneID();
-	inline std::array<float, 16> getVertices() { return m_Vertices; }
+
+	inline glm::vec2 GetPosition() const { return m_Position; }
+	inline glm::vec2 GetSize() const { return m_Size; }
+
+	inline Texture& GetTexture() const { return m_Texture; }
+	inline Shader& GetShader() const { return m_Shader; }
 
 private:
-	void BuildVertices(glm::vec2& position, glm::vec2& size);
-private:
-	std::array<float, 16> m_Vertices;
 	int m_SceneID;
-	Texture m_Texture;
-	Shader m_Shader;
+
+	glm::vec2 m_Position;
+	glm::vec2 m_Size;
+
+	Texture& m_Texture;
+	Shader& m_Shader;
 };
 

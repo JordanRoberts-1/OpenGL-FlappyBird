@@ -1,13 +1,18 @@
 #include "Application.h"
+#include "SceneManager.h"
+
 #include "ImGUI/imgui.h"
 #include "ImGUI/imgui_impl_glfw.h"
 #include "ImGUI/imgui_impl_opengl3.h"
 
-Application::Application() : m_isRunning(false) {
+Application::Application() : m_isRunning(false)
+{
 	m_Window = SetupWindow();
+	SceneManager::GetInstance().BuildScene();
 }
 
-Application::~Application() {
+Application::~Application()
+{
 	// Cleanup
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
@@ -16,12 +21,14 @@ Application::~Application() {
 	glfwTerminate();
 }
 
-void Application::Run() {
+void Application::Run()
+{
 	m_isRunning = true;
-	while (m_isRunning) {
+	while (m_isRunning)
+	{
 		Renderer::ClearRendering();
 
-		//RenderGeometry(vao, ib, shader);
+		Renderer::RenderGeometry();
 
 		Renderer::RenderGUI();
 

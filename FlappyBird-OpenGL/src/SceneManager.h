@@ -1,18 +1,26 @@
 #pragma once
 #include "TexturedQuad.h"
 
-#include <vector>
-#include <unordered_map>
-
 class SceneManager
 {
 public:
-	SceneManager();
-	void AddObject(TexturedQuad& object);
-	void RemoveQuad();
-	void CreateNewQuad(const std::string& texturePath, Shader& shader);
+	void BuildScene();
+
+	static SceneManager& GetInstance()
+	{
+		static SceneManager instance;
+
+		return instance;
+	}
+
+	SceneManager(SceneManager const&) = delete;
+	void operator=(SceneManager const&) = delete;
+
+	std::vector<TexturedQuad*> GetObjects();
+
 private:
-	std::unordered_map<int, TexturedQuad> m_Objects;
-	int m_CurrentID;
+	SceneManager() {};
+private:
+	std::vector<std::unique_ptr<TexturedQuad>> m_Objects;
 };
 
