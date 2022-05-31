@@ -12,7 +12,7 @@ void SceneManager::BuildScene()
 	ResourceManager& rm = ResourceManager::GetInstance();
 
 	m_Objects.emplace_back(std::make_unique<TexturedQuad>(std::string("dickbutt.png"), std::string("Basic.glsl"), glm::vec2(0.0f, 0.0f)));
-	m_Objects.emplace_back(std::make_unique<TexturedQuad>(std::string("dr_minion.jpg"), std::string("Basic.glsl"), glm::vec2(100.0f, 200.0f)));
+	m_Objects.emplace_back(std::make_unique<TexturedQuad>(std::string("dr_minion.jpg"), std::string("Basic.glsl"), glm::vec2(300.0f, 200.0f)));
 
 
 	//m_Shaders.push_back(std::make_unique<Shader>("res/shaders/Basic.glsl"));

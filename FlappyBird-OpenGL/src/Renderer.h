@@ -21,5 +21,11 @@ public:
 	static void RenderGUI();
 private:
 	static void Clear();
-	static std::array<float, 16> BuildVertices(TexturedQuad object);
+private:
+	static constexpr const float m_TexturedQuadVertices[16] = {
+		0.0f, 0.0f, 0.0f, 0.0f,
+		1.0f, 0.0f, 1.0f, 0.0f,
+		1.0f, 1.0f, 1.0f, 1.0f,
+		0.0f, 1.0f, 0.0f, 1.0f
+	};
 };

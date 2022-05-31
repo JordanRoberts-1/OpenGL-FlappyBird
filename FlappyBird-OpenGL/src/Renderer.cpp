@@ -30,13 +30,11 @@ void Renderer::RenderGUI()
 
 void Renderer::RenderGeometry()
 {
-	glm::mat4 proj = glm::ortho(0.0f, 960.0f, 0.0f, 540.0f, -1.0f, 1.0f);
-	//glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(-100, 0, 0));
-	//glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(200, 200, 0));
-	glm::mat4 mvp = proj;
-
 	SceneManager& sc = SceneManager::GetInstance();
 	const std::vector<TexturedQuad*> objects = sc.GetObjects();
+
+	glm::mat4 proj = glm::ortho(0.0f, 960.0f, 0.0f, 540.0f, -1.0f, 1.0f);
+	glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
 
 	VertexBufferLayout vbLayout = VertexBufferLayout();
 	vbLayout.Push<float>(2);
@@ -49,11 +47,16 @@ void Renderer::RenderGeometry()
 	{
 		VertexArray vao;
 
-		const std::array<float, 16>& vertices = BuildVertices(*object);
-		VertexBuffer vb(&vertices, vertices.size() * sizeof(float));
+		const float* vertices = m_TexturedQuadVertices;
+		VertexBuffer vb(vertices, 16 * sizeof(float));
+
 		vb.Bind();
 
 		vao.AddBuffer(vb, vbLayout);
+
+		glm::mat4 transMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(object->GetPosition(), 0.0f));
+		glm::mat4 model = glm::scale(transMatrix, glm::vec3(object->GetSize(), 1));
+		glm::mat4 mvp = proj * view * model;
 
 		Shader& shader = object->GetShader();
 		shader.Bind();
@@ -75,34 +78,4 @@ void Renderer::ClearRendering()
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
-}
-
-std::array<float, 16> Renderer::BuildVertices(TexturedQuad object)
-{
-	std::array<float, 16> vertices;
-	glm::vec2 position = object.GetPosition();
-	glm::vec2 size = object.GetSize();
-
-	//Build the vertice array from the given arguments
-	vertices[0] = position.x;
-	vertices[1] = position.y;
-	vertices[2] = 0.0f;
-	vertices[3] = 0.0f;
-
-	vertices[4] = position.x + size.x;
-	vertices[5] = position.y;
-	vertices[6] = 1.0f;
-	vertices[7] = 0.0f;
-
-	vertices[8] = position.x + size.x;
-	vertices[9] = position.y + size.y;
-	vertices[10] = 1.0f;
-	vertices[11] = 1.0f;
-
-	vertices[12] = position.x;
-	vertices[13] = position.y + size.y;
-	vertices[14] = 0.0f;
-	vertices[15] = 1.0f;
-
-	return vertices;
 }
