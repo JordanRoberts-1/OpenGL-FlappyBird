@@ -15,6 +15,8 @@ public:
 	inline int GetWidth() const { return m_Width; }
 	inline int GetHeight() const { return m_Height; }
 
+	inline unsigned int GetRendererID() const { return m_RendererID; }
+
 private:
 	void SetupTexture(const std::string& path);
 

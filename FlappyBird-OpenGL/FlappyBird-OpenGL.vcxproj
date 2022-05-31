@@ -626,6 +626,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\textures\dickbutt.png" />
+    <Image Include="res\textures\dr_minion.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

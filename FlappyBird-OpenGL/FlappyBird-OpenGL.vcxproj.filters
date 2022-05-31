@@ -1405,5 +1405,8 @@
     <Image Include="res\textures\dickbutt.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="res\textures\dr_minion.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

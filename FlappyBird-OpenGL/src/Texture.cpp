@@ -17,10 +17,6 @@ Texture::Texture(const std::string& path, Shader& shader)
 {
 	SetupTexture(path);
 
-	shader.Bind();
-	Bind();
-	shader.SetUniform1i("u_Texture", 0);
-
 	if (m_localBuffer)
 	{
 		stbi_image_free(m_localBuffer);

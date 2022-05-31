@@ -56,7 +56,12 @@ void Renderer::RenderGeometry()
 		vao.AddBuffer(vb, vbLayout);
 
 		Shader& shader = object->GetShader();
+		shader.Bind();
 		shader.SetUniformMat4f("u_MVP", mvp);
+
+		Texture& texture = object->GetTexture();
+		texture.Bind(texture.GetRendererID());
+		shader.SetUniform1i("u_Texture", texture.GetRendererID());
 
 		Renderer::Draw(vao, ib, shader);
 	}
