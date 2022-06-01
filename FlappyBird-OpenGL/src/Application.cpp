@@ -1,5 +1,6 @@
 #include "Application.h"
 #include "SceneManager.h"
+#include "Clock.h"
 
 #include "ImGUI/imgui.h"
 #include "ImGUI/imgui_impl_glfw.h"
@@ -24,8 +25,22 @@ Application::~Application()
 void Application::Run()
 {
 	m_isRunning = true;
+
+	double prev = Clock::CurrTimeInMillis();
+	double lag = 0.0;
 	while (m_isRunning)
 	{
+		double curr = Clock::CurrTimeInMillis();
+		double elapsed = curr - prev;
+		prev = curr;
+		lag += elapsed;
+
+		while (lag >= MS_PER_UPDATE)
+		{
+			Update();
+			lag -= MS_PER_UPDATE;
+		}
+
 		Renderer::Render();
 
 		/* Swap front and back buffers */
