@@ -1,5 +1,5 @@
 #pragma once
-#include "TexturedQuad.h"
+#include "Entity.h"
 
 class SceneManager
 {
@@ -16,11 +16,11 @@ public:
 	SceneManager(SceneManager const&) = delete;
 	void operator=(SceneManager const&) = delete;
 
-	std::vector<TexturedQuad*> GetObjects() const;
+	std::vector<Entity*> GetObjects() const;
 
 private:
 	SceneManager() {};
 private:
-	std::vector<std::unique_ptr<TexturedQuad>> m_Objects;
+	std::vector<std::unique_ptr<Entity>> m_Objects;
 };
 

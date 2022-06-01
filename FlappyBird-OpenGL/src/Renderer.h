@@ -7,7 +7,7 @@
 #include "ImGUI/imgui_impl_glfw.h"
 #include "ImGUI/imgui_impl_opengl3.h"
 
-class TexturedQuad;
+class Entity;
 class VertexArray;
 class IndexBuffer;
 class Shader;
@@ -23,7 +23,7 @@ public:
 private:
 	static void Clear();
 private:
-	static constexpr const float m_TexturedQuadVertices[16] = {
+	static constexpr const float m_EntityVertices[16] = {
 		0.0f, 0.0f, 0.0f, 0.0f,
 		1.0f, 0.0f, 1.0f, 0.0f,
 		1.0f, 1.0f, 1.0f, 1.0f,

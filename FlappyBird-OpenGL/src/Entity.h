@@ -6,10 +6,10 @@
 #include "Texture.h"
 #include "Renderer.h"
 
-class TexturedQuad
+class Entity
 {
 public:
-	TexturedQuad(const std::string& texture, const std::string& shader, glm::vec2 pos);
+	Entity(const std::string& texture, const std::string& shader, glm::vec2 pos);
 
 public:
 	void SetSceneID(int id);

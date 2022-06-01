@@ -4,7 +4,7 @@
 #include "VertexArray.h"
 #include "IndexBuffer.h"
 #include "Shader.h"
-#include "TexturedQuad.h"
+#include "Entity.h"
 
 void Renderer::Draw(const VertexArray& va, const IndexBuffer& ib, const Shader& shader)
 {
@@ -40,7 +40,7 @@ void Renderer::Render()
 void Renderer::RenderGeometry()
 {
 	SceneManager& sc = SceneManager::GetInstance();
-	const std::vector<TexturedQuad*> objects = sc.GetObjects();
+	const std::vector<Entity*> objects = sc.GetObjects();
 
 	glm::mat4 proj = glm::ortho(0.0f, 960.0f, 0.0f, 540.0f, -1.0f, 1.0f);
 	glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
@@ -52,11 +52,11 @@ void Renderer::RenderGeometry()
 	unsigned int indices[] = { 0, 1, 2, 2, 3, 0 };
 	IndexBuffer ib(indices, 6);
 
-	for (const TexturedQuad* object : objects)
+	for (const Entity* object : objects)
 	{
 		VertexArray vao;
 
-		const float* vertices = m_TexturedQuadVertices;
+		const float* vertices = m_EntityVertices;
 		VertexBuffer vb(vertices, 16 * sizeof(float));
 
 		vb.Bind();

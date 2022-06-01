@@ -35,6 +35,8 @@ void Application::Run()
 		prev = curr;
 		lag += elapsed;
 
+		std::cout << "Frametime: " << elapsed << "ms" << std::endl;
+
 		while (lag >= MS_PER_UPDATE)
 		{
 			Update();
@@ -113,10 +115,11 @@ std::unique_ptr<GLFWwindow, DestroyglfwWin> Application::SetupWindow()
 void Application::Update()
 {
 	const SceneManager& sc = SceneManager::GetInstance();
-	const std::vector<TexturedQuad*>& objects = sc.GetObjects();
+	const std::vector<Entity*>& objects = sc.GetObjects();
 
-	for (TexturedQuad* entity : objects)
+	for (Entity* entity : objects)
 	{
 		entity->Update();
 	}
 }
+

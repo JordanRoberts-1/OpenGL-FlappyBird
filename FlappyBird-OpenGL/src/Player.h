@@ -1,8 +1,8 @@
 #pragma once
-#include "TexturedQuad.h"
+#include "Entity.h"
 
 class Player :
-	public TexturedQuad
+	public Entity
 {
 public:
 	Player(const std::string& texture, const std::string& shader, glm::vec2 pos);

@@ -1,7 +1,7 @@
 #pragma once
 #include <chrono>
 
-static class Clock
+class Clock
 {
 public:
 	static double CurrTimeInMillis()
