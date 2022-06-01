@@ -28,6 +28,15 @@ void Renderer::RenderGUI()
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
+void Renderer::Render()
+{
+	Renderer::ClearRendering();
+
+	Renderer::RenderGeometry();
+
+	Renderer::RenderGUI();
+}
+
 void Renderer::RenderGeometry()
 {
 	SceneManager& sc = SceneManager::GetInstance();

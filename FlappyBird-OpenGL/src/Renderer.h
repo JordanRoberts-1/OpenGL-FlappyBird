@@ -19,6 +19,7 @@ public:
 	static void ClearRendering();
 	static void RenderGeometry();
 	static void RenderGUI();
+	static void Render();
 private:
 	static void Clear();
 private:

@@ -26,11 +26,7 @@ void Application::Run()
 	m_isRunning = true;
 	while (m_isRunning)
 	{
-		Renderer::ClearRendering();
-
-		Renderer::RenderGeometry();
-
-		Renderer::RenderGUI();
+		Renderer::Render();
 
 		/* Swap front and back buffers */
 		glfwSwapBuffers(m_Window.get());
