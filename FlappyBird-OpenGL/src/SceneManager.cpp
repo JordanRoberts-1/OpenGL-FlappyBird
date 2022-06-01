@@ -15,7 +15,7 @@ void SceneManager::BuildScene()
 	{
 		std::unique_ptr<TexturedQuad> test1 = std::make_unique<TexturedQuad>(std::string("dickbutt.png"), std::string("Basic.glsl"), glm::vec2(0.0f, 0.0f));
 		m_Objects.push_back(std::move(test1));
-		std::unique_ptr<TexturedQuad> test2 = std::make_unique<TexturedQuad>(std::string("d_minion.jpg"), std::string("Basic.glsl"), glm::vec2(300.0f, 200.0f));
+		std::unique_ptr<TexturedQuad> test2 = std::make_unique<TexturedQuad>(std::string("dr_minion.jpg"), std::string("Baic.glsl"), glm::vec2(300.0f, 200.0f));
 		m_Objects.push_back(std::move(test2));
 	}
 	catch (...) { std::cerr << "Failed to make objects"; }

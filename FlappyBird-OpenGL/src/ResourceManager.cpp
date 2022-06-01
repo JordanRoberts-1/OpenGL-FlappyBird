@@ -8,8 +8,6 @@ Texture* ResourceManager::CreateTexture(const std::string& filename)
 
 	m_Textures[filename] = std::make_unique<Texture>(m_ResString + "textures/" + filename);
 
-	if (m_Textures[filename] == nullptr) return nullptr;
-
 	return m_Textures[filename].get();
 }
 

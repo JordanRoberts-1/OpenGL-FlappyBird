@@ -80,8 +80,11 @@ ShaderProgramSource Shader::ParseShader(const std::string& filepath)
 	//Create an input stream from the given file
 	std::ifstream stream(filepath);
 
+	if (!stream) throw std::invalid_argument("Error creating Shader");
+
 	//Enum for the shader type, also used as the indices of the types of shaders
-	enum class ShaderType {
+	enum class ShaderType
+	{
 		NONE = -1, VERTEX = 0, FRAGMENT = 1
 	};
 

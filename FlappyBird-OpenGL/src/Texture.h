@@ -18,7 +18,7 @@ public:
 	inline unsigned int GetRendererID() const { return m_RendererID; }
 
 private:
-	bool SetupTexture(const std::string& path);
+	void SetupTexture(const std::string& path);
 
 private:
 	unsigned int m_RendererID;
