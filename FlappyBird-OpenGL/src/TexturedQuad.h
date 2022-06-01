@@ -21,7 +21,9 @@ public:
 	inline Texture* GetTexture() const { return m_Texture; }
 	inline Shader* GetShader() const { return m_Shader; }
 
-private:
+	virtual void Update() = 0;
+
+protected:
 	int m_SceneID;
 
 	glm::vec2 m_Position;

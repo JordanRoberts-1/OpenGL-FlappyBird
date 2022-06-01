@@ -16,7 +16,7 @@ public:
 	SceneManager(SceneManager const&) = delete;
 	void operator=(SceneManager const&) = delete;
 
-	std::vector<TexturedQuad*> GetObjects();
+	std::vector<TexturedQuad*> GetObjects() const;
 
 private:
 	SceneManager() {};
