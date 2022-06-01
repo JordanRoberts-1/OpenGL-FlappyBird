@@ -67,15 +67,15 @@ void Renderer::RenderGeometry()
 		glm::mat4 model = glm::scale(transMatrix, glm::vec3(object->GetSize(), 1));
 		glm::mat4 mvp = proj * view * model;
 
-		Shader& shader = object->GetShader();
-		shader.Bind();
-		shader.SetUniformMat4f("u_MVP", mvp);
+		Shader* shader = object->GetShader();
+		shader->Bind();
+		shader->SetUniformMat4f("u_MVP", mvp);
 
-		Texture& texture = object->GetTexture();
-		texture.Bind(texture.GetRendererID());
-		shader.SetUniform1i("u_Texture", texture.GetRendererID());
+		Texture* texture = object->GetTexture();
+		texture->Bind(texture->GetRendererID());
+		shader->SetUniform1i("u_Texture", texture->GetRendererID());
 
-		Renderer::Draw(vao, ib, shader);
+		Renderer::Draw(vao, ib, *shader);
 	}
 }
 

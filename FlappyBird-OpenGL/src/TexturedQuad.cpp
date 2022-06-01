@@ -6,8 +6,8 @@ TexturedQuad::TexturedQuad(const std::string& texture, const std::string& shader
 	m_Texture(ResourceManager::GetInstance().CreateTexture(texture)),
 	m_Shader(ResourceManager::GetInstance().CreateShader(shader))
 {
-	m_Size.x = (float)m_Texture.GetWidth();
-	m_Size.y = (float)m_Texture.GetHeight();
+	m_Size.x = (float)m_Texture->GetWidth();
+	m_Size.y = (float)m_Texture->GetHeight();
 }
 
 void TexturedQuad::SetSceneID(int id)

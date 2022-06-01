@@ -17,8 +17,8 @@ public:
 	ResourceManager(ResourceManager const&) = delete;
 	void operator=(ResourceManager const&) = delete;
 
-	Texture& CreateTexture(const std::string& filename);
-	Shader& CreateShader(const std::string& filename);
+	Texture* CreateTexture(const std::string& filename);
+	Shader* CreateShader(const std::string& filename);
 private:
 	ResourceManager() : m_ResString("res/") {};
 private:
