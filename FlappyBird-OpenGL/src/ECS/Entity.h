@@ -3,8 +3,10 @@
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
-#include "Texture.h"
-#include "Renderer.h"
+#include "../Texture.h"
+#include "../Renderer.h"
+#include "Component.h"
+#include "TransformComponent.h"
 
 class Entity
 {
@@ -15,8 +17,8 @@ public:
 	void SetSceneID(int id);
 	int GetSceneID();
 
-	inline glm::vec2 GetPosition() const { return m_Position; }
-	inline glm::vec2 GetSize() const { return m_Size; }
+	inline glm::vec2 GetPosition() const { return m_Transform->GetPosition(); }
+	inline glm::vec2 GetSize() const { return m_Transform->GetScale(); }
 
 	inline Texture* GetTexture() const { return m_Texture; }
 	inline Shader* GetShader() const { return m_Shader; }
@@ -25,9 +27,10 @@ public:
 
 protected:
 	int m_SceneID;
+	std::vector<std::unique_ptr<Component>> m_Components;
 
-	glm::vec2 m_Position;
-	glm::vec2 m_Size;
+	//Always on each entity and used frequently, so cheaper to cache it
+	std::unique_ptr<TransformComponent> m_Transform;
 
 	Texture* m_Texture;
 	Shader* m_Shader;
