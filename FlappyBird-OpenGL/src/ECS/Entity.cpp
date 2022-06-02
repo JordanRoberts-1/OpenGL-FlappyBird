@@ -11,7 +11,8 @@ Entity::Entity(const std::string& texture, const std::string& shader, glm::vec2 
 	size.x = (float)m_Texture->GetWidth();
 	size.y = (float)m_Texture->GetHeight();
 
-	m_Transform = std::make_unique<TransformComponent>(this, pos, size);
+	//Add the transform component to each entity
+	m_Transform = (TransformComponent*)m_Components.emplace_back(std::make_unique<TransformComponent>(this, pos, size)).get();
 }
 
 void Entity::SetSceneID(int id)
@@ -22,4 +23,21 @@ void Entity::SetSceneID(int id)
 int Entity::GetSceneID()
 {
 	return m_SceneID;
+}
+
+template <typename T>
+T* Entity::GetComponent(ComponentType type)
+{
+	for (uint32_t i = 0; i < m_Components.size(); i++)
+	{
+		if (type == m_Components[i]->GetType()) return m_Components[i].get();
+	}
+}
+
+void Entity::Update()
+{
+	for (uint32_t i = 0; i < m_Components.size(); i++)
+	{
+		m_Components[i]->Update();
+	}
 }

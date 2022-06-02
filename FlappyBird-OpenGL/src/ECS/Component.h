@@ -16,7 +16,6 @@ public:
 	virtual inline ComponentType GetType() const = 0;
 
 	inline Entity* GetParent() const { return m_Parent; }
-
 private:
 	Entity* m_Parent;
 };

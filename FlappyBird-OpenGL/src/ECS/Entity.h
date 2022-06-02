@@ -23,14 +23,18 @@ public:
 	inline Texture* GetTexture() const { return m_Texture; }
 	inline Shader* GetShader() const { return m_Shader; }
 
-	virtual void Update() = 0;
+	template <typename T>
+	T* GetComponent(ComponentType type);
+	inline const std::vector<std::unique_ptr<Component>>& GetAllComponents() const { return m_Components; };
 
-protected:
+	void Update();
+
+private:
 	int m_SceneID;
 	std::vector<std::unique_ptr<Component>> m_Components;
 
 	//Always on each entity and used frequently, so cheaper to cache it
-	std::unique_ptr<TransformComponent> m_Transform;
+	TransformComponent* m_Transform;
 
 	Texture* m_Texture;
 	Shader* m_Shader;

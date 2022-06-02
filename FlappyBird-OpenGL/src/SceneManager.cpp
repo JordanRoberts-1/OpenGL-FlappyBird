@@ -13,10 +13,10 @@ void SceneManager::BuildScene()
 
 	try
 	{
-		//std::unique_ptr<Player> test1 = std::make_unique<Player>(std::string("dickbutt.png"), std::string("Basic.glsl"), glm::vec2(0.0f, 0.0f));
-		//m_Objects.push_back(std::move(test1));
-		//std::unique_ptr<Player> test2 = std::make_unique<Player>(std::string("dr_minion.jpg"), std::string("Basic.glsl"), glm::vec2(300.0f, 200.0f));
-		//m_Objects.push_back(std::move(test2));
+		std::unique_ptr<Entity> test1 = std::make_unique<Entity>(std::string("dickbutt.png"), std::string("Basic.glsl"), glm::vec2(0.0f, 0.0f));
+		m_Objects.push_back(std::move(test1));
+		std::unique_ptr<Entity> test2 = std::make_unique<Entity>(std::string("dr_minion.jpg"), std::string("Basic.glsl"), glm::vec2(300.0f, 200.0f));
+		m_Objects.push_back(std::move(test2));
 	}
 	catch (...) { std::cerr << "Failed to make objects"; }
 
