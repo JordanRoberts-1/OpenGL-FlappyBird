@@ -7,7 +7,6 @@
 #include "ImGUI/imgui_impl_glfw.h"
 #include "ImGUI/imgui_impl_opengl3.h"
 
-class Entity;
 class VertexArray;
 class IndexBuffer;
 class Shader;

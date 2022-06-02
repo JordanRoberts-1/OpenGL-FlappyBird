@@ -4,7 +4,7 @@
 #include "VertexArray.h"
 #include "IndexBuffer.h"
 #include "Shader.h"
-#include "ECS/Entity.h"
+#include "ECS/TransformComponent.h"
 
 void Renderer::Draw(const VertexArray& va, const IndexBuffer& ib, const Shader& shader)
 {
@@ -64,9 +64,13 @@ void Renderer::RenderGeometry()
 		vb.Bind();
 		vao.AddBuffer(vb, vbLayout);
 
+		TransformComponent* tc = object->GetTransform();
+		glm::vec3 pos = glm::vec3(tc->GetPosition(), 1.0f);
+		glm::vec3 scale = glm::vec3(tc->GetScale(), 1.0f);
+
 		//Setup the MVP matrix from each objects position, scale, rotation, etc...
-		glm::mat4 transMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(object->GetPosition(), 0.0f));
-		glm::mat4 model = glm::scale(transMatrix, glm::vec3(object->GetSize(), 1));
+		glm::mat4 transMatrix = glm::translate(glm::mat4(1.0f), pos);
+		glm::mat4 model = glm::scale(transMatrix, scale);
 		glm::mat4 mvp = proj * view * model;
 
 		Shader* shader = object->GetShader();

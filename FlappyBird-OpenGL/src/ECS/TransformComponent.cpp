@@ -8,3 +8,13 @@ TransformComponent::TransformComponent(Entity* parent, glm::vec2 pos, glm::vec2 
 void TransformComponent::Update()
 {
 }
+
+void TransformComponent::SetPosition(glm::vec2 pos)
+{
+	m_Position = pos;
+}
+
+void TransformComponent::SetScale(glm::vec2 scale)
+{
+	m_Scale = scale;
+}

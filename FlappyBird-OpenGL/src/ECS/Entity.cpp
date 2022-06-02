@@ -1,6 +1,7 @@
 #include "Entity.h"
 #include "../ResourceManager.h"
 #include "TransformComponent.h"
+#include "Component.h"
 
 Entity::Entity(const std::string& texture, const std::string& shader, glm::vec2 pos)
 	: m_SceneID(0), m_Transform(nullptr),
@@ -41,3 +42,6 @@ void Entity::Update()
 		m_Components[i]->Update();
 	}
 }
+
+inline const std::vector<std::unique_ptr<Component>>& Entity::GetAllComponents() const { return m_Components; };
+

@@ -6,7 +6,9 @@
 #include "../Texture.h"
 #include "../Renderer.h"
 #include "Component.h"
-#include "TransformComponent.h"
+
+class TransformComponent;
+enum ComponentType;
 
 class Entity
 {
@@ -17,15 +19,14 @@ public:
 	void SetSceneID(int id);
 	int GetSceneID();
 
-	inline glm::vec2 GetPosition() const { return m_Transform->GetPosition(); }
-	inline glm::vec2 GetSize() const { return m_Transform->GetScale(); }
-
 	inline Texture* GetTexture() const { return m_Texture; }
 	inline Shader* GetShader() const { return m_Shader; }
 
 	template <typename T>
 	T* GetComponent(ComponentType type);
-	inline const std::vector<std::unique_ptr<Component>>& GetAllComponents() const { return m_Components; };
+
+	inline TransformComponent* GetTransform() const { return m_Transform; }
+	inline const std::vector<std::unique_ptr<Component>>& GetAllComponents() const;
 
 	void Update();
 

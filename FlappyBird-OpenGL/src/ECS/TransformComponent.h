@@ -13,6 +13,9 @@ public:
 	inline glm::vec2 GetPosition() const { return m_Position; }
 	inline glm::vec2 GetScale() const { return m_Scale; }
 
+	void SetPosition(glm::vec2 pos);
+	void SetScale(glm::vec2 scale);
+
 private:
 	glm::vec2 m_Position;
 	glm::vec2 m_Scale;
