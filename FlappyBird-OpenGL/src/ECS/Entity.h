@@ -28,6 +28,12 @@ public:
 	inline TransformComponent* GetTransform() const { return m_Transform; }
 	inline const std::vector<std::unique_ptr<Component>>& GetAllComponents() const;
 
+	template <typename T>
+	void AddComponent(Entity* parent)
+	{
+		m_Components.emplace_back(new T(parent));
+	}
+
 	void Update();
 
 private:

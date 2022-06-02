@@ -3,7 +3,7 @@
 #include "TransformComponent.h"
 
 PhysicsComponent::PhysicsComponent(Entity* parent)
-	: Component(parent), m_Velocity(0.0f), m_Acceleration(0.0f)
+	: Component(parent), m_Velocity(0.05f), m_Acceleration(0.05f)
 {
 	m_TransformComponent = parent->GetTransform();
 }

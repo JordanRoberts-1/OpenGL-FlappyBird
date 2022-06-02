@@ -15,7 +15,7 @@ private:
 
 	const float GRAVITY = .5f;
 
-	float m_Velocity = 0.05f;
-	float m_Acceleration = 0.05f;
+	float m_Velocity;
+	float m_Acceleration;
 };
 

@@ -6,17 +6,20 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include "Shader.h"
 #include "Texture.h"
+#include "ECS/PhysicsComponent.h"
+#include "ECS/Entity.h"
 
 void SceneManager::BuildScene()
 {
 	ResourceManager& rm = ResourceManager::GetInstance();
 
+	//Attempt to create the objects and add components
 	try
 	{
-		std::unique_ptr<Entity> test1 = std::make_unique<Entity>(std::string("dickbutt.png"), std::string("Basic.glsl"), glm::vec2(0.0f, 0.0f));
-		m_Objects.push_back(std::move(test1));
-		std::unique_ptr<Entity> test2 = std::make_unique<Entity>(std::string("dr_minion.jpg"), std::string("Basic.glsl"), glm::vec2(300.0f, 200.0f));
-		m_Objects.push_back(std::move(test2));
+		std::unique_ptr<Entity>& player = m_Objects.emplace_back(std::make_unique<Entity>(std::string("dickbutt.png"), std::string("Basic.glsl"), glm::vec2(0.0f, 0.0f)));
+		player->AddComponent<PhysicsComponent>(player.get());
+
+		std::unique_ptr<Entity>& test2 = m_Objects.emplace_back(std::make_unique<Entity>(std::string("dr_minion.jpg"), std::string("Basic.glsl"), glm::vec2(300.0f, 200.0f)));
 	}
 	catch (...) { std::cerr << "Failed to make objects"; }
 }
