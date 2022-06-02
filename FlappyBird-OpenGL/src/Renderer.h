@@ -23,7 +23,8 @@ public:
 private:
 	static void Clear();
 private:
-	static constexpr const float m_EntityVertices[16] = {
+	static const uint32_t NUM_VERTICES = 16;
+	static constexpr const float m_EntityVertices[NUM_VERTICES] = {
 		0.0f, 0.0f, 0.0f, 0.0f,
 		1.0f, 0.0f, 1.0f, 0.0f,
 		1.0f, 1.0f, 1.0f, 1.0f,

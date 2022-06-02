@@ -16,7 +16,7 @@ public:
 	SceneManager(SceneManager const&) = delete;
 	void operator=(SceneManager const&) = delete;
 
-	std::vector<Entity*> GetObjects() const;
+	const std::vector<std::unique_ptr<Entity>>& GetObjects() const { return m_Objects; };
 
 private:
 	SceneManager() {};

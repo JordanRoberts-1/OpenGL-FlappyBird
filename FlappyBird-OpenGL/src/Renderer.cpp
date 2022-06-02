@@ -40,8 +40,9 @@ void Renderer::Render()
 void Renderer::RenderGeometry()
 {
 	SceneManager& sc = SceneManager::GetInstance();
-	const std::vector<Entity*> objects = sc.GetObjects();
+	const std::vector<std::unique_ptr<Entity>>& objects = sc.GetObjects();
 
+	//Get Prepped for the MVP matrix
 	glm::mat4 proj = glm::ortho(0.0f, 960.0f, 0.0f, 540.0f, -1.0f, 1.0f);
 	glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
 
@@ -52,17 +53,18 @@ void Renderer::RenderGeometry()
 	unsigned int indices[] = { 0, 1, 2, 2, 3, 0 };
 	IndexBuffer ib(indices, 6);
 
-	for (const Entity* object : objects)
-	{
-		VertexArray vao;
+	VertexArray vao;
 
+	//Loop through and render each object in a separate draw call
+	for (const std::unique_ptr<Entity>& object : objects)
+	{
 		const float* vertices = m_EntityVertices;
-		VertexBuffer vb(vertices, 16 * sizeof(float));
+		VertexBuffer vb(vertices, NUM_VERTICES * sizeof(float));
 
 		vb.Bind();
-
 		vao.AddBuffer(vb, vbLayout);
 
+		//Setup the MVP matrix from each objects position, scale, rotation, etc...
 		glm::mat4 transMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(object->GetPosition(), 0.0f));
 		glm::mat4 model = glm::scale(transMatrix, glm::vec3(object->GetSize(), 1));
 		glm::mat4 mvp = proj * view * model;

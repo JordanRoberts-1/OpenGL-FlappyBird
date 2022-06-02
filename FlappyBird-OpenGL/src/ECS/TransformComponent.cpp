@@ -7,5 +7,4 @@ TransformComponent::TransformComponent(Entity* parent, glm::vec2 pos, glm::vec2 
 
 void TransformComponent::Update()
 {
-	m_Position += 0.05;
 }

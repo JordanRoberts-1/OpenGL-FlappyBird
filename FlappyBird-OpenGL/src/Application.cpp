@@ -115,9 +115,9 @@ std::unique_ptr<GLFWwindow, DestroyglfwWin> Application::SetupWindow()
 void Application::Update()
 {
 	const SceneManager& sc = SceneManager::GetInstance();
-	const std::vector<Entity*>& objects = sc.GetObjects();
+	const std::vector<std::unique_ptr<Entity>>& objects = sc.GetObjects();
 
-	for (Entity* entity : objects)
+	for (const std::unique_ptr<Entity>& entity : objects)
 	{
 		entity->Update();
 	}
