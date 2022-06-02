@@ -92,7 +92,7 @@ std::unique_ptr<GLFWwindow, DestroyglfwWin> Application::SetupWindow()
 	glfwMakeContextCurrent(window.get());
 
 	//turn on V-Sync
-	glfwSwapInterval(1);
+	glfwSwapInterval(0);
 
 	//Initialize glew
 	if (glewInit())
