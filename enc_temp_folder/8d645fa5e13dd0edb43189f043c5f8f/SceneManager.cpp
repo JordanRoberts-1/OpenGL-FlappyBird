@@ -55,6 +55,6 @@ std::vector<BoxColliderComponent*> SceneManager::GetColliders() const
 
 void SceneManager::AddObject(std::unique_ptr<Entity> object)
 {
- 	object->Init();
+	object->Init();
 	m_Objects.push_back(std::move(object));
 }

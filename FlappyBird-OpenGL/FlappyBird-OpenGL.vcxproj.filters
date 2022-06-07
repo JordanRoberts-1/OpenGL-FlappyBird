@@ -90,6 +90,12 @@
     <ClCompile Include="src\ECS\BoxColliderComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\PipeGenerator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ECS\PipeComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\IndexBuffer.h">
@@ -1025,6 +1031,12 @@
     <ClInclude Include="src\ECS\BoxColliderComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\PipeGenerator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\PipeComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\vendor\glm\detail\func_common.inl">
@@ -1447,7 +1459,7 @@
     <Image Include="res\textures\flappy_bird.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="C:\Users\stead\Downloads\flappy_bird.png">
+    <Image Include="res\textures\flappybirdpipe.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

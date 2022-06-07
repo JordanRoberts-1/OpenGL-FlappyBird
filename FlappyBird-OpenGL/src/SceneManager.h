@@ -21,6 +21,8 @@ public:
 	const std::vector<std::unique_ptr<Entity>>& GetObjects() const { return m_Objects; };
 	std::vector<BoxColliderComponent*> GetColliders() const;
 
+	void AddObject(std::unique_ptr<Entity> object);
+
 private:
 	SceneManager() {};
 private:

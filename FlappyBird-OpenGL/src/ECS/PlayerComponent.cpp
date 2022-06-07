@@ -30,7 +30,6 @@ void PlayerComponent::Update()
 
 void PlayerComponent::OnCollision(BoxColliderComponent* other)
 {
-	std::cout << "This is being called! on entity:" << m_Parent << std::endl;
 }
 
 void PlayerComponent::HandleEvent()

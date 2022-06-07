@@ -160,6 +160,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\ECS\PipeComponent.cpp" />
+    <ClCompile Include="src\PipeGenerator.cpp" />
     <ClCompile Include="src\ECS\BoxColliderComponent.cpp" />
     <ClCompile Include="src\ECS\PlayerComponent.cpp" />
     <ClCompile Include="src\ECS\PhysicsComponent.cpp" />
@@ -186,6 +188,8 @@
     <ClCompile Include="src\ECS\TransformComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\ECS\PipeComponent.h" />
+    <ClInclude Include="src\PipeGenerator.h" />
     <ClInclude Include="src\ECS\BoxColliderComponent.h" />
     <ClInclude Include="src\ECS\PlayerComponent.h" />
     <ClInclude Include="src\ECS\PhysicsComponent.h" />
@@ -639,9 +643,9 @@
     <None Include="src\vendor\glm\gtx\wrap.inl" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="C:\Users\stead\Downloads\flappy_bird.png" />
     <Image Include="res\textures\dickbutt.png" />
     <Image Include="res\textures\dr_minion.jpg" />
+    <Image Include="res\textures\flappybirdpipe.png" />
     <Image Include="res\textures\flappy_bird.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
