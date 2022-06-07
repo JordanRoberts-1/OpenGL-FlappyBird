@@ -90,6 +90,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW\include;$(SolutionDir)Dependencies\glew-2.1.0\include;$(SolutionDir)\FlappyBird-OpenGL\src\vendor</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -110,6 +111,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW\include;$(SolutionDir)Dependencies\glew-2.1.0\include;$(SolutionDir)\FlappyBird-OpenGL\src\vendor</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -158,7 +160,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\ECS\PlayerComponent.cpp" />
     <ClCompile Include="src\ECS\PhysicsComponent.cpp" />
+    <ClCompile Include="src\Input.cpp" />
     <ClCompile Include="src\ResourceManager.cpp" />
     <ClCompile Include="src\SceneManager.cpp" />
     <ClCompile Include="src\ECS\Entity.cpp" />
@@ -181,9 +185,11 @@
     <ClCompile Include="src\ECS\TransformComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\ECS\PlayerComponent.h" />
     <ClInclude Include="src\ECS\PhysicsComponent.h" />
     <ClInclude Include="src\ECS\Component.h" />
     <ClInclude Include="src\Clock.h" />
+    <ClInclude Include="src\Input.h" />
     <ClInclude Include="src\ResourceManager.h" />
     <ClInclude Include="src\SceneManager.h" />
     <ClInclude Include="src\Application.h" />

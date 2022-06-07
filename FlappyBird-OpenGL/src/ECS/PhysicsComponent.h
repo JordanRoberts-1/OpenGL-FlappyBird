@@ -1,5 +1,6 @@
 #pragma once
 #include "Component.h"
+#include "glm/glm.hpp"
 
 class TransformComponent;
 
@@ -8,14 +9,23 @@ class PhysicsComponent :
 {
 public:
 	PhysicsComponent(Entity* parent);
+	void Init();
 	void Update();
 	inline ComponentType GetType() const { return PHYSICSCOMPONENT; }
+
+	void AddForce(glm::vec2 force);
+	void SetMass(float mass);
+	void SetVelocity(glm::vec2 velocity);
+	void SetAcceleration(glm::vec2 acceleration);
 private:
 	TransformComponent* m_TransformComponent;
 
 	const float GRAVITY = .5f;
 
-	float m_Velocity;
-	float m_Acceleration;
+	float m_Mass;
+
+	glm::vec2 m_CurrentForce;
+	glm::vec2 m_Velocity;
+	glm::vec2 m_Acceleration;
 };
 

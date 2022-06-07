@@ -23,15 +23,25 @@ public:
 	inline Shader* GetShader() const { return m_Shader; }
 
 	template <typename T>
-	T* GetComponent(ComponentType type);
+	T* GetComponent(ComponentType type)
+	{
+		for (uint32_t i = 0; i < m_Components.size(); i++)
+		{
+			if (type == m_Components[i]->GetType())
+			{
+				return (T*)m_Components[i].get();
+			}
+		}
+		return nullptr;
+	}
 
 	inline TransformComponent* GetTransform() const { return m_Transform; }
 	inline const std::vector<std::unique_ptr<Component>>& GetAllComponents() const;
 
 	template <typename T>
-	void AddComponent(Entity* parent)
+	T* AddComponent(Entity* parent)
 	{
-		m_Components.emplace_back(new T(parent));
+		return 	(T*)m_Components.emplace_back(new T(parent)).get();
 	}
 
 	void Update();

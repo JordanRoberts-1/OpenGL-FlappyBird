@@ -21,10 +21,21 @@ struct DestroyglfwWin
 class Application
 {
 public:
-	Application();
+	static Application& GetInstance()
+	{
+		static Application instance;
+
+		return instance;
+	}
+
+	Application(Application const&) = delete;
+	void operator=(Application const&) = delete;
+
 	~Application();
 	void Run();
+	inline GLFWwindow* GetWindow() const { return m_Window.get(); }
 private:
+	Application();
 	void CreateContext();
 	void SetupImGui(GLFWwindow* window);
 	std::unique_ptr<GLFWwindow, DestroyglfwWin> SetupWindow();

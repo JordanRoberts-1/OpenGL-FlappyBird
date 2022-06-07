@@ -5,13 +5,15 @@ class Entity;
 enum ComponentType
 {
 	TRANSFORMCOMPONENT,
-	PHYSICSCOMPONENT
+	PHYSICSCOMPONENT,
+	PLAYERCOMPONENT
 };
 
 class Component
 {
 public:
 	Component(Entity* parent) : m_Parent(parent) {};
+	virtual void Init() = 0;
 	virtual void Update() = 0;
 	virtual inline ComponentType GetType() const = 0;
 

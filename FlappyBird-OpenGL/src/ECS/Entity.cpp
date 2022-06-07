@@ -26,15 +26,6 @@ int Entity::GetSceneID()
 	return m_SceneID;
 }
 
-template <typename T>
-T* Entity::GetComponent(ComponentType type)
-{
-	for (uint32_t i = 0; i < m_Components.size(); i++)
-	{
-		if (type == m_Components[i]->GetType()) return m_Components[i].get();
-	}
-}
-
 void Entity::Update()
 {
 	for (uint32_t i = 0; i < m_Components.size(); i++)

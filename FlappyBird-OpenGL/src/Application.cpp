@@ -2,6 +2,8 @@
 #include "SceneManager.h"
 #include "Clock.h"
 
+#include "Input.h"
+
 #include "ImGUI/imgui.h"
 #include "ImGUI/imgui_impl_glfw.h"
 #include "ImGUI/imgui_impl_opengl3.h"
@@ -35,7 +37,7 @@ void Application::Run()
 		prev = curr;
 		lag += elapsed;
 
-		std::cout << "Frametime: " << elapsed << "ms" << std::endl;
+		//std::cout << "Frametime: " << elapsed << "ms" << std::endl;
 
 		while (lag >= MS_PER_UPDATE)
 		{
@@ -107,6 +109,8 @@ std::unique_ptr<GLFWwindow, DestroyglfwWin> Application::SetupWindow()
 	glEnable(GL_BLEND);
 
 	SetupImGui(window.get());
+
+	glfwSetKeyCallback(window.get(), InputManager::Callback);
 
 	Debug::SetupDebug();
 	return window;

@@ -7,6 +7,7 @@ class TransformComponent :
 {
 public:
 	TransformComponent(Entity* parent, glm::vec2 pos, glm::vec2 scale);
+	void Init() {};
 	void Update();
 	inline ComponentType GetType() const { return TRANSFORMCOMPONENT; }
 
