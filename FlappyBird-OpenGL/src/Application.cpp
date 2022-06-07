@@ -84,7 +84,7 @@ std::unique_ptr<GLFWwindow, DestroyglfwWin> Application::SetupWindow()
 	CreateContext();
 
 	/* Create a windowed mode window and its OpenGL context */
-	std::unique_ptr<GLFWwindow, DestroyglfwWin> window = std::unique_ptr<GLFWwindow, DestroyglfwWin>(glfwCreateWindow(960, 540, "Hello World", NULL, NULL));
+	std::unique_ptr<GLFWwindow, DestroyglfwWin> window = std::unique_ptr<GLFWwindow, DestroyglfwWin>(glfwCreateWindow(540, 960, "Hello World", NULL, NULL));
 	if (!window)
 	{
 		glfwTerminate();
@@ -106,8 +106,11 @@ std::unique_ptr<GLFWwindow, DestroyglfwWin> Application::SetupWindow()
 	//Print out the version of OpenGL to the console
 	std::cout << glGetString(GL_VERSION) << std::endl;
 
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	//Setup transparencies
 	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+
 
 	SetupImGui(window.get());
 

@@ -1444,5 +1444,11 @@
     <Image Include="res\textures\dr_minion.jpg">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="res\textures\flappy_bird.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="C:\Users\stead\Downloads\flappy_bird.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

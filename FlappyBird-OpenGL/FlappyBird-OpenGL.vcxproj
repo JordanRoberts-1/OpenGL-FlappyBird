@@ -639,8 +639,10 @@
     <None Include="src\vendor\glm\gtx\wrap.inl" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="C:\Users\stead\Downloads\flappy_bird.png" />
     <Image Include="res\textures\dickbutt.png" />
     <Image Include="res\textures\dr_minion.jpg" />
+    <Image Include="res\textures\flappy_bird.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
