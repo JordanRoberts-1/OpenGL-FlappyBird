@@ -17,7 +17,7 @@ void SceneManager::BuildScene()
 	//Attempt to create the objects and add components
 	try
 	{
-		std::unique_ptr<Entity>& player = m_Objects.emplace_back(std::make_unique<Entity>(std::string("dickbutt.png"), std::string("Basic.glsl"), glm::vec2(0.0f, 0.0f)));
+		std::unique_ptr<Entity>& player = m_Objects.emplace_back(std::make_unique<Entity>(std::string("dickbutt.png"), std::string("Basic.glsl"), glm::vec2(100.0f, 200.0f), glm::vec2(0.1f)));
 		PlayerComponent* playerComponent = player->AddComponent<PlayerComponent>(player.get());
 		PhysicsComponent* playerPhysics = player->AddComponent<PhysicsComponent>(player.get());
 		playerPhysics->SetMass(1.0f);

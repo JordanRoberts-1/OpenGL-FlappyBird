@@ -1,7 +1,7 @@
 #include "TransformComponent.h"
 
-TransformComponent::TransformComponent(Entity* parent, glm::vec2 pos, glm::vec2 scale)
-	: Component(parent), m_Position(pos), m_Scale(scale)
+TransformComponent::TransformComponent(Entity* parent, glm::vec2 pos, glm::vec2 size, glm::vec2 scale)
+	: Component(parent), m_Position(pos), m_Size(size), m_Scale(scale)
 {
 }
 

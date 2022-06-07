@@ -66,7 +66,7 @@ void Renderer::RenderGeometry()
 
 		TransformComponent* tc = object->GetTransform();
 		glm::vec3 pos = glm::vec3(tc->GetPosition(), 1.0f);
-		glm::vec3 scale = glm::vec3(tc->GetScale(), 1.0f);
+		glm::vec3 scale = glm::vec3(tc->GetSize() * tc->GetScale(), 1.0f);
 
 		//Setup the MVP matrix from each objects position, scale, rotation, etc...
 		glm::mat4 transMatrix = glm::translate(glm::mat4(1.0f), pos);
