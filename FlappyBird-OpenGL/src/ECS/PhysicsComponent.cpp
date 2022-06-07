@@ -3,9 +3,14 @@
 #include "TransformComponent.h"
 
 PhysicsComponent::PhysicsComponent(Entity* parent)
-	: Component(parent), m_Mass(0.0f), m_CurrentForce(0.0f), m_Velocity(0.0f), m_Acceleration(0.0f)
+	: Component(parent), m_TransformComponent(nullptr), m_Mass(0.0f), m_CurrentForce(0.0f), m_Velocity(0.0f), m_Acceleration(0.0f)
 {
-	m_TransformComponent = parent->GetTransform();
+
+}
+
+void PhysicsComponent::Init()
+{
+	m_TransformComponent = m_Parent->GetTransform();
 }
 
 void PhysicsComponent::Update()

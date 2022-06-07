@@ -6,12 +6,13 @@
 
 PlayerComponent::PlayerComponent(Entity* parent)
 	: Component(parent),
-	m_PhysicsComponent((PhysicsComponent*)parent->GetComponent<PhysicsComponent>(PHYSICSCOMPONENT))
+	m_PhysicsComponent(nullptr)
 {
 }
 
 void PlayerComponent::Init()
 {
+	m_PhysicsComponent = (PhysicsComponent*)m_Parent->GetComponent<PhysicsComponent>(PHYSICSCOMPONENT);
 }
 
 void PlayerComponent::Update()

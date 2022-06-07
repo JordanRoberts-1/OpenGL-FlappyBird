@@ -44,6 +44,7 @@ public:
 		return 	(T*)m_Components.emplace_back(new T(parent)).get();
 	}
 
+	void Init();
 	void Update();
 
 private:

@@ -34,5 +34,13 @@ void Entity::Update()
 	}
 }
 
+void Entity::Init()
+{
+	for (const auto& component : m_Components)
+	{
+		component->Init();
+	}
+}
+
 inline const std::vector<std::unique_ptr<Component>>& Entity::GetAllComponents() const { return m_Components; };
 
