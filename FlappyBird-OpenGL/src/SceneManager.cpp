@@ -26,7 +26,7 @@ void SceneManager::BuildScene()
 		playerPhysics->SetMass(1.0f);
 
 		std::unique_ptr<Entity>& test2 = m_Objects.emplace_back(
-			std::make_unique<Entity>(std::string("dr_minion.jpg"), std::string("Basic.glsl"), glm::vec2(400.0f, 115.0f), glm::vec2(.1f))
+			std::make_unique<Entity>(std::string("dr_minion.jpg"), std::string("Basic.glsl"), glm::vec2(115.0f, 115.0f), glm::vec2(1.0f))
 		);
 		test2->AddComponent<BoxColliderComponent>(test2.get());
 

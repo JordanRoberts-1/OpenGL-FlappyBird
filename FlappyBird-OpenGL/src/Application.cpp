@@ -122,11 +122,13 @@ void Application::Update()
 	const SceneManager& sc = SceneManager::GetInstance();
 	const std::vector<std::unique_ptr<Entity>>& objects = sc.GetObjects();
 
+	//Update all the objects
 	for (const std::unique_ptr<Entity>& entity : objects)
 	{
 		entity->Update();
 	}
 
+	//Check for collisions
 	const std::vector<BoxColliderComponent*> colliders = sc.GetColliders();
 
 	for (const auto& collider : colliders)
@@ -137,7 +139,8 @@ void Application::Update()
 
 			if (collider->CollidesWith(otherCollider))
 			{
-				std::cout << "Collision!" << std::endl;
+				collider->OnCollision(otherCollider);
+				otherCollider->OnCollision(collider);
 			}
 		}
 	}

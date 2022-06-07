@@ -34,3 +34,11 @@ bool BoxColliderComponent::CollidesWith(BoxColliderComponent* other)
 
 	return false;
 }
+
+void BoxColliderComponent::OnCollision(BoxColliderComponent* other)
+{
+	for (const auto& function : m_Subscribers)
+	{
+		function(other);
+	}
+}
