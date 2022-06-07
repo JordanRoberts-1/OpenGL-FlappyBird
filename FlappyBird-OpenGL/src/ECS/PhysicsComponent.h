@@ -17,10 +17,12 @@ public:
 	void SetMass(float mass);
 	void SetVelocity(glm::vec2 velocity);
 	void SetAcceleration(glm::vec2 acceleration);
+	void SetBoolGravity(bool value);
 private:
 	TransformComponent* m_TransformComponent;
 
 	const float GRAVITY = -.5f;
+	bool m_GravityAffects = true;
 
 	float m_Mass;
 

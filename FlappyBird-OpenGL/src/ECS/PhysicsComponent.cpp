@@ -11,7 +11,12 @@ PhysicsComponent::PhysicsComponent(Entity* parent)
 void PhysicsComponent::Init()
 {
 	m_TransformComponent = m_Parent->GetTransform();
-	AddForce(glm::vec2(0.0f, GRAVITY));
+
+	//Add gravity if this object is affected by gravity
+	if (m_GravityAffects)
+	{
+		AddForce(glm::vec2(0.0f, GRAVITY));
+	}
 }
 
 void PhysicsComponent::Update()
@@ -41,4 +46,9 @@ void PhysicsComponent::SetVelocity(glm::vec2 velocity)
 void PhysicsComponent::SetAcceleration(glm::vec2 acceleration)
 {
 	m_Acceleration = acceleration;
+}
+
+void PhysicsComponent::SetBoolGravity(bool value)
+{
+	m_GravityAffects = value;
 }

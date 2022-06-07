@@ -11,5 +11,5 @@ PipeComponent::PipeComponent(Entity* parent)
 
 void PipeComponent::Init()
 {
-	//m_PhysicsComponent->SetVelocity(glm::vec2(-1.0f, 0.0f));
+	m_PhysicsComponent->SetVelocity(glm::vec2(-1.0f, 0.0f));
 }
