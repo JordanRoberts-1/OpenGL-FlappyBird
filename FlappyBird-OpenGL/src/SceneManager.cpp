@@ -9,6 +9,7 @@
 #include "ECS/PhysicsComponent.h"
 #include "ECS/Entity.h"
 #include "ECS/PlayerComponent.h"
+#include "ECS/BoxColliderComponent.h"
 
 void SceneManager::BuildScene()
 {
@@ -20,9 +21,16 @@ void SceneManager::BuildScene()
 		std::unique_ptr<Entity>& player = m_Objects.emplace_back(std::make_unique<Entity>(std::string("dickbutt.png"), std::string("Basic.glsl"), glm::vec2(100.0f, 200.0f), glm::vec2(0.1f)));
 		PlayerComponent* playerComponent = player->AddComponent<PlayerComponent>(player.get());
 		PhysicsComponent* playerPhysics = player->AddComponent<PhysicsComponent>(player.get());
+		BoxColliderComponent* playerCollider = player->AddComponent<BoxColliderComponent>(player.get());
+
 		playerPhysics->SetMass(1.0f);
 
-		//std::unique_ptr<Entity>& test2 = m_Objects.emplace_back(std::make_unique<Entity>(std::string("dr_minion.jpg"), std::string("Basic.glsl"), glm::vec2(300.0f, 200.0f)));
+		std::unique_ptr<Entity>& test2 = m_Objects.emplace_back(
+			std::make_unique<Entity>(std::string("dr_minion.jpg"), std::string("Basic.glsl"), glm::vec2(400.0f, 115.0f), glm::vec2(.1f))
+		);
+		test2->AddComponent<BoxColliderComponent>(test2.get());
+
+
 	}
 	catch (...) { std::cerr << "Failed to make objects"; }
 
@@ -31,4 +39,18 @@ void SceneManager::BuildScene()
 	{
 		entity->Init();
 	}
+}
+
+std::vector<BoxColliderComponent*> SceneManager::GetColliders() const
+{
+	std::vector<BoxColliderComponent*> result;
+
+	//Loop through all the entities and add any found box colliders to the returned list
+	for (const auto& object : m_Objects)
+	{
+		BoxColliderComponent* boxCollider = object->GetComponent<BoxColliderComponent>(BOXCOLLIDERCOMPONENT);
+		if (boxCollider) result.push_back(boxCollider);
+	}
+
+	return result;
 }

@@ -1,6 +1,8 @@
 #pragma once
 #include "ECS/Entity.h"
 
+class BoxColliderComponent;
+
 class SceneManager
 {
 public:
@@ -17,6 +19,7 @@ public:
 	void operator=(SceneManager const&) = delete;
 
 	const std::vector<std::unique_ptr<Entity>>& GetObjects() const { return m_Objects; };
+	std::vector<BoxColliderComponent*> GetColliders() const;
 
 private:
 	SceneManager() {};

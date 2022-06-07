@@ -3,6 +3,7 @@
 #include "Clock.h"
 
 #include "Input.h"
+#include "ECS/BoxColliderComponent.h"
 
 #include "ImGUI/imgui.h"
 #include "ImGUI/imgui_impl_glfw.h"
@@ -124,6 +125,21 @@ void Application::Update()
 	for (const std::unique_ptr<Entity>& entity : objects)
 	{
 		entity->Update();
+	}
+
+	const std::vector<BoxColliderComponent*> colliders = sc.GetColliders();
+
+	for (const auto& collider : colliders)
+	{
+		for (const auto& otherCollider : colliders)
+		{
+			if (collider == otherCollider) continue;
+
+			if (collider->CollidesWith(otherCollider))
+			{
+				std::cout << "Collision!" << std::endl;
+			}
+		}
 	}
 }
 
