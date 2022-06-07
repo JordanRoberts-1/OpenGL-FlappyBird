@@ -21,8 +21,6 @@ void PhysicsComponent::Update()
 	m_Velocity += m_Acceleration;
 	glm::vec2 currPos = m_TransformComponent->GetPosition();
 	m_TransformComponent->SetPosition(currPos + m_Velocity);
-
-	std::cout << "position: x=" << m_TransformComponent->GetPosition().x << ", y=" << m_TransformComponent->GetPosition().y << std::endl;
 }
 
 void PhysicsComponent::AddForce(glm::vec2 force)
@@ -38,7 +36,6 @@ void PhysicsComponent::SetMass(float mass)
 void PhysicsComponent::SetVelocity(glm::vec2 velocity)
 {
 	m_Velocity = velocity;
-	std::cout << "velocity: x=" << m_Velocity.x << ", y=" << m_Velocity.y << std::endl;
 }
 
 void PhysicsComponent::SetAcceleration(glm::vec2 acceleration)
