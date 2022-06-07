@@ -14,6 +14,7 @@ public:
 	inline glm::vec2 GetPosition() const { return m_Position; }
 	inline glm::vec2 GetSize() const { return m_Size; }
 	inline glm::vec2 GetScale() const { return m_Scale; }
+	inline glm::vec2 GetScaledSize() const { return m_Size * m_Scale; }
 
 	void SetPosition(glm::vec2 pos);
 	void SetScale(glm::vec2 scale);
