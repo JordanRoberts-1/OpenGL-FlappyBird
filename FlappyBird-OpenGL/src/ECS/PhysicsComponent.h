@@ -20,7 +20,7 @@ public:
 private:
 	TransformComponent* m_TransformComponent;
 
-	const float GRAVITY = .5f;
+	const float GRAVITY = -.5f;
 
 	float m_Mass;
 

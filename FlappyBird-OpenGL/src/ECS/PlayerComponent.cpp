@@ -21,6 +21,5 @@ void PlayerComponent::Update()
 
 void PlayerComponent::HandleEvent()
 {
-	std::cout << "Handling Event" << std::endl;
-	m_PhysicsComponent->SetVelocity(glm::vec2(0.0f, 1.0f));
+	m_PhysicsComponent->SetVelocity(glm::vec2(0.0f, 20.0f));
 }

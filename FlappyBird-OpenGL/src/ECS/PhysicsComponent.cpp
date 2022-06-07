@@ -11,6 +11,7 @@ PhysicsComponent::PhysicsComponent(Entity* parent)
 void PhysicsComponent::Init()
 {
 	m_TransformComponent = m_Parent->GetTransform();
+	AddForce(glm::vec2(0.0f, GRAVITY));
 }
 
 void PhysicsComponent::Update()
