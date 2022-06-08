@@ -44,6 +44,7 @@ void Application::Run()
 		while (lag >= MS_PER_UPDATE)
 		{
 			Update();
+			//std::cout << SceneManager::GetInstance().GetObjects().size() << std::endl;
 			lag -= MS_PER_UPDATE;
 		}
 
@@ -123,7 +124,9 @@ std::unique_ptr<GLFWwindow, DestroyglfwWin> Application::SetupWindow()
 
 void Application::Update()
 {
-	const SceneManager& sc = SceneManager::GetInstance();
+	SceneManager& sc = SceneManager::GetInstance();
+	sc.ResetCleanupVector();
+
 	const std::vector<std::unique_ptr<Entity>>& objects = sc.GetObjects();
 
 	//Update all the objects
@@ -151,5 +154,7 @@ void Application::Update()
 			}
 		}
 	}
+
+	sc.CleanUpObjects();
 }
 

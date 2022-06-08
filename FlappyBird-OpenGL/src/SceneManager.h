@@ -21,11 +21,16 @@ public:
 	const std::vector<std::unique_ptr<Entity>>& GetObjects() const { return m_Objects; };
 	std::vector<BoxColliderComponent*> GetColliders() const;
 
-	void AddObject(std::unique_ptr<Entity> object);
+	Entity* AddObject(std::unique_ptr<Entity> object);
+	void RemoveObject(int ID);
+	void CleanUpObjects();
+	void ResetCleanupVector();
 
 private:
 	SceneManager() {};
 private:
 	std::vector<std::unique_ptr<Entity>> m_Objects;
+	std::vector<uint32_t> m_IDsToRemove;
+	uint32_t m_CurrentSceneID = 0;
 };
 

@@ -10,7 +10,7 @@ public:
 	PipeComponent(Entity* parent);
 
 	virtual void Init();
-	virtual void Update() {};
+	virtual void Update();
 	virtual inline ComponentType GetType() const { return PIPECOMPONENT; };
 
 private:

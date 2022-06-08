@@ -11,6 +11,8 @@
 #include "ECS/PlayerComponent.h"
 #include "ECS/BoxColliderComponent.h"
 
+#include <algorithm>
+
 void SceneManager::BuildScene()
 {
 	ResourceManager& rm = ResourceManager::GetInstance();
@@ -18,17 +20,14 @@ void SceneManager::BuildScene()
 	//Attempt to create the objects and add components
 	try
 	{
-		std::unique_ptr<Entity>& player = m_Objects.emplace_back(std::make_unique<Entity>(std::string("flappy_bird.png"), std::string("Basic.glsl"), glm::vec2(100.0f, 200.0f), glm::vec2(10.0f)));
-		PlayerComponent* playerComponent = player->AddComponent<PlayerComponent>(player.get());
-		PhysicsComponent* playerPhysics = player->AddComponent<PhysicsComponent>(player.get());
-		BoxColliderComponent* playerCollider = player->AddComponent<BoxColliderComponent>(player.get());
+		//Setup player
+		std::unique_ptr<Entity> playerEntity = std::make_unique<Entity>(std::string("flappy_bird.png"), std::string("Basic.glsl"), glm::vec2(100.0f, 200.0f), glm::vec2(5.0f));
+		Entity* player = AddObject(std::move(playerEntity));
+		PlayerComponent* playerComponent = player->AddComponent<PlayerComponent>(player);
+		PhysicsComponent* playerPhysics = player->AddComponent<PhysicsComponent>(player);
+		BoxColliderComponent* playerCollider = player->AddComponent<BoxColliderComponent>(player);
 
 		playerPhysics->SetMass(1.0f);
-
-		std::unique_ptr<Entity>& test2 = m_Objects.emplace_back(
-			std::make_unique<Entity>(std::string("flappybirdpipe.png"), std::string("Basic.glsl"), glm::vec2(115.0f, 115.0f), glm::vec2(5.0f))
-		);
-		test2->AddComponent<BoxColliderComponent>(test2.get());
 	}
 	catch (...) { std::cerr << "Failed to make objects"; }
 
@@ -53,8 +52,40 @@ std::vector<BoxColliderComponent*> SceneManager::GetColliders() const
 	return result;
 }
 
-void SceneManager::AddObject(std::unique_ptr<Entity> object)
+Entity* SceneManager::AddObject(std::unique_ptr<Entity> object)
 {
- 	object->Init();
+	object->Init();
+
+	//Set the scene ID for each object
+	object->SetSceneID(m_CurrentSceneID);
+	m_CurrentSceneID++;
+
 	m_Objects.push_back(std::move(object));
+	return m_Objects.back().get();
+}
+
+void SceneManager::RemoveObject(int ID)
+{
+	m_IDsToRemove.push_back(ID);
+}
+
+void SceneManager::CleanUpObjects()
+{
+	std::sort(m_IDsToRemove.begin(), m_IDsToRemove.end());
+	for (int i = m_IDsToRemove.size() - 1; i >= 0; --i)
+	{
+		m_Objects.erase(m_Objects.begin() + m_IDsToRemove[i]);
+	}
+
+	for (int i = 0; i < m_Objects.size(); i++)
+	{
+		m_Objects[i]->SetSceneID(i);
+	}
+
+	m_CurrentSceneID = m_Objects.size();
+}
+
+void SceneManager::ResetCleanupVector()
+{
+	m_IDsToRemove.clear();
 }

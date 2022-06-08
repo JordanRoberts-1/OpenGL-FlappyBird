@@ -1459,7 +1459,10 @@
     <Image Include="res\textures\flappy_bird.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="res\textures\flappybirdpipe.png">
+    <Image Include="res\textures\bottom_pipe.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\textures\top_pipe.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
