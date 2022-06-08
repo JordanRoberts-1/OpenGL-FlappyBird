@@ -3,7 +3,7 @@
 #include "TransformComponent.h"
 #include "Component.h"
 
-Entity::Entity(const std::string& texture, const std::string& shader, glm::vec2 pos, glm::vec2 scale)
+Entity::Entity(const std::string& texture, const std::string& shader, glm::vec3 pos, glm::vec2 scale)
 	: m_SceneID(0), m_Transform(nullptr),
 	m_Texture(ResourceManager::GetInstance().CreateTexture(texture)),
 	m_Shader(ResourceManager::GetInstance().CreateShader(shader))

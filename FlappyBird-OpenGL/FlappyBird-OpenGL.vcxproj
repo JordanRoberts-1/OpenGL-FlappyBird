@@ -643,10 +643,12 @@
     <None Include="src\vendor\glm\gtx\wrap.inl" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="res\textures\background.png" />
     <Image Include="res\textures\dickbutt.png" />
     <Image Include="res\textures\dr_minion.jpg" />
     <Image Include="res\textures\bottom_pipe.png" />
     <Image Include="res\textures\flappy_bird.png" />
+    <Image Include="res\textures\ground.png" />
     <Image Include="res\textures\top_pipe.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

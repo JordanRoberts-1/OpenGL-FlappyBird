@@ -24,8 +24,9 @@ void PhysicsComponent::Update()
 	m_Acceleration = m_CurrentForce / m_Mass;
 
 	m_Velocity += m_Acceleration;
-	glm::vec2 currPos = m_TransformComponent->GetPosition();
-	m_TransformComponent->SetPosition(currPos + m_Velocity);
+	glm::vec3 currPos = m_TransformComponent->GetPosition();
+	glm::vec3 newPos = currPos + glm::vec3(m_Velocity, 0);
+	m_TransformComponent->SetPosition(newPos);
 }
 
 void PhysicsComponent::AddForce(glm::vec2 force)

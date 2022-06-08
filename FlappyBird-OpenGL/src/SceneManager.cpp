@@ -20,14 +20,23 @@ void SceneManager::BuildScene()
 	//Attempt to create the objects and add components
 	try
 	{
+		//Setup background
+		std::unique_ptr<Entity> background = std::make_unique<Entity>(std::string("background.png"), std::string("Basic.glsl"), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec2(1.5f));
+		AddObject(std::move(background));
+
+		//Setup Ground plane
+		std::unique_ptr<Entity> ground = std::make_unique<Entity>(std::string("ground.png"), std::string("Basic.glsl"), glm::vec3(0.0f, -50.0f, -1.0f), glm::vec2(0.4f));
+		AddObject(std::move(ground));
+
+
 		//Setup player
-		std::unique_ptr<Entity> playerEntity = std::make_unique<Entity>(std::string("flappy_bird.png"), std::string("Basic.glsl"), glm::vec2(100.0f, 200.0f), glm::vec2(3.0f));
+		std::unique_ptr<Entity> playerEntity = std::make_unique<Entity>(std::string("flappy_bird.png"), std::string("Basic.glsl"), glm::vec3(100.0f, 200.0f, 1.0f), glm::vec2(3.0f));
 		Entity* player = AddObject(std::move(playerEntity));
 		PlayerComponent* playerComponent = player->AddComponent<PlayerComponent>(player);
 		PhysicsComponent* playerPhysics = player->AddComponent<PhysicsComponent>(player);
 		BoxColliderComponent* playerCollider = player->AddComponent<BoxColliderComponent>(player);
-
 		playerPhysics->SetMass(1.0f);
+
 	}
 	catch (...) { std::cerr << "Failed to make objects"; }
 

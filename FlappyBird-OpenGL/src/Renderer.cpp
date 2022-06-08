@@ -65,7 +65,7 @@ void Renderer::RenderGeometry()
 		vao.AddBuffer(vb, vbLayout);
 
 		TransformComponent* tc = object->GetTransform();
-		glm::vec3 pos = glm::vec3(tc->GetPosition(), 1.0f);
+		glm::vec3 pos = tc->GetPosition();
 		glm::vec3 scale = glm::vec3(tc->GetScaledSize(), 1.0f);
 
 		//Setup the MVP matrix from each objects position, scale, rotation, etc...

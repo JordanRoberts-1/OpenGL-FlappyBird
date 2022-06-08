@@ -1465,5 +1465,11 @@
     <Image Include="res\textures\top_pipe.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="res\textures\background.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\textures\ground.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

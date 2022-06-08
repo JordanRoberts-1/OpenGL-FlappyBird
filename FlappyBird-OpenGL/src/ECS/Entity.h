@@ -13,7 +13,7 @@ enum ComponentType;
 class Entity
 {
 public:
-	Entity(const std::string& texture, const std::string& shader, glm::vec2 pos, glm::vec2 scale);
+	Entity(const std::string& texture, const std::string& shader, glm::vec3 pos, glm::vec2 scale);
 
 public:
 	void SetSceneID(int id);
