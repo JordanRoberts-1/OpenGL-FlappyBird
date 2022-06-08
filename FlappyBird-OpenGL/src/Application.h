@@ -34,6 +34,7 @@ public:
 	~Application();
 	void Run();
 	inline GLFWwindow* GetWindow() const { return m_Window.get(); }
+	void SetResetBool(bool value);
 private:
 	Application();
 	void CreateContext();
@@ -44,4 +45,5 @@ private:
 private:
 	std::unique_ptr<GLFWwindow, DestroyglfwWin> m_Window;
 	bool m_isRunning;
+	bool m_ShouldReset;
 };

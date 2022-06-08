@@ -89,3 +89,10 @@ void SceneManager::ResetCleanupVector()
 {
 	m_IDsToRemove.clear();
 }
+
+void SceneManager::ResetScene()
+{
+	m_Objects.clear();
+	m_IDsToRemove.clear();
+	m_CurrentSceneID = 0;
+}

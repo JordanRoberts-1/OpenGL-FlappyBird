@@ -34,30 +34,46 @@ void Application::Run()
 	double lag = 0.0;
 	while (m_isRunning)
 	{
-		double curr = Clock::CurrTimeInMillis();
-		double elapsed = curr - prev;
-		prev = curr;
-		lag += elapsed;
+		SceneManager::GetInstance().BuildScene();
+		m_ShouldReset = false;
 
-		//std::cout << "Frametime: " << elapsed << "ms" << std::endl;
-
-		while (lag >= MS_PER_UPDATE)
+		while (!m_ShouldReset)
 		{
-			Update();
-			//std::cout << SceneManager::GetInstance().GetObjects().size() << std::endl;
-			lag -= MS_PER_UPDATE;
+			double curr = Clock::CurrTimeInMillis();
+			double elapsed = curr - prev;
+			prev = curr;
+			lag += elapsed;
+
+			//std::cout << "Frametime: " << elapsed << "ms" << std::endl;
+
+			while (lag >= MS_PER_UPDATE)
+			{
+				Update();
+				//std::cout << SceneManager::GetInstance().GetObjects().size() << std::endl;
+				lag -= MS_PER_UPDATE;
+			}
+
+			Renderer::Render();
+
+			/* Swap front and back buffers */
+			glfwSwapBuffers(m_Window.get());
+
+			/* Poll for and process events */
+			glfwPollEvents();
+
+			if (glfwWindowShouldClose(m_Window.get()))
+			{
+				m_ShouldReset = true;
+				m_isRunning = false;
+			}
 		}
-
-		Renderer::Render();
-
-		/* Swap front and back buffers */
-		glfwSwapBuffers(m_Window.get());
-
-		/* Poll for and process events */
-		glfwPollEvents();
-
-		if (glfwWindowShouldClose(m_Window.get())) m_isRunning = false;
+		SceneManager::GetInstance().ResetScene();
 	}
+}
+
+void Application::SetResetBool(bool value)
+{
+	m_ShouldReset = value;
 }
 
 void Application::CreateContext()

@@ -25,6 +25,7 @@ public:
 	void RemoveObject(int ID);
 	void CleanUpObjects();
 	void ResetCleanupVector();
+	void ResetScene();
 
 private:
 	SceneManager() {};

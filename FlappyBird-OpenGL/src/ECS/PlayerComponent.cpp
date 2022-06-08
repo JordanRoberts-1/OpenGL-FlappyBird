@@ -1,9 +1,9 @@
 #include "PlayerComponent.h"
 
 #include "Entity.h"
-#include "../Application.h"
 #include "PhysicsComponent.h"
 #include "BoxColliderComponent.h"
+#include "../Application.h"
 
 PlayerComponent::PlayerComponent(Entity* parent)
 	: Component(parent),
@@ -30,6 +30,7 @@ void PlayerComponent::Update()
 
 void PlayerComponent::OnCollision(BoxColliderComponent* other)
 {
+	Application::GetInstance().SetResetBool(true);
 }
 
 void PlayerComponent::HandleEvent()
