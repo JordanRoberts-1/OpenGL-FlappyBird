@@ -21,7 +21,7 @@ void SceneManager::BuildScene()
 	try
 	{
 		//Setup player
-		std::unique_ptr<Entity> playerEntity = std::make_unique<Entity>(std::string("flappy_bird.png"), std::string("Basic.glsl"), glm::vec2(100.0f, 200.0f), glm::vec2(5.0f));
+		std::unique_ptr<Entity> playerEntity = std::make_unique<Entity>(std::string("flappy_bird.png"), std::string("Basic.glsl"), glm::vec2(100.0f, 200.0f), glm::vec2(3.0f));
 		Entity* player = AddObject(std::move(playerEntity));
 		PlayerComponent* playerComponent = player->AddComponent<PlayerComponent>(player);
 		PhysicsComponent* playerPhysics = player->AddComponent<PhysicsComponent>(player);
