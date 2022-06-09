@@ -9,6 +9,8 @@
 #include "ImGUI/imgui_impl_glfw.h"
 #include "ImGUI/imgui_impl_opengl3.h"
 #include "PipeGenerator.h"
+#include "Score.h"
+#include "UI.h"
 
 Application::Application() : m_isRunning(false)
 {
@@ -35,10 +37,13 @@ void Application::Run()
 	while (m_isRunning)
 	{
 		SceneManager::GetInstance().BuildScene();
+		Score::ResetScore();
 		m_ShouldReset = false;
 
 		while (!m_ShouldReset)
 		{
+			Renderer::ClearRendering();
+
 			double curr = Clock::CurrTimeInMillis();
 			double elapsed = curr - prev;
 			prev = curr;
@@ -53,6 +58,7 @@ void Application::Run()
 				lag -= MS_PER_UPDATE;
 			}
 
+			UI::RenderScore();
 			Renderer::Render();
 
 			/* Swap front and back buffers */

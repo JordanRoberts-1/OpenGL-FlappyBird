@@ -6,6 +6,7 @@
 #include "ECS/PipeComponent.h"
 #include "ECS/TransformComponent.h"
 #include "ECS/BoxColliderComponent.h"
+#include "ECS/ScoreTrackingComponent.h"
 
 int PipeGenerator::s_UpdateCounter = 0;
 
@@ -35,6 +36,7 @@ void PipeGenerator::SpawnPipes()
 	topPipePhysics->SetBoolGravity(false);
 	topPipe->AddComponent<PipeComponent>(topPipe.get());
 	topPipe->AddComponent<BoxColliderComponent>(topPipe.get());
+	topPipe->AddComponent<ScoreTrackingComponent>(topPipe.get());
 
 	std::unique_ptr<Entity> bottomPipe = std::make_unique<Entity>(std::string("bottom_pipe.png"), std::string("Basic.glsl"), glm::vec3(600.0f, -100.0f, 1.0f), glm::vec2(4.0f));
 	glm::vec3 bottomPosition = glm::vec3(gapPosition.x, gapPosition.y - gapRadius - bottomPipe->GetTransform()->GetScaledSize().y, 1);

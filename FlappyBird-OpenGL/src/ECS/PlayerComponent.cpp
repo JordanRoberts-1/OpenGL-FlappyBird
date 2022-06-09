@@ -14,7 +14,6 @@ PlayerComponent::PlayerComponent(Entity* parent)
 
 void PlayerComponent::Init()
 {
-
 	//!Potential errors if components aren't found
 	m_PhysicsComponent = (PhysicsComponent*)m_Parent->GetComponent<PhysicsComponent>(PHYSICSCOMPONENT);
 	m_BoxColliderComponent = (BoxColliderComponent*)m_Parent->GetComponent<BoxColliderComponent>(BOXCOLLIDERCOMPONENT);

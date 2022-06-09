@@ -30,8 +30,6 @@ void Renderer::RenderGUI()
 
 void Renderer::Render()
 {
-	Renderer::ClearRendering();
-
 	Renderer::RenderGeometry();
 
 	Renderer::RenderGUI();

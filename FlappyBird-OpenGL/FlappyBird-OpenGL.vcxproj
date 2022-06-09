@@ -161,6 +161,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\ECS\PipeComponent.cpp" />
+    <ClCompile Include="src\ECS\ScoreTrackingComponent.cpp" />
     <ClCompile Include="src\PipeGenerator.cpp" />
     <ClCompile Include="src\ECS\BoxColliderComponent.cpp" />
     <ClCompile Include="src\ECS\PlayerComponent.cpp" />
@@ -172,6 +173,7 @@
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\IndexBuffer.cpp" />
     <ClCompile Include="src\Renderer.cpp" />
+    <ClCompile Include="src\Score.cpp" />
     <ClCompile Include="src\Shader.cpp" />
     <ClCompile Include="src\Texture.cpp" />
     <ClCompile Include="src\vendor\glm\detail\glm.cpp" />
@@ -186,9 +188,11 @@
     <ClCompile Include="src\VertexArray.cpp" />
     <ClCompile Include="src\VertexBuffer.cpp" />
     <ClCompile Include="src\ECS\TransformComponent.cpp" />
+    <ClCompile Include="src\UI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ECS\PipeComponent.h" />
+    <ClInclude Include="src\ECS\ScoreTrackingComponent.h" />
     <ClInclude Include="src\PipeGenerator.h" />
     <ClInclude Include="src\ECS\BoxColliderComponent.h" />
     <ClInclude Include="src\ECS\PlayerComponent.h" />
@@ -204,6 +208,7 @@
     <ClInclude Include="src\ECS\Entity.h" />
     <ClInclude Include="src\IndexBuffer.h" />
     <ClInclude Include="src\Renderer.h" />
+    <ClInclude Include="src\Score.h" />
     <ClInclude Include="src\Shader.h" />
     <ClInclude Include="src\Texture.h" />
     <ClInclude Include="src\vendor\glm\common.hpp" />
@@ -502,6 +507,7 @@
     <ClInclude Include="src\VertexBuffer.h" />
     <ClInclude Include="src\VertexBufferLayout.h" />
     <ClInclude Include="src\ECS\TransformComponent.h" />
+    <ClInclude Include="src\UI.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\Basic.glsl" />
