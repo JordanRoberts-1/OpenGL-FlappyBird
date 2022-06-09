@@ -23,11 +23,11 @@ void PipeGenerator::SpawnPipes()
 {
 	std::cout << "Spawning Pipes" << std::endl;
 
-	glm::vec2 gapPosition = glm::vec2(1000.0f, std::rand() % 480);
-	float gapRadius = 300.0f;
+	glm::vec2 gapPosition = glm::vec2(600.0f, std::rand() % 360 + 300.0f);
+	float gapRadius = 100.0f;
 
-	std::unique_ptr<Entity> topPipe = std::make_unique<Entity>(std::string("top_pipe.png"), std::string("Basic.glsl"), glm::vec3(600.0f, 750.0f, 1.0f), glm::vec2(3.0f));
-	glm::vec3 topPosition = glm::vec3(gapPosition.x, gapPosition.y + gapRadius + topPipe->GetTransform()->GetScaledSize().y / 2.0f, 1);
+	std::unique_ptr<Entity> topPipe = std::make_unique<Entity>(std::string("top_pipe.png"), std::string("Basic.glsl"), glm::vec3(600.0f, 750.0f, 1.0f), glm::vec2(4.0f));
+	glm::vec3 topPosition = glm::vec3(gapPosition.x, gapPosition.y + gapRadius, 1);
 	topPipe->GetTransform()->SetPosition(topPosition);
 
 	//Setup components for the top pipes
@@ -36,8 +36,8 @@ void PipeGenerator::SpawnPipes()
 	topPipe->AddComponent<PipeComponent>(topPipe.get());
 	topPipe->AddComponent<BoxColliderComponent>(topPipe.get());
 
-	std::unique_ptr<Entity> bottomPipe = std::make_unique<Entity>(std::string("bottom_pipe.png"), std::string("Basic.glsl"), glm::vec3(600.0f, -100.0f, 1.0f), glm::vec2(3.0f));
-	glm::vec3 bottomPosition = glm::vec3(gapPosition.x, gapPosition.y - gapRadius, 1);
+	std::unique_ptr<Entity> bottomPipe = std::make_unique<Entity>(std::string("bottom_pipe.png"), std::string("Basic.glsl"), glm::vec3(600.0f, -100.0f, 1.0f), glm::vec2(4.0f));
+	glm::vec3 bottomPosition = glm::vec3(gapPosition.x, gapPosition.y - gapRadius - bottomPipe->GetTransform()->GetScaledSize().y, 1);
 	bottomPipe->GetTransform()->SetPosition(bottomPosition);
 
 

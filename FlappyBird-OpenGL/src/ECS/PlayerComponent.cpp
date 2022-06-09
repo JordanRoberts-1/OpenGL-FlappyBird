@@ -35,5 +35,5 @@ void PlayerComponent::OnCollision(BoxColliderComponent* other)
 
 void PlayerComponent::HandleEvent()
 {
-	m_PhysicsComponent->SetVelocity(glm::vec2(0.0f, 20.0f));
+	m_PhysicsComponent->SetVelocity(glm::vec2(0.0f, 15.0f));
 }
