@@ -3,9 +3,10 @@
 #include <GL/glew.h>
 
 #include "Renderer.h"
-#include "Debug.h"
+#include "../Util/Debug.h"
 
-struct VertexBufferElement {
+struct VertexBufferElement
+{
 	unsigned int type; //The type that this is e.g GL_FLOAT, GL_UNSIGNED_INT, GL_UNSIGNED_BYTE
 	unsigned int count; //The number of individual vertices in this buffer element
 	unsigned char normalized; //Whether the element is normalized (idk)
@@ -27,7 +28,8 @@ struct VertexBufferElement {
 template<typename>
 constexpr bool dependent_false = false;
 
-class VertexBufferLayout {
+class VertexBufferLayout
+{
 private:
 	std::vector<VertexBufferElement> m_Elements; //The elements in the layout
 	unsigned int m_Stride; //The length of the current element

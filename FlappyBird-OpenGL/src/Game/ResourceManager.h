@@ -1,6 +1,6 @@
 #pragma once
-#include "Texture.h"
-#include "Shader.h"
+#include "../Rendering/Texture.h"
+#include "../Rendering/Shader.h"
 #include <unordered_map>
 
 

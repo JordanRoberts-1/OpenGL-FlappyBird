@@ -2,12 +2,10 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-#include "Renderer.h"
-#include "Debug.h"
+#include "Rendering/Renderer.h"
+#include "Util/Debug.h"
 
 #include <iostream>
-
-#define MS_PER_UPDATE 16.666666666666666
 
 //Delete method for GLFWwindows due to them being forward declared in source
 struct DestroyglfwWin
@@ -46,4 +44,6 @@ private:
 	std::unique_ptr<GLFWwindow, DestroyglfwWin> m_Window;
 	bool m_isRunning;
 	bool m_ShouldReset;
+
+	const double MS_PER_UPDATE = 16.66666666666666;
 };

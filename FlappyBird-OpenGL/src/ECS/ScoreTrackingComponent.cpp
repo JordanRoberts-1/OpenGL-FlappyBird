@@ -1,7 +1,7 @@
 #include "ScoreTrackingComponent.h"
 #include "Entity.h"
 #include "TransformComponent.h"
-#include "../Score.h"
+#include "../Game/Score.h"
 
 ScoreTrackingComponent::ScoreTrackingComponent(Entity* parent)
 	: Component(parent), m_HasScored(false)

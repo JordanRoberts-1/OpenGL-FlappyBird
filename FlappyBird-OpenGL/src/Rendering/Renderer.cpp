@@ -1,16 +1,21 @@
 #include "Renderer.h"
-#include "SceneManager.h"
+
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+
+#include "../Application.h"
+#include "../Game/SceneManager.h"
 #include "VertexBufferLayout.h"
 #include "VertexArray.h"
 #include "IndexBuffer.h"
 #include "Shader.h"
-#include "ECS/TransformComponent.h"
+#include "../ECS/TransformComponent.h"
+
 
 void Renderer::Draw(const VertexArray& va, const IndexBuffer& ib, const Shader& shader)
 {
-	shader.Bind();
-
 	//Bind all of the buffers and stuff
+	shader.Bind();
 	va.Bind();
 	ib.Bind();
 
@@ -33,6 +38,8 @@ void Renderer::Render()
 	Renderer::RenderGeometry();
 
 	Renderer::RenderGUI();
+
+	glfwSwapBuffers(Application::GetInstance().GetWindow());
 }
 
 void Renderer::RenderGeometry()

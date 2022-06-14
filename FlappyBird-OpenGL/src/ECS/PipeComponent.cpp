@@ -3,7 +3,7 @@
 #include "Entity.h"
 #include "PhysicsComponent.h"
 #include "TransformComponent.h"
-#include "../SceneManager.h"
+#include "../Game/SceneManager.h"
 
 PipeComponent::PipeComponent(Entity* parent)
 	: Component(parent), m_PhysicsComponent(nullptr)

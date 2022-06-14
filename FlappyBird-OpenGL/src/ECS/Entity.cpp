@@ -1,5 +1,5 @@
 #include "Entity.h"
-#include "../ResourceManager.h"
+#include "../Game/ResourceManager.h"
 #include "TransformComponent.h"
 #include "Component.h"
 

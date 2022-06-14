@@ -3,8 +3,8 @@
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
-#include "../Texture.h"
-#include "../Renderer.h"
+#include "../Rendering/Texture.h"
+#include "../Rendering/Renderer.h"
 #include "Component.h"
 
 class TransformComponent;

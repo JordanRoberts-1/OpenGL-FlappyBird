@@ -1,12 +1,13 @@
 #include "PipeGenerator.h"
 
-#include "ECS/Entity.h"
+#include "../ECS/Entity.h"
 #include "SceneManager.h"
-#include "ECS/PhysicsComponent.h"
-#include "ECS/PipeComponent.h"
-#include "ECS/TransformComponent.h"
-#include "ECS/BoxColliderComponent.h"
-#include "ECS/ScoreTrackingComponent.h"
+#include "../ECS/PhysicsComponent.h"
+#include "../ECS/PipeComponent.h"
+#include "../ECS/TransformComponent.h"
+#include "../ECS/BoxColliderComponent.h"
+#include "../ECS/ScoreTrackingComponent.h"
+#include <iostream>
 
 int PipeGenerator::s_UpdateCounter = 0;
 

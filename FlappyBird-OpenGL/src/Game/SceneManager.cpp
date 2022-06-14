@@ -4,12 +4,12 @@
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
-#include "Shader.h"
-#include "Texture.h"
-#include "ECS/PhysicsComponent.h"
-#include "ECS/Entity.h"
-#include "ECS/PlayerComponent.h"
-#include "ECS/BoxColliderComponent.h"
+#include "../Rendering/Shader.h"
+#include "../Rendering/Texture.h"
+#include "../ECS/PhysicsComponent.h"
+#include "../ECS/Entity.h"
+#include "../ECS/PlayerComponent.h"
+#include "../ECS/BoxColliderComponent.h"
 
 #include <algorithm>
 

@@ -1,16 +1,16 @@
 #include "Application.h"
-#include "SceneManager.h"
-#include "Clock.h"
+#include "Game/SceneManager.h"
+#include "Util/Clock.h"
 
-#include "Input.h"
+#include "Util/Input.h"
 #include "ECS/BoxColliderComponent.h"
 
 #include "ImGUI/imgui.h"
 #include "ImGUI/imgui_impl_glfw.h"
 #include "ImGUI/imgui_impl_opengl3.h"
-#include "PipeGenerator.h"
-#include "Score.h"
-#include "UI.h"
+#include "Game/PipeGenerator.h"
+#include "Game/Score.h"
+#include "Game/UI.h"
 
 Application::Application() : m_isRunning(false)
 {
@@ -34,38 +34,34 @@ void Application::Run()
 
 	double prev = Clock::CurrTimeInMillis();
 	double lag = 0.0;
+
+	//Application loop
 	while (m_isRunning)
 	{
 		SceneManager::GetInstance().BuildScene();
 		Score::ResetScore();
 		m_ShouldReset = false;
 
+		//this is the loop for each round of the game
 		while (!m_ShouldReset)
 		{
 			Renderer::ClearRendering();
+			glfwPollEvents();
 
 			double curr = Clock::CurrTimeInMillis();
 			double elapsed = curr - prev;
 			prev = curr;
 			lag += elapsed;
 
-			//std::cout << "Frametime: " << elapsed << "ms" << std::endl;
-
+			//Keep constant update time regardless of rendering speed
 			while (lag >= MS_PER_UPDATE)
 			{
 				Update();
-				//std::cout << SceneManager::GetInstance().GetObjects().size() << std::endl;
 				lag -= MS_PER_UPDATE;
 			}
 
 			UI::RenderScore();
 			Renderer::Render();
-
-			/* Swap front and back buffers */
-			glfwSwapBuffers(m_Window.get());
-
-			/* Poll for and process events */
-			glfwPollEvents();
 
 			if (glfwWindowShouldClose(m_Window.get()))
 			{
@@ -119,7 +115,7 @@ std::unique_ptr<GLFWwindow, DestroyglfwWin> Application::SetupWindow()
 	glfwMakeContextCurrent(window.get());
 
 	//turn on V-Sync
-	glfwSwapInterval(0);
+	glfwSwapInterval(1);
 
 	//Initialize glew
 	if (glewInit())
