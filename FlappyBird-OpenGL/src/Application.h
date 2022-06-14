@@ -32,6 +32,8 @@ public:
 	~Application();
 	void Run();
 	inline GLFWwindow* GetWindow() const { return m_Window.get(); }
+	inline float GetWindowWidth() const { return (float)m_WindowWidth; }
+	inline float GetWindowHeight() const { return (float)m_WindowHeight; }
 	void SetResetBool(bool value);
 private:
 	Application();
@@ -44,6 +46,9 @@ private:
 	std::unique_ptr<GLFWwindow, DestroyglfwWin> m_Window;
 	bool m_isRunning;
 	bool m_ShouldReset;
+
+	const int m_WindowWidth;
+	const int m_WindowHeight;
 
 	const double MS_PER_UPDATE = 16.66666666666666;
 };

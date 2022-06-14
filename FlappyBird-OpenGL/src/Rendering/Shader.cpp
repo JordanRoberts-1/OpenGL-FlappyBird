@@ -52,8 +52,6 @@ unsigned int Shader::CompileShader(const std::string& source, unsigned int type)
 	glShaderSource(id, 1, &src, nullptr); //Set the source for the shader
 	glCompileShader(id); //Compile the shader with the given id
 
-	/*Error Handling*/
-
 	int result; //Store the result of the shader process
 	glGetShaderiv(id, GL_COMPILE_STATUS, &result);
 
@@ -63,7 +61,7 @@ unsigned int Shader::CompileShader(const std::string& source, unsigned int type)
 		//Output the error message
 		int length;
 		glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length);
-		char* message = (char*)alloca(length * sizeof(char));
+		char* message = (char*)malloc(length * sizeof(char));
 		glGetShaderInfoLog(id, length, &length, message);
 		std::cout << "Failure to compile " << (type == GL_VERTEX_SHADER ? "vertex" : "fragment") << std::endl;
 		std::cout << message << std::endl;

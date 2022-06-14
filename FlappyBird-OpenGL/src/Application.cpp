@@ -12,7 +12,8 @@
 #include "Game/Score.h"
 #include "Game/UI.h"
 
-Application::Application() : m_isRunning(false)
+Application::Application()
+	: m_isRunning(false), m_WindowWidth(540), m_WindowHeight(960)
 {
 	m_Window = SetupWindow();
 	SceneManager::GetInstance().BuildScene();
@@ -53,6 +54,8 @@ void Application::Run()
 			prev = curr;
 			lag += elapsed;
 
+			//std::cout << "Frametime: " << elapsed << "ms" << std::endl;
+
 			//Keep constant update time regardless of rendering speed
 			while (lag >= MS_PER_UPDATE)
 			{
@@ -69,6 +72,8 @@ void Application::Run()
 				m_isRunning = false;
 			}
 		}
+
+		//This round is over, so reset
 		SceneManager::GetInstance().ResetScene();
 	}
 }
@@ -104,7 +109,9 @@ std::unique_ptr<GLFWwindow, DestroyglfwWin> Application::SetupWindow()
 	CreateContext();
 
 	/* Create a windowed mode window and its OpenGL context */
-	std::unique_ptr<GLFWwindow, DestroyglfwWin> window = std::unique_ptr<GLFWwindow, DestroyglfwWin>(glfwCreateWindow(540, 960, "Hello World", NULL, NULL));
+	std::unique_ptr<GLFWwindow, DestroyglfwWin> window =
+		std::unique_ptr<GLFWwindow, DestroyglfwWin>(glfwCreateWindow(m_WindowWidth, m_WindowHeight, "Hello World", NULL, NULL));
+
 	if (!window)
 	{
 		glfwTerminate();
@@ -115,7 +122,7 @@ std::unique_ptr<GLFWwindow, DestroyglfwWin> Application::SetupWindow()
 	glfwMakeContextCurrent(window.get());
 
 	//turn on V-Sync
-	glfwSwapInterval(1);
+	glfwSwapInterval(0);
 
 	//Initialize glew
 	if (glewInit())
@@ -129,8 +136,6 @@ std::unique_ptr<GLFWwindow, DestroyglfwWin> Application::SetupWindow()
 	//Setup transparencies
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-
 
 	SetupImGui(window.get());
 
@@ -173,6 +178,7 @@ void Application::Update()
 		}
 	}
 
+	//defer deletion of objects so as to not mess up updates
 	sc.CleanUpObjects();
 }
 

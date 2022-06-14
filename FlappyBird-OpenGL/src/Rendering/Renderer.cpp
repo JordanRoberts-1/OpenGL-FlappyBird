@@ -48,15 +48,15 @@ void Renderer::RenderGeometry()
 	const std::vector<std::unique_ptr<Entity>>& objects = sc.GetObjects();
 
 	//Get Prepped for the MVP matrix
-	glm::mat4 proj = glm::ortho(0.0f, 540.0f, 0.0f, 960.0f, -1.0f, 1.0f);
-	glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+	const Application& app = Application::GetInstance();
+	glm::mat4 proj = glm::ortho(0.0f, app.GetWindowWidth(), 0.0f, app.GetWindowHeight(), -1.0f, 1.0f);
+	glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f));
 
 	VertexBufferLayout vbLayout = VertexBufferLayout();
 	vbLayout.Push<float>(2);
 	vbLayout.Push<float>(2);
 
-	unsigned int indices[] = { 0, 1, 2, 2, 3, 0 };
-	IndexBuffer ib(indices, 6);
+	IndexBuffer ib(QUAD_INDICES, 6);
 
 	VertexArray vao;
 

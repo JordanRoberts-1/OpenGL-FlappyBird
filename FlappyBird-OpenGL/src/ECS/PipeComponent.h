@@ -15,5 +15,8 @@ public:
 
 private:
 	PhysicsComponent* m_PhysicsComponent;
+
+	const glm::vec2 PIPE_VELOCITY = glm::vec2(-5.0f, 0.0f);
+	const float MIN_X = -100.0f;
 };
 

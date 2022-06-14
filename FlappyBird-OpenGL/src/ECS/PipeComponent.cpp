@@ -13,12 +13,12 @@ PipeComponent::PipeComponent(Entity* parent)
 
 void PipeComponent::Init()
 {
-	m_PhysicsComponent->SetVelocity(glm::vec2(-5.0f, 0.0f));
+	m_PhysicsComponent->SetVelocity(PIPE_VELOCITY);
 }
 
 void PipeComponent::Update()
 {
-	if (m_Parent->GetTransform()->GetPosition().x < -100.0f)
+	if (m_Parent->GetTransform()->GetPosition().x < -MIN_X)
 	{
 		SceneManager::GetInstance().RemoveObject(m_Parent->GetSceneID());
 	}

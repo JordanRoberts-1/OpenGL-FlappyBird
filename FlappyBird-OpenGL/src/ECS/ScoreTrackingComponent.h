@@ -14,4 +14,6 @@ public:
 
 private:
 	bool m_HasScored;
+
+	const float SCORE_X = 100.0f;
 };

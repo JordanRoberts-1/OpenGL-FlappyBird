@@ -3,8 +3,10 @@
 
 #define ASSERT(x) if (!(x)) __debugbreak(); //If x is not true, then add a breakpoint
 
-class Debug {
+class Debug
+{
 public:
+	//Straight from stack overflow
 	static void GLAPIENTRY glDebugOutput(GLenum source,
 		GLenum type,
 		GLuint id,
@@ -52,10 +54,12 @@ public:
 		std::cout << std::endl;
 	}
 
-	static void SetupDebug() {
+	static void SetupDebug()
+	{
 		GLint flags;
 		glGetIntegerv(GL_CONTEXT_FLAGS, &flags);
-		if (flags & GL_CONTEXT_FLAG_DEBUG_BIT) {
+		if (flags & GL_CONTEXT_FLAG_DEBUG_BIT)
+		{
 			printf("Debug context created! \n");
 			glEnable(GL_DEBUG_OUTPUT);
 			glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);

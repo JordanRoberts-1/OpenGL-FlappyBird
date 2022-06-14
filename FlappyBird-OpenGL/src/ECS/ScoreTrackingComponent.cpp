@@ -15,7 +15,7 @@ void ScoreTrackingComponent::Init()
 
 void ScoreTrackingComponent::Update()
 {
-	if (!m_HasScored && m_Parent->GetTransform()->GetPosition().x < 100.0f)
+	if (!m_HasScored && m_Parent->GetTransform()->GetPosition().x < SCORE_X)
 	{
 		Score::IncrementScore();
 		m_HasScored = true;

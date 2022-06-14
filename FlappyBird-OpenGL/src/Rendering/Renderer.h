@@ -29,4 +29,5 @@ private:
 		1.0f, 1.0f, 1.0f, 1.0f,
 		0.0f, 1.0f, 0.0f, 1.0f
 	};
+	static constexpr const uint32_t QUAD_INDICES[6] = { 0, 1, 2, 2, 3, 0 };
 };

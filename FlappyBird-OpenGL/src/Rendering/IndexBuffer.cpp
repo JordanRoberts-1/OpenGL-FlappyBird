@@ -23,5 +23,4 @@ void IndexBuffer::Bind() const
 void IndexBuffer::Unbind() const
 {
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); //Bind the above buffer ID to an Array buffer. This is what is going to be drawn in the next draw call.
-
 }
