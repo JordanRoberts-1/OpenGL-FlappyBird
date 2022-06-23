@@ -159,12 +159,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\ECS\DQNAgentComponent.cpp" />
     <ClCompile Include="src\ECS\PipeComponent.cpp" />
     <ClCompile Include="src\ECS\ScoreTrackingComponent.cpp" />
     <ClCompile Include="src\Game\PipeGenerator.cpp" />
     <ClCompile Include="src\ECS\BoxColliderComponent.cpp" />
     <ClCompile Include="src\ECS\PlayerComponent.cpp" />
     <ClCompile Include="src\ECS\PhysicsComponent.cpp" />
+    <ClCompile Include="src\ML\Layer.cpp" />
     <ClCompile Include="src\ML\NeuralNetwork.cpp" />
     <ClCompile Include="src\Util\Input.cpp" />
     <ClCompile Include="src\Game\ResourceManager.cpp" />
@@ -191,6 +193,7 @@
     <ClCompile Include="src\Game\UI.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\ECS\DQNAgentComponent.h" />
     <ClInclude Include="src\ECS\PipeComponent.h" />
     <ClInclude Include="src\ECS\ScoreTrackingComponent.h" />
     <ClInclude Include="src\Game\PipeGenerator.h" />

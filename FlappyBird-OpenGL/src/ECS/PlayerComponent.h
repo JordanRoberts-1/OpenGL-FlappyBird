@@ -16,14 +16,11 @@ public:
 	void Update();
 	inline ComponentType GetType() const { return PLAYERCOMPONENT; }
 	void OnCollision(BoxColliderComponent* other);
-	void Jump();
 
 	void HandleEvent();
 
 private:
 	PhysicsComponent* m_PhysicsComponent;
 	BoxColliderComponent* m_BoxColliderComponent;
-
-	const glm::vec2 JUMP_VELOCITY = glm::vec2(0.0f, 15.0f);
 };
 

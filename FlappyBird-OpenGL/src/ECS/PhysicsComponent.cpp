@@ -53,3 +53,8 @@ void PhysicsComponent::SetBoolGravity(bool value)
 {
 	m_GravityAffects = value;
 }
+
+void PhysicsComponent::Jump()
+{
+	SetVelocity(JUMP_VELOCITY);
+}

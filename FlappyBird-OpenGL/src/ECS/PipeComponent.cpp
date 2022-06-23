@@ -18,8 +18,9 @@ void PipeComponent::Init()
 
 void PipeComponent::Update()
 {
-	if (m_Parent->GetTransform()->GetPosition().x < -MIN_X)
+	if (m_Parent->GetTransform()->GetPosition().x < MIN_X)
 	{
 		SceneManager::GetInstance().RemoveObject(m_Parent->GetSceneID());
+		std::cout << "Deleting" << std::endl;
 	}
 }

@@ -18,6 +18,7 @@ public:
 	void SetVelocity(glm::vec2 velocity);
 	void SetAcceleration(glm::vec2 acceleration);
 	void SetBoolGravity(bool value);
+	void Jump();
 private:
 	TransformComponent* m_TransformComponent;
 
@@ -29,5 +30,7 @@ private:
 	glm::vec2 m_CurrentForce;
 	glm::vec2 m_Velocity;
 	glm::vec2 m_Acceleration;
+
+	const glm::vec2 JUMP_VELOCITY = glm::vec2(0.0f, 15.0f);
 };
 

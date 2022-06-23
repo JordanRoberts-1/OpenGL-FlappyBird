@@ -23,7 +23,7 @@ void PlayerComponent::Init()
 	m_BoxColliderComponent->SubscribeOnCollision(fun);
 
 	//Jump when created
-	Jump();
+	m_PhysicsComponent->Jump();
 }
 
 void PlayerComponent::Update()
@@ -35,12 +35,7 @@ void PlayerComponent::OnCollision(BoxColliderComponent* other)
 	Application::GetInstance().SetResetBool(true);
 }
 
-void PlayerComponent::Jump()
-{
-	m_PhysicsComponent->SetVelocity(JUMP_VELOCITY);
-}
-
 void PlayerComponent::HandleEvent()
 {
-	Jump();
+	m_PhysicsComponent->Jump();
 }
