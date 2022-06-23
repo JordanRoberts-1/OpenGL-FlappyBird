@@ -159,6 +159,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Util\Random.cpp" />
     <ClCompile Include="src\ECS\DQNAgentComponent.cpp" />
     <ClCompile Include="src\ECS\PipeComponent.cpp" />
     <ClCompile Include="src\ECS\ScoreTrackingComponent.cpp" />
@@ -193,6 +194,7 @@
     <ClCompile Include="src\Game\UI.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Util\Random.h" />
     <ClInclude Include="src\ECS\DQNAgentComponent.h" />
     <ClInclude Include="src\ECS\PipeComponent.h" />
     <ClInclude Include="src\ECS\ScoreTrackingComponent.h" />
