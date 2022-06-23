@@ -109,7 +109,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>GLEW_STATIC;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)src;$(SolutionDir)Dependencies\GLFW\include;$(SolutionDir)Dependencies\glew-2.1.0\include;$(SolutionDir)\FlappyBird-OpenGL\src\vendor</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW\include;$(SolutionDir)Dependencies\glew-2.1.0\include;$(SolutionDir)\FlappyBird-OpenGL\src\vendor</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -165,6 +165,7 @@
     <ClCompile Include="src\ECS\BoxColliderComponent.cpp" />
     <ClCompile Include="src\ECS\PlayerComponent.cpp" />
     <ClCompile Include="src\ECS\PhysicsComponent.cpp" />
+    <ClCompile Include="src\ML\NeuralNetwork.cpp" />
     <ClCompile Include="src\Util\Input.cpp" />
     <ClCompile Include="src\Game\ResourceManager.cpp" />
     <ClCompile Include="src\Game\SceneManager.cpp" />
@@ -197,6 +198,8 @@
     <ClInclude Include="src\ECS\PlayerComponent.h" />
     <ClInclude Include="src\ECS\PhysicsComponent.h" />
     <ClInclude Include="src\ECS\Component.h" />
+    <ClInclude Include="src\ML\Layer.h" />
+    <ClInclude Include="src\ML\NeuralNetwork.h" />
     <ClInclude Include="src\Util\Clock.h" />
     <ClInclude Include="src\Util\Input.h" />
     <ClInclude Include="src\Game\ResourceManager.h" />
