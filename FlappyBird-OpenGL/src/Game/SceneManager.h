@@ -21,6 +21,7 @@ public:
 	void BuildTrainingScene();
 	const std::vector<std::unique_ptr<Entity>>& GetObjects() const { return m_Objects; };
 	std::vector<BoxColliderComponent*> GetColliders() const;
+	glm::vec2 GetNearestPipeGap() const;
 
 	Entity* AddObject(std::unique_ptr<Entity> object);
 	void RemoveObject(int ID);

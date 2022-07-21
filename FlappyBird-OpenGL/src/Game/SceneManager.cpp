@@ -11,6 +11,7 @@
 #include "../ECS/PlayerComponent.h"
 #include "../ECS/BoxColliderComponent.h"
 #include "../ECS/DQNAgentComponent.h"
+#include "../ECS/PipeComponent.h"
 
 #include <algorithm>
 
@@ -97,6 +98,22 @@ std::vector<BoxColliderComponent*> SceneManager::GetColliders() const
 	}
 
 	return result;
+}
+
+glm::vec2 SceneManager::GetNearestPipeGap() const
+{
+	glm::vec2 closest = glm::vec2(std::numeric_limits<float>::max());
+	for (const auto& object : m_Objects)
+	{
+		PipeComponent* pipe = object->GetComponent<PipeComponent>(PIPECOMPONENT);
+
+		glm::vec2 gapPosition = pipe->GetGapPosition();
+		if (gapPosition.x > 100.0f && gapPosition.x < closest.x)
+		{
+			closest = pipe->GetGapPosition();
+		}
+	}
+	return closest;
 }
 
 Entity* SceneManager::AddObject(std::unique_ptr<Entity> object)

@@ -23,4 +23,11 @@ void PipeComponent::Update()
 		SceneManager::GetInstance().RemoveObject(m_Parent->GetSceneID());
 		std::cout << "Deleting" << std::endl;
 	}
+
+	m_GapPosition.x = m_Parent->GetTransform()->GetPosition().x;
+}
+
+void PipeComponent::SetGapPosition(glm::vec2 gapPosition)
+{
+	m_GapPosition = gapPosition;
 }
