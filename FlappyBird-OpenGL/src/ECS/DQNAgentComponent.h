@@ -3,6 +3,7 @@
 #include "../ML/NeuralNetwork.h"
 #include <deque>
 
+class TransformComponent;
 class PhysicsComponent;
 class BoxColliderComponent;
 
@@ -24,12 +25,16 @@ struct MemorySlice
 class DQNAgentComponent :
 	public Component
 {
-	DQNAgentComponent(Entity* parent, int stateSize, int actionSize);
+public:
+	DQNAgentComponent(Entity* parent);
 
 	// Inherited via Component
 	virtual void Init() override;
 	virtual void Update() override;
 	virtual ComponentType GetType() const override;
+
+	void SetStateSize(int stateSize) { m_StateSize = stateSize; }
+	void SetActionSize(int actionSize) { m_ActionSize = actionSize; }
 
 	void OnCollision(BoxColliderComponent* other);
 
@@ -41,6 +46,7 @@ class DQNAgentComponent :
 
 
 private:
+	TransformComponent* m_TransformComponent;
 	PhysicsComponent* m_PhysicsComponent;
 	BoxColliderComponent* m_BoxColliderComponent;
 

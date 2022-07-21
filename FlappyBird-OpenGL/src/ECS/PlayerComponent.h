@@ -4,6 +4,7 @@
 
 class Application;
 class PhysicsComponent;
+class TransformComponent;
 class BoxColliderComponent;
 struct GLFWwindow;
 
@@ -20,6 +21,7 @@ public:
 	void HandleEvent();
 
 private:
+	TransformComponent* m_TransformComponent;
 	PhysicsComponent* m_PhysicsComponent;
 	BoxColliderComponent* m_BoxColliderComponent;
 };

@@ -1,18 +1,24 @@
 #include "DQNAgentComponent.h"
+
+#include "TransformComponent.h"
 #include "PhysicsComponent.h"
 #include "BoxColliderComponent.h"
 #include "Entity.h"
+#include "../Application.h"
 #include "../Util/Random.h"
 
-DQNAgentComponent::DQNAgentComponent(Entity* parent, int stateSize, int actionSize)
-	: Component(parent), m_PhysicsComponent(nullptr), m_BoxColliderComponent(nullptr),
-	m_StateSize(stateSize), m_ActionSize(actionSize), m_NN(), m_Memory(), m_Optimizer(LEARNING_RATE)
+DQNAgentComponent::DQNAgentComponent(Entity* parent)
+	: Component(parent), m_TransformComponent(nullptr),
+	m_PhysicsComponent(nullptr), 
+	m_BoxColliderComponent(nullptr),
+	m_StateSize(1), m_ActionSize(1), m_NN(),
+	m_Memory(), m_Optimizer(LEARNING_RATE)
 {
-
 }
 
 void DQNAgentComponent::Init()
 {
+	m_TransformComponent = (TransformComponent*)m_Parent->GetTransform();
 	m_PhysicsComponent = (PhysicsComponent*)m_Parent->GetComponent<PhysicsComponent>(PHYSICSCOMPONENT);
 	m_BoxColliderComponent = (BoxColliderComponent*)m_Parent->GetComponent<BoxColliderComponent>(BOXCOLLIDERCOMPONENT);
 	std::function<void(BoxColliderComponent*)> fun = [this](BoxColliderComponent* other) {
@@ -25,11 +31,21 @@ void DQNAgentComponent::Init()
 
 	m_NN.AddLayer(m_StateSize, 16);
 	m_NN.AddLayer(16, 16);
-	m_NN.AddLayer(16, 2);
+	m_NN.AddLayer(16, m_ActionSize);
 }
 
 void DQNAgentComponent::Update()
 {
+	Application& app = Application::GetInstance();
+	if (m_TransformComponent->GetPosition().y > app.GetWindowHeight())
+	{
+		app.SetResetBool(true);
+	}
+
+	if (Random::Random01() > 0.01f)
+	{
+		m_PhysicsComponent->Jump();
+	}
 }
 
 ComponentType DQNAgentComponent::GetType() const
@@ -39,6 +55,7 @@ ComponentType DQNAgentComponent::GetType() const
 
 void DQNAgentComponent::OnCollision(BoxColliderComponent* other)
 {
+	Application::GetInstance().SetResetBool(true);
 }
 
 void DQNAgentComponent::Remember(const Eigen::VectorXf& state, int action, float reward, const Eigen::VectorXf& nextState, bool done)
@@ -83,6 +100,7 @@ void DQNAgentComponent::Replay(int batchSize)
 		}
 
 		Eigen::VectorXf targetQs = m_NN.GetQs(memory.state);
+		//targetQs.
 		targetQs[memory.action] = target;
 
 		m_NN.Fit(memory.state, targetQs, m_Optimizer);
