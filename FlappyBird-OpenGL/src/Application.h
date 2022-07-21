@@ -47,6 +47,7 @@ public:
 	inline GLFWwindow* GetWindow() const { return m_Window.get(); }
 	inline float GetWindowWidth() const { return (float)m_WindowWidth; }
 	inline float GetWindowHeight() const { return (float)m_WindowHeight; }
+	inline int GetEpisodeCount() const { return m_EpisodeCount; }
 	void SetResetBool(bool value);
 private:
 	Application();
@@ -62,7 +63,7 @@ private:
 
 	MenuChoice m_Choice;
 
-	int m_CurrEpisodes;
+	int m_EpisodeCount = 0;
 
 	const int m_WindowWidth;
 	const int m_WindowHeight;

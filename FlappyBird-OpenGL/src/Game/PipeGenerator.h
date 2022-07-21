@@ -3,6 +3,7 @@ class PipeGenerator
 {
 public:
 	static void Update();
+	static void SpawnPipes();
 private:
 	static int s_UpdateCounter;
 	static const int UPDATES_PER_GENERATION = 75;
@@ -11,7 +12,5 @@ private:
 	static const float PIPE_SPAWN_X;
 	static const float GAP_RADIUS;
 	static const float PIPE_SCALE;
-private:
-	static void SpawnPipes();
 };
 

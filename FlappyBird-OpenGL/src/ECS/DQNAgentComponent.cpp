@@ -6,6 +6,7 @@
 #include "Entity.h"
 #include "../Application.h"
 #include "../Util/Random.h"
+#include "../Game/SceneManager.h"
 
 DQNAgentComponent::DQNAgentComponent(Entity* parent)
 	: Component(parent), m_TransformComponent(nullptr),
@@ -39,14 +40,37 @@ void DQNAgentComponent::Update()
 	Application& app = Application::GetInstance();
 	if (m_TransformComponent->GetPosition().y > app.GetWindowHeight())
 	{
-		app.SetResetBool(true);
+		Done();
 	}
 
-	if (Random::Random01() > 0.01f)
-	{
-		m_PhysicsComponent->Jump();
-	}
+	Eigen::VectorXf currentState(m_StateSize);
+	currentState[0] = m_TransformComponent->GetPosition().y;
+	
+	SceneManager& sc = SceneManager::GetInstance();
+	glm::vec2 nearestPipe = sc.GetNearestPipeGap();
+	currentState[1] = nearestPipe.x;
+	currentState[2] = nearestPipe.y;
+
+	//Set the new values for the previous updates data
+	m_CurrentMemory.nextState = currentState;
+	m_totalReward += m_CurrentMemory.reward;
+	Remember(m_CurrentMemory);
+
+	//reset the memory and start this current frames data
+	m_CurrentMemory = MemorySlice();
+	m_CurrentMemory.state = currentState;
+	m_CurrentMemory.reward = 1;
+	m_CurrentMemory.action = Act(currentState);
+
+	if (m_CurrentMemory.action = 0) m_PhysicsComponent->Jump();
+
+	////Temp policy
+	//if (Random::Random01() > 0.95f)
+	//{
+	//	m_PhysicsComponent->Jump();
+	//}
 }
+
 
 ComponentType DQNAgentComponent::GetType() const
 {
@@ -55,19 +79,28 @@ ComponentType DQNAgentComponent::GetType() const
 
 void DQNAgentComponent::OnCollision(BoxColliderComponent* other)
 {
-	Application::GetInstance().SetResetBool(true);
+	Done();
 }
 
-void DQNAgentComponent::Remember(const Eigen::VectorXf& state, int action, float reward, const Eigen::VectorXf& nextState, bool done)
+void DQNAgentComponent::Done()
+{
+	Application& app = Application::GetInstance();
+	app.SetResetBool(true);
+	m_CurrentMemory.done = true;
+	m_CurrentMemory.reward = -10;
+
+	std::cout << "Episode: " << app.GetEpisodeCount() << ", Reward: " << m_totalReward << std::endl;
+}
+void DQNAgentComponent::Remember(const MemorySlice& memory)
 {
 	if (m_Memory.size() < MEMORY_MAX)
 	{
-		m_Memory.emplace_back(state, action, reward, nextState, done);
+		m_Memory.push_back(memory);
 	}
 	else
 	{
 		m_Memory.pop_front();
-		m_Memory.emplace_back(state, action, reward, nextState, done);
+		m_Memory.push_back(memory);
 	}
 }
 
@@ -83,7 +116,7 @@ int DQNAgentComponent::Act(const Eigen::VectorXf state)
 	return action;
 }
 
-void DQNAgentComponent::Replay(int batchSize)
+void DQNAgentComponent::Replay(int batchSize = 32)
 {
 	std::vector<MemorySlice> minibatch;
 	std::sample(m_Memory.begin(), m_Memory.end(),

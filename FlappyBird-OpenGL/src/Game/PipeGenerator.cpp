@@ -21,12 +21,13 @@ void PipeGenerator::Update()
 	if (s_UpdateCounter > UPDATES_PER_GENERATION)
 	{
 		SpawnPipes();
-		s_UpdateCounter = 0;
 	}
 }
 
 void PipeGenerator::SpawnPipes()
 {
+	s_UpdateCounter = 0;
+
 	std::cout << "Spawning Pipes" << std::endl;
 
 	glm::vec2 gapPosition = glm::vec2(PIPE_SPAWN_X, std::rand() % PIPE_RANDOM_SPAWN_Y + PIPE_OFFSET_Y);
@@ -41,9 +42,11 @@ void PipeGenerator::SpawnPipes()
 	//Setup components for the top pipes
 	PhysicsComponent* topPipePhysics = topPipe->AddComponent<PhysicsComponent>(topPipe.get());
 	topPipePhysics->SetBoolGravity(false);
-	topPipe->AddComponent<PipeComponent>(topPipe.get());
 	topPipe->AddComponent<BoxColliderComponent>(topPipe.get());
 	topPipe->AddComponent<ScoreTrackingComponent>(topPipe.get());
+
+	PipeComponent* topPipeComponent = topPipe->AddComponent<PipeComponent>(topPipe.get());
+	topPipeComponent->SetGapPosition(gapPosition);
 
 	std::unique_ptr<Entity> bottomPipe = std::make_unique<Entity>(
 		std::string("bottom_pipe.png"), std::string("Basic.glsl"), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(PIPE_SCALE)
@@ -55,8 +58,10 @@ void PipeGenerator::SpawnPipes()
 	//Set up the components for the bottom pipes
 	PhysicsComponent* bottomPipePhysics = bottomPipe->AddComponent<PhysicsComponent>(bottomPipe.get());
 	bottomPipePhysics->SetBoolGravity(false);
-	bottomPipe->AddComponent<PipeComponent>(bottomPipe.get());
 	bottomPipe->AddComponent<BoxColliderComponent>(bottomPipe.get());
+
+	PipeComponent* bottomPipeComponent = bottomPipe->AddComponent<PipeComponent>(bottomPipe.get());
+	bottomPipeComponent->SetGapPosition(gapPosition);
 
 	//Add the new objects to the scene
 	SceneManager& instance = SceneManager::GetInstance();

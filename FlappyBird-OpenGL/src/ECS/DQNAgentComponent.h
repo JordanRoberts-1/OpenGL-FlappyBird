@@ -15,6 +15,8 @@ struct MemorySlice
 	Eigen::VectorXf nextState;
 	bool done;
 
+	MemorySlice() = default;
+
 	MemorySlice(const Eigen::VectorXf& state, int action, float reward,
 		const Eigen::VectorXf nextState, bool done)
 		: state(state), action(action), reward(reward), nextState(nextState), done(done)
@@ -37,9 +39,9 @@ public:
 	void SetActionSize(int actionSize) { m_ActionSize = actionSize; }
 
 	void OnCollision(BoxColliderComponent* other);
+	void Done();
 
-	void Remember(const Eigen::VectorXf& state, int action, float reward,
-		const Eigen::VectorXf& nextState, bool done);
+	void Remember(const MemorySlice& memory);
 
 	int Act(const Eigen::VectorXf state);
 	void Replay(int batchSize);
@@ -53,6 +55,8 @@ private:
 	int m_StateSize, m_ActionSize;
 	const float GAMMA = 0.95;
 	float m_Epsilon = 1.0f;
+	int m_totalReward = 0;
+	MemorySlice m_CurrentMemory;
 	const float EPSILON_DECAY = 0.995f;
 	const float EPSILON_MIN = 0.01f;
 

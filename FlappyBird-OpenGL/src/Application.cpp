@@ -143,8 +143,9 @@ void Application::Train(double& prev, double& lag)
 	SceneManager::GetInstance().BuildTrainingScene();
 	Score::ResetScore();
 	m_ShouldReset = false;
+	m_EpisodeCount++;
 
-	//this is the loop for each round of the game
+	//this is the loop for every frame
 	while (!m_ShouldReset)
 	{
 		Renderer::ClearRendering();
@@ -155,7 +156,7 @@ void Application::Train(double& prev, double& lag)
 		prev = curr;
 		lag += elapsed;
 
-		std::cout << "Frametime: " << elapsed << "ms" << std::endl;
+		//std::cout << "Frametime: " << elapsed << "ms" << std::endl;
 
 		//Keep constant update time regardless of rendering speed
 		while (lag >= TRAIN_MS_PER_UPDATE)
@@ -174,7 +175,10 @@ void Application::Train(double& prev, double& lag)
 		}
 	}
 
-	//This round is over, so reset
+	//This round is over, Learn from the data and reset
+	DQNAgentComponent& agent = SceneManager::GetInstance().GetAgent();
+	agent.Replay(32);
+
 	SceneManager::GetInstance().ResetScene();
 }
 
