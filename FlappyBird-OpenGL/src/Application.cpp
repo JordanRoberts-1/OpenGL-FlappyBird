@@ -13,10 +13,9 @@
 #include "Game/UI.h"
 
 Application::Application()
-	: m_isRunning(false), m_WindowWidth(540), m_WindowHeight(960)
+	: m_isRunning(false), m_WindowWidth(540), m_WindowHeight(960), m_Choice(NONE)
 {
 	m_Window = SetupWindow();
-	SceneManager::GetInstance().BuildScene();
 }
 
 Application::~Application()
@@ -99,39 +98,84 @@ void Application::Run()
 	}
 }
 
-		//this is the loop for each round of the game
-		while (!m_ShouldReset)
+void Application::UserPlayLoop(double& prev, double& lag)
+{
+	SceneManager::GetInstance().BuildPlayScene();
+	Score::ResetScore();
+	m_ShouldReset = false;
+
+	//this is the loop for each round of the game
+	while (!m_ShouldReset)
+	{
+		Renderer::ClearRendering();
+		glfwPollEvents();
+
+		double curr = Clock::CurrTimeInMillis();
+		double elapsed = curr - prev;
+		prev = curr;
+		lag += elapsed;
+
+		//std::cout << "Frametime: " << elapsed << "ms" << std::endl;
+
+		//Keep constant update time regardless of rendering speed
+		while (lag >= MS_PER_UPDATE)
 		{
-			Renderer::ClearRendering();
-			glfwPollEvents();
-
-			double curr = Clock::CurrTimeInMillis();
-			double elapsed = curr - prev;
-			prev = curr;
-			lag += elapsed;
-
-			//std::cout << "Frametime: " << elapsed << "ms" << std::endl;
-
-			//Keep constant update time regardless of rendering speed
-			while (lag >= MS_PER_UPDATE)
-			{
-				Update();
-				lag -= MS_PER_UPDATE;
-			}
-
-			UI::RenderScore();
-			Renderer::Render();
-
-			if (glfwWindowShouldClose(m_Window.get()))
-			{
-				m_ShouldReset = true;
-				m_isRunning = false;
-			}
+			Update();
+			lag -= MS_PER_UPDATE;
 		}
 
-		//This round is over, so reset
-		SceneManager::GetInstance().ResetScene();
+		UI::RenderScore();
+		Renderer::Render();
+
+		if (glfwWindowShouldClose(m_Window.get()))
+		{
+			m_ShouldReset = true;
+			m_isRunning = false;
+		}
 	}
+
+	//This round is over, so reset
+	SceneManager::GetInstance().ResetScene();
+}
+
+void Application::Train(double& prev, double& lag)
+{
+	SceneManager::GetInstance().BuildTrainingScene();
+	Score::ResetScore();
+	m_ShouldReset = false;
+
+	//this is the loop for each round of the game
+	while (!m_ShouldReset)
+	{
+		Renderer::ClearRendering();
+		glfwPollEvents();
+
+		double curr = Clock::CurrTimeInMillis();
+		double elapsed = curr - prev;
+		prev = curr;
+		lag += elapsed;
+
+		std::cout << "Frametime: " << elapsed << "ms" << std::endl;
+
+		//Keep constant update time regardless of rendering speed
+		while (lag >= TRAIN_MS_PER_UPDATE)
+		{
+			Update();
+			lag -= TRAIN_MS_PER_UPDATE;
+		}
+
+		UI::RenderScore();
+		Renderer::Render();
+
+		if (glfwWindowShouldClose(m_Window.get()))
+		{
+			m_ShouldReset = true;
+			m_isRunning = false;
+		}
+	}
+
+	//This round is over, so reset
+	SceneManager::GetInstance().ResetScene();
 }
 
 void Application::SetResetBool(bool value)
@@ -237,4 +281,3 @@ void Application::Update()
 	//defer deletion of objects so as to not mess up updates
 	sc.CleanUpObjects();
 }
-
