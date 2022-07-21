@@ -6,7 +6,6 @@ class BoxColliderComponent;
 class SceneManager
 {
 public:
-	void BuildScene();
 
 	static SceneManager& GetInstance()
 	{
@@ -18,6 +17,8 @@ public:
 	SceneManager(SceneManager const&) = delete;
 	void operator=(SceneManager const&) = delete;
 
+	void BuildPlayScene();
+	void BuildTrainingScene();
 	const std::vector<std::unique_ptr<Entity>>& GetObjects() const { return m_Objects; };
 	std::vector<BoxColliderComponent*> GetColliders() const;
 

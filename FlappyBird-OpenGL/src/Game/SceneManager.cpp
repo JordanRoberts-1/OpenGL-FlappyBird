@@ -10,10 +10,11 @@
 #include "../ECS/Entity.h"
 #include "../ECS/PlayerComponent.h"
 #include "../ECS/BoxColliderComponent.h"
+#include "../ECS/DQNAgentComponent.h"
 
 #include <algorithm>
 
-void SceneManager::BuildScene()
+void SceneManager::BuildPlayScene()
 {
 	ResourceManager& rm = ResourceManager::GetInstance();
 
@@ -36,6 +37,44 @@ void SceneManager::BuildScene()
 		PlayerComponent* playerComponent = player->AddComponent<PlayerComponent>(player);
 		PhysicsComponent* playerPhysics = player->AddComponent<PhysicsComponent>(player);
 		BoxColliderComponent* playerCollider = player->AddComponent<BoxColliderComponent>(player);
+	}
+	catch (...) { std::cerr << "Failed to make objects"; }
+
+	//Initialize the entities
+	for (const auto& entity : m_Objects)
+	{
+		entity->Init();
+	}
+}
+
+void SceneManager::BuildTrainingScene()
+{
+	ResourceManager& rm = ResourceManager::GetInstance();
+
+	//Attempt to create the objects and add components
+	try
+	{
+		//Setup background
+		std::unique_ptr<Entity> background = std::make_unique<Entity>(std::string("background.png"), std::string("Basic.glsl"), BACKGROUND_POSITION, BACKGROUND_SCALE);
+		AddObject(std::move(background));
+
+		//Setup Ground plane
+		std::unique_ptr<Entity> ground = std::make_unique<Entity>(std::string("ground.png"), std::string("Basic.glsl"), GROUND_POSITION, GROUND_SCALE);
+		ground->AddComponent<BoxColliderComponent>(ground.get());
+		AddObject(std::move(ground));
+
+
+		//Setup player
+		std::unique_ptr<Entity> trainingEntity = std::make_unique<Entity>(std::string("flappy_bird.png"), std::string("Basic.glsl"), PLAYER_POSITION, PLAYER_SCALE);
+		Entity* ai = AddObject(std::move(trainingEntity));
+		DQNAgentComponent* aiComponent = ai->AddComponent<DQNAgentComponent>(ai);
+		PhysicsComponent* playerPhysics = ai->AddComponent<PhysicsComponent>(ai);
+		BoxColliderComponent* playerCollider = ai->AddComponent<BoxColliderComponent>(ai);
+
+		//States: Height off ground, distance to center of pipe gap
+		//Actions: Jump or don't jump
+		aiComponent->SetStateSize(2);
+		aiComponent->SetActionSize(2);
 	}
 	catch (...) { std::cerr << "Failed to make objects"; }
 
