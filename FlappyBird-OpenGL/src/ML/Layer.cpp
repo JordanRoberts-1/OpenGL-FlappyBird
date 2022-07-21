@@ -183,3 +183,55 @@ float Loss_CategoricalCrossentropy::CalculateLoss(const Eigen::MatrixXf& output,
 	Eigen::VectorXf sampleLosses = Forward(output, yTrue);
 	return sampleLosses.mean();
 }
+
+Eigen::MatrixXf Activation_Linear::Forward(const Eigen::MatrixXf& input)
+{
+	m_Inputs = input;
+	m_Output = input;
+	return m_Output;
+}
+
+Eigen::MatrixXf Activation_Linear::Backward(const Eigen::MatrixXf& dValues)
+{
+	m_dInputs = dValues;
+	return m_dInputs;
+}
+
+Eigen::MatrixXf Activation_Linear::Predict(const Eigen::MatrixXf& input)
+{
+	return input;
+}
+
+Eigen::VectorXf Loss_MSE::Forward(const Eigen::MatrixXf& yPred, const Eigen::MatrixXf& yTrue)
+{
+	Eigen::VectorXf sampleLosses(yPred.rows());
+
+	for (int i = 0; i < yPred.rows(); i++)
+	{
+		Eigen::VectorXf row = yPred.row(i);
+		Eigen::VectorXf currentY = yTrue.row(i);
+
+		row = currentY - row;
+		row = Eigen::square(row.array());
+		sampleLosses[i] = row.mean();
+	}
+	return sampleLosses;
+}
+
+Eigen::MatrixXf Loss_MSE::Backward(const Eigen::MatrixXf& dValues, const Eigen::MatrixXf& yTrue)
+{
+	int samples = dValues.rows();
+	int outputs = dValues.cols();
+
+	m_dInputs = -2 * (yTrue - dValues) / outputs;
+	m_dInputs /= samples;
+
+	return m_dInputs;
+}
+
+float Loss_MSE::CalculateLoss(const Eigen::MatrixXf& output, const Eigen::MatrixXf& yTrue)
+{
+	Eigen::VectorXf Loss = Forward(output, yTrue);
+	float mean = Loss.mean();
+	return mean;
+}

@@ -1,5 +1,5 @@
 #pragma once
-#include "eigen-3.4.0/Eigen/Eigen"
+#include <Eigen/Eigen>
 #include <vector>
 
 class Activation_ReLU
@@ -52,6 +52,35 @@ private:
 	Eigen::MatrixXf m_dInputs;
 };
 
+class Activation_Linear
+{
+public:
+	Eigen::MatrixXf Forward(const Eigen::MatrixXf& input);
+	Eigen::MatrixXf Backward(const Eigen::MatrixXf& dValues);
+
+	Eigen::MatrixXf Predict(const Eigen::MatrixXf& input);
+
+	Eigen::MatrixXf GetInputs() { return m_Inputs; }
+	Eigen::MatrixXf GetOutput() { return m_Output; }
+	Eigen::MatrixXf GetdInputs() { return m_dInputs; }
+
+private:
+	Eigen::MatrixXf m_Inputs;
+	Eigen::MatrixXf m_Output;
+	Eigen::MatrixXf m_dInputs;
+};
+
+class Loss_MSE
+{
+public:
+	Eigen::VectorXf Forward(const Eigen::MatrixXf& yPred, const Eigen::MatrixXf& yTrue);
+	Eigen::MatrixXf Backward(const Eigen::MatrixXf& dValues, const Eigen::MatrixXf& yTrue);
+	float CalculateLoss(const Eigen::MatrixXf& output, const Eigen::MatrixXf& yTrue);
+
+private:
+	Eigen::MatrixXf m_dInputs;
+};
+
 class Layer
 {
 public:
@@ -62,6 +91,8 @@ public:
 
 	inline unsigned int GetSize() const { return m_Size; }
 	Activation_ReLU& GetReLU() { return m_ReLU; }
+	Activation_Linear& GetLinear() { return m_Linear; }
+	Loss_MSE& GetMSE() { return m_MSE; }
 	Activation_SoftMax_Loss_CategoricalCrossentropy& GetSoftmax() { return m_Softmax; }
 
 	void UpdateParams(float learningRate);
@@ -86,7 +117,9 @@ private:
 	unsigned int m_Size;
 
 	Activation_ReLU m_ReLU;
+	Activation_Linear m_Linear;
 	Activation_SoftMax_Loss_CategoricalCrossentropy m_Softmax;
+	Loss_MSE m_MSE;
 
 	Eigen::MatrixXf m_WeightMatrix;
 	Eigen::VectorXf m_BiasVector;

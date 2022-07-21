@@ -20,12 +20,12 @@ public:
 	inline Eigen::MatrixXf GetOutput() const { return m_CurrentOutput; }
 
 	void ForwardProp(Eigen::MatrixXf* input);
-	void BackwardProp(Eigen::VectorXi yTrue);
-	void Fit(Eigen::MatrixXf input, Eigen::VectorXi y, const Optimizer_SGD& optimizer);
+	void BackwardProp(const Eigen::MatrixXf& yTrue);
+	void Fit(Eigen::MatrixXf input, const Eigen::MatrixXf& y, const Optimizer_SGD& optimizer);
 
 	void Optimize(const Optimizer_SGD& optimizer);
-	float CalculateLoss(Eigen::VectorXi yTrue);
-	float CalculateAccuracy(Eigen::VectorXi yTrue);
+	float CalculateLoss(const Eigen::MatrixXf& yTrue);
+	float CalculateAccuracy(Eigen::VectorXf yTrue);
 
 	Eigen::VectorXf GetQs(const Eigen::VectorXf& input);
 	int Predict(const Eigen::VectorXf& input);
