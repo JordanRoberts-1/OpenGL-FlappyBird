@@ -29,6 +29,46 @@ Application::~Application()
 	glfwTerminate();
 }
 
+void Application::ShowMenu()
+{
+	ImGui::Begin("Main Menu");
+	if (ImGui::Button("Train"))
+	{
+		m_Choice = TRAIN;
+		ImGui::End();
+		return;
+	}
+	if (ImGui::Button("Play"))
+	{
+		m_Choice = PLAY;
+		ImGui::End();
+		return;
+	}
+	if (ImGui::Button("AI Plays"))
+	{
+		m_Choice = AIPLAY;
+		ImGui::End();
+		return;
+	}
+	ImGui::End();
+}
+
+void Application::ShowMainMenu()
+{
+	Renderer::ClearRendering();
+	glfwPollEvents();
+
+	ShowMenu();
+
+	Renderer::RenderGUI();
+	glfwSwapBuffers(Application::GetInstance().GetWindow());
+
+	if (glfwWindowShouldClose(m_Window.get()))
+	{
+		m_isRunning = false;
+	}
+}
+
 void Application::Run()
 {
 	m_isRunning = true;
@@ -39,9 +79,25 @@ void Application::Run()
 	//Application loop
 	while (m_isRunning)
 	{
-		SceneManager::GetInstance().BuildScene();
-		Score::ResetScore();
-		m_ShouldReset = false;
+		if (m_Choice == NONE)
+		{
+			ShowMainMenu();
+		}
+		else if (m_Choice == TRAIN)
+		{
+			Train(prev, lag);
+		}
+		else if(m_Choice == PLAY)
+		{
+			UserPlayLoop(prev, lag);
+		}
+		else if (m_Choice == AIPLAY)
+		{
+			//todo: add ai playing ability
+		}
+
+	}
+}
 
 		//this is the loop for each round of the game
 		while (!m_ShouldReset)
