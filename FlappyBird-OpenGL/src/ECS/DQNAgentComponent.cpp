@@ -45,16 +45,25 @@ void DQNAgentComponent::Update()
 
 	Eigen::VectorXf currentState(m_StateSize);
 	currentState[0] = m_TransformComponent->GetPosition().y;
-	
+
 	SceneManager& sc = SceneManager::GetInstance();
 	glm::vec2 nearestPipe = sc.GetNearestPipeGap();
 	currentState[1] = nearestPipe.x;
 	currentState[2] = nearestPipe.y;
 
-	//Set the new values for the previous updates data
-	m_CurrentMemory.nextState = currentState;
-	m_totalReward += m_CurrentMemory.reward;
-	Remember(m_CurrentMemory);
+	//If we haven't just reset then continue as normal, otherwise skip updating the
+	//previous frames data because there was no previous frame
+	if (!m_ResetBool)
+	{
+		//Set the new values for the previous updates data
+		m_CurrentMemory.nextState = currentState;
+		m_totalReward += m_CurrentMemory.reward;
+		Remember(m_CurrentMemory);
+	}
+	else
+	{
+		m_ResetBool = false;
+	}
 
 	//reset the memory and start this current frames data
 	m_CurrentMemory = MemorySlice();
@@ -116,8 +125,10 @@ int DQNAgentComponent::Act(const Eigen::VectorXf state)
 	return action;
 }
 
-void DQNAgentComponent::Replay(int batchSize = 32)
+void DQNAgentComponent::Replay(int batchSize = 44)
 {
+	if (m_Memory.size() <= batchSize) return;
+
 	std::vector<MemorySlice> minibatch;
 	std::sample(m_Memory.begin(), m_Memory.end(),
 		std::back_inserter(minibatch), batchSize,

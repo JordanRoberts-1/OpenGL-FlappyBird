@@ -37,6 +37,7 @@ public:
 
 	void SetStateSize(int stateSize) { m_StateSize = stateSize; }
 	void SetActionSize(int actionSize) { m_ActionSize = actionSize; }
+	void SetResetBool(bool value) { m_ResetBool = value; }
 
 	void OnCollision(BoxColliderComponent* other);
 	void Done();
@@ -51,6 +52,8 @@ private:
 	TransformComponent* m_TransformComponent;
 	PhysicsComponent* m_PhysicsComponent;
 	BoxColliderComponent* m_BoxColliderComponent;
+
+	bool m_ResetBool = true;
 
 	int m_StateSize, m_ActionSize;
 	const float GAMMA = 0.95;
