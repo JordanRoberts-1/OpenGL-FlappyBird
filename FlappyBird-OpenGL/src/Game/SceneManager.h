@@ -1,5 +1,6 @@
 #pragma once
 #include "../ECS/Entity.h"
+#include "../ECS/DQNAgentComponent.h"
 
 class BoxColliderComponent;
 
@@ -20,6 +21,7 @@ public:
 	void BuildPlayScene();
 	void BuildTrainingScene();
 	const std::vector<std::unique_ptr<Entity>>& GetObjects() const { return m_Objects; };
+	DQNAgentComponent& GetAgent() const;
 	std::vector<BoxColliderComponent*> GetColliders() const;
 	glm::vec2 GetNearestPipeGap() const;
 

@@ -14,6 +14,7 @@
 #include "../ECS/PipeComponent.h"
 
 #include <algorithm>
+#include "PipeGenerator.h"
 
 void SceneManager::BuildPlayScene()
 {
@@ -74,8 +75,10 @@ void SceneManager::BuildTrainingScene()
 
 		//States: Height off ground, distance to center of pipe gap
 		//Actions: Jump or don't jump
-		aiComponent->SetStateSize(2);
+		aiComponent->SetStateSize(3);
 		aiComponent->SetActionSize(2);
+
+		PipeGenerator::SpawnPipes();
 	}
 	catch (...) { std::cerr << "Failed to make objects"; }
 
@@ -83,6 +86,16 @@ void SceneManager::BuildTrainingScene()
 	for (const auto& entity : m_Objects)
 	{
 		entity->Init();
+	}
+}
+
+DQNAgentComponent& SceneManager::GetAgent() const
+{
+	for (const auto& object : m_Objects)
+	{
+		DQNAgentComponent* agent = object->GetComponent<DQNAgentComponent>(DQNAGENTCOMPONENT);
+		if (agent)
+			return *agent;
 	}
 }
 
@@ -106,6 +119,9 @@ glm::vec2 SceneManager::GetNearestPipeGap() const
 	for (const auto& object : m_Objects)
 	{
 		PipeComponent* pipe = object->GetComponent<PipeComponent>(PIPECOMPONENT);
+
+		if (!pipe)
+			continue;
 
 		glm::vec2 gapPosition = pipe->GetGapPosition();
 		if (gapPosition.x > 100.0f && gapPosition.x < closest.x)
