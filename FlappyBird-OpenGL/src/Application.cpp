@@ -34,6 +34,7 @@ void Application::ShowMenu()
 	if (ImGui::Button("Train"))
 	{
 		m_Choice = TRAIN;
+		SceneManager::GetInstance().BuildTrainingScene();
 		ImGui::End();
 		return;
 	}
@@ -140,7 +141,6 @@ void Application::UserPlayLoop(double& prev, double& lag)
 
 void Application::Train(double& prev, double& lag)
 {
-	SceneManager::GetInstance().BuildTrainingScene();
 	Score::ResetScore();
 	m_ShouldReset = false;
 	m_EpisodeCount++;
@@ -179,7 +179,7 @@ void Application::Train(double& prev, double& lag)
 	DQNAgentComponent& agent = SceneManager::GetInstance().GetAgent();
 	agent.Replay(32);
 
-	SceneManager::GetInstance().ResetScene();
+	SceneManager::GetInstance().ResetTrainingScene();
 }
 
 void Application::SetResetBool(bool value)

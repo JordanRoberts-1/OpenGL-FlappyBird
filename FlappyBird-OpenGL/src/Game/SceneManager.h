@@ -30,6 +30,7 @@ public:
 	void CleanUpObjects();
 	void ResetCleanupVector();
 	void ResetScene();
+	void ResetTrainingScene();
 
 private:
 	SceneManager() {};

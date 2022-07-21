@@ -65,7 +65,6 @@ void SceneManager::BuildTrainingScene()
 		ground->AddComponent<BoxColliderComponent>(ground.get());
 		AddObject(std::move(ground));
 
-
 		//Setup player
 		std::unique_ptr<Entity> trainingEntity = std::make_unique<Entity>(std::string("flappy_bird.png"), std::string("Basic.glsl"), PLAYER_POSITION, PLAYER_SCALE);
 		Entity* ai = AddObject(std::move(trainingEntity));
@@ -73,7 +72,7 @@ void SceneManager::BuildTrainingScene()
 		PhysicsComponent* playerPhysics = ai->AddComponent<PhysicsComponent>(ai);
 		BoxColliderComponent* playerCollider = ai->AddComponent<BoxColliderComponent>(ai);
 
-		//States: Height off ground, distance to center of pipe gap
+		//States: Height off ground, position of center of pipe gap
 		//Actions: Jump or don't jump
 		aiComponent->SetStateSize(3);
 		aiComponent->SetActionSize(2);
@@ -178,4 +177,21 @@ void SceneManager::ResetScene()
 	m_Objects.clear();
 	m_IDsToRemove.clear();
 	m_CurrentSceneID = 0;
+}
+
+void SceneManager::ResetTrainingScene()
+{
+	DQNAgentComponent& agentComponent = GetAgent();
+	agentComponent.SetResetBool(true);
+
+	Entity* agentParent = agentComponent.GetParent();
+	agentParent->SetSceneID(0);
+	std::vector<std::unique_ptr<Entity>> temp(1);
+
+	temp.emplace_back(agentParent);
+
+	m_Objects.clear();
+	m_IDsToRemove.clear();
+	m_CurrentSceneID = 1;
+	m_Objects = std::move(temp);
 }
