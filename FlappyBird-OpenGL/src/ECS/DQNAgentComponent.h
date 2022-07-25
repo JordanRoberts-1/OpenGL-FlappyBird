@@ -47,6 +47,8 @@ public:
 	int Act(const Eigen::VectorXf state);
 	void Replay(int batchSize);
 
+	void Reset();
+
 
 private:
 	TransformComponent* m_TransformComponent;

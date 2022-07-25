@@ -181,17 +181,15 @@ void SceneManager::ResetScene()
 
 void SceneManager::ResetTrainingScene()
 {
-	DQNAgentComponent& agentComponent = GetAgent();
-	agentComponent.SetResetBool(true);
+	DQNAgentComponent& agent = GetAgent();
+	agent.Reset();
 
-	Entity* agentParent = agentComponent.GetParent();
-	agentParent->SetSceneID(0);
-	std::vector<std::unique_ptr<Entity>> temp(1);
-
-	temp.emplace_back(agentParent);
-
-	m_Objects.clear();
-	m_IDsToRemove.clear();
-	m_CurrentSceneID = 1;
-	m_Objects = std::move(temp);
+	for (const auto& object : m_Objects)
+	{
+		PipeComponent* pipe = object->GetComponent<PipeComponent>(PIPECOMPONENT);
+		if (pipe)
+		{
+			pipe->Reset();
+		}
+	}
 }

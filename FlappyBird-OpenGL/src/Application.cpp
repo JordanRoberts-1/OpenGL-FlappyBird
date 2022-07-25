@@ -262,8 +262,6 @@ void Application::Update()
 		entity->Update();
 	}
 
-	PipeGenerator::Update();
-
 	//Check for collisions
 	const std::vector<BoxColliderComponent*> colliders = sc.GetColliders();
 
