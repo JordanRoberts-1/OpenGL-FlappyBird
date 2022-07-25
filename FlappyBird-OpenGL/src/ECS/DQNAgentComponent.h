@@ -60,7 +60,7 @@ private:
 	int m_StateSize, m_ActionSize;
 	const float GAMMA = 0.95;
 	float m_Epsilon = 1.0f;
-	int m_totalReward = 0;
+	int m_TotalReward = 0;
 	MemorySlice m_CurrentMemory;
 	const float EPSILON_DECAY = 0.995f;
 	const float EPSILON_MIN = 0.01f;

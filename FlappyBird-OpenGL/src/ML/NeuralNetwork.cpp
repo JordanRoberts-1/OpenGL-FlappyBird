@@ -179,8 +179,6 @@ Eigen::VectorXf NeuralNetwork::GetQs(const Eigen::VectorXf& input)
 		}
 	}
 
-	std::cout << "Result: " << result.row(0) << std::endl;
-
 	return result.row(0);
 }
 

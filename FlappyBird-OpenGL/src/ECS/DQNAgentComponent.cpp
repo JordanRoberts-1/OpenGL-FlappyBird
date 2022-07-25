@@ -27,6 +27,8 @@ void DQNAgentComponent::Init()
 	};
 	m_BoxColliderComponent->SubscribeOnCollision(fun);
 
+	Reset();
+
 	//Jump when created
 	m_PhysicsComponent->Jump();
 
@@ -57,7 +59,7 @@ void DQNAgentComponent::Update()
 	{
 		//Set the new values for the previous updates data
 		m_CurrentMemory.nextState = currentState;
-		m_totalReward += m_CurrentMemory.reward;
+		m_TotalReward += m_CurrentMemory.reward;
 		Remember(m_CurrentMemory);
 	}
 	else
@@ -71,7 +73,7 @@ void DQNAgentComponent::Update()
 	m_CurrentMemory.reward = 1;
 	m_CurrentMemory.action = Act(currentState);
 
-	if (m_CurrentMemory.action = 0) m_PhysicsComponent->Jump();
+	if (m_CurrentMemory.action == 0) m_PhysicsComponent->Jump();
 
 	////Temp policy
 	//if (Random::Random01() > 0.95f)
@@ -98,7 +100,8 @@ void DQNAgentComponent::Done()
 	m_CurrentMemory.done = true;
 	m_CurrentMemory.reward = -10;
 
-	std::cout << "Episode: " << app.GetEpisodeCount() << ", Reward: " << m_totalReward << std::endl;
+	std::cout << "Episode: " << app.GetEpisodeCount() << ", Reward: " << m_TotalReward << std::endl 
+		<< "Epsilon: " << m_Epsilon << std::endl;
 }
 void DQNAgentComponent::Remember(const MemorySlice& memory)
 {
@@ -117,11 +120,14 @@ int DQNAgentComponent::Act(const Eigen::VectorXf state)
 {
 	if (Random::Random01() <= m_Epsilon)
 	{
+		int action = Random::Random0n(m_ActionSize - 1);
+		std::cout << "Randomly selecting: " << action << std::endl;
 		//0 to 1
-		return Random::Random0n(m_ActionSize - 1);
+		return action;
 	}
 
 	int action = m_NN.Predict(state);
+	std::cout << "Using NN to choose: " << action << std::endl;
 	return action;
 }
 
@@ -147,8 +153,16 @@ void DQNAgentComponent::Replay(int batchSize = 44)
 		//targetQs.
 		targetQs[memory.action] = target;
 
-		m_NN.Fit(memory.state, targetQs, m_Optimizer);
+		m_NN.Fit(memory.state.transpose(), targetQs.transpose(), m_Optimizer);
 	}
 
 	if (m_Epsilon > EPSILON_MIN) m_Epsilon *= EPSILON_DECAY;
+}
+
+void DQNAgentComponent::Reset()
+{
+	m_TransformComponent->SetPosition(glm::vec3(100.0f, 500.0f, 1.0f));
+	m_PhysicsComponent->Jump();
+	m_TotalReward = 0;
+	m_ResetBool = true;
 }
