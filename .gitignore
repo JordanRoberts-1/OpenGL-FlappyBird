@@ -360,3 +360,5 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+FlappyBird-OpenGL/Weights.txt
+FlappyBird-OpenGL/Weights-test.txt
