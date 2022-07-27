@@ -143,7 +143,6 @@ void Application::Train(double& prev, double& lag)
 {
 	Score::ResetScore();
 	m_ShouldReset = false;
-	m_EpisodeCount++;
 
 	//this is the loop for every frame
 	while (!m_ShouldReset)
@@ -175,9 +174,7 @@ void Application::Train(double& prev, double& lag)
 		}
 	}
 
-	//This round is over, Learn from the data and reset
-	DQNAgentComponent& agent = SceneManager::GetInstance().GetAgent();
-
+	m_EpisodeCount++;
 	SceneManager::GetInstance().ResetTrainingScene();
 }
 

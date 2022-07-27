@@ -35,13 +35,13 @@ void DQNAgentComponent::Init()
 	//Jump when created
 	m_PhysicsComponent->Jump();
 
-	m_QNetwork.AddLayer(m_StateSize, 8);
-	m_QNetwork.AddLayer(8, 4);
-	m_QNetwork.AddLayer(4, m_ActionSize);
+	m_QNetwork.AddLayer(m_StateSize, 16);
+	m_QNetwork.AddLayer(16, 8);
+	m_QNetwork.AddLayer(8, m_ActionSize);
 
-	m_TargetNetwork.AddLayer(m_StateSize, 8);
-	m_TargetNetwork.AddLayer(8, 4);
-	m_TargetNetwork.AddLayer(4, m_ActionSize);
+	m_TargetNetwork.AddLayer(m_StateSize, 16);
+	m_TargetNetwork.AddLayer(16, 8);
+	m_TargetNetwork.AddLayer(8, m_ActionSize);
 }
 
 void DQNAgentComponent::Update()
@@ -206,23 +206,24 @@ float DQNAgentComponent::Replay(int batchSize)
 		currentStates.row(i) = minibatch[i].state;
 		newCurrentStates.row(i) = minibatch[i].nextState;
 	}
+
 	Eigen::MatrixXf currentQsList = m_QNetwork.GetQs(currentStates);
-	Eigen::MatrixXf futureQsList = m_QNetwork.GetQs(newCurrentStates);
+	Eigen::MatrixXf futureQsList = m_TargetNetwork.GetQs(newCurrentStates);
 
 	Eigen::MatrixXf X(minibatch.size(), 4);
 	Eigen::MatrixXf y(minibatch.size(), 2);
 	for (int i = 0; i < minibatch.size(); i++)
 	{
 		MemorySlice memory = minibatch[i];
-		float maxFutureQ = memory.reward;
+		float newQ = memory.reward;
 
 		if (!memory.done)
 		{
-			maxFutureQ = (memory.reward + GAMMA * futureQsList.row(i).maxCoeff());
+			newQ = (memory.reward + GAMMA * futureQsList.row(i).maxCoeff());
 		}
 
 		Eigen::VectorXf currentQs = currentQsList.row(i);
-		currentQs[memory.action] = (1 - GAMMA) * currentQs[memory.action] + GAMMA * maxFutureQ;
+		currentQs[memory.action] = newQ;
 
 		X.row(i) = memory.state;
 		y.row(i) = currentQs;
@@ -293,12 +294,12 @@ void DQNAgentComponent::RenderUI()
 
 void DQNAgentComponent::SaveWeights(const std::string& fileName)
 {
-	m_QNetwork.SaveWeights(fileName);
+	m_TargetNetwork.SaveWeights(fileName);
 }
 
 void DQNAgentComponent::LoadWeights(const std::string& fileName)
 {
-	m_QNetwork.LoadWeights(fileName);
+	m_TargetNetwork.LoadWeights(fileName);
 }
 
 void DQNAgentComponent::CopyNN(NeuralNetwork& source, NeuralNetwork& dest)
