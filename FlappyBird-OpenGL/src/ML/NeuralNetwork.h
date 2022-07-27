@@ -28,6 +28,7 @@ public:
 	float CalculateAccuracy(Eigen::VectorXf yTrue);
 
 	Eigen::VectorXf GetQs(const Eigen::VectorXf& input);
+	Eigen::MatrixXf GetQs(const Eigen::MatrixXf& input);
 	int Predict(const Eigen::VectorXf& input);
 	void Print();
 	void SaveWeights(const std::string& fileName = "Weights.txt");

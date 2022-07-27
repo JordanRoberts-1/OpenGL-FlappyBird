@@ -1,5 +1,6 @@
 #include "NeuralNetwork.h"
 #include <iostream>
+#include <fstream>
 
 NeuralNetwork::NeuralNetwork()
 	: m_Layers(), m_CurrentOutput()
@@ -241,6 +242,33 @@ Eigen::VectorXf NeuralNetwork::GetQs(const Eigen::VectorXf& input)
 	}
 
 	return result.row(0);
+}
+
+Eigen::MatrixXf NeuralNetwork::GetQs(const Eigen::MatrixXf& input)
+{
+	Eigen::MatrixXf result = input;
+
+	//loop through each layer
+	for (int i = 0; i < m_Layers.size(); i++)
+	{
+		Layer& layer = m_Layers[i];
+		result = layer.Predict(result);
+
+		if (i != m_Layers.size() - 1)
+		{
+			//Handle every other layers activation
+			Activation_ReLU& activation = layer.GetReLU();
+			result = activation.Predict(result);
+		}
+		else
+		{
+			//Handle the last layer / loss/ softmax activation
+			Activation_Linear& linear = layer.GetLinear();
+			result = linear.Predict(result);
+		}
+	}
+
+	return result;
 }
 
 Optimizer_SGD::Optimizer_SGD(float learningRate)

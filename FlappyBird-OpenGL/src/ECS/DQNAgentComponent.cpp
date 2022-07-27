@@ -62,21 +62,35 @@ void DQNAgentComponent::Update()
 		m_CurrentMemory.nextState = currentState;
 		m_TotalReward += m_CurrentMemory.reward;
 		Remember(m_CurrentMemory);
+
+		//Start this frames memory
+		m_CurrentMemory = MemorySlice();
+
+		//Update the model every 8 steps
+		m_StepsToUpdateTargetModel++;
+		if (m_StepsToUpdateTargetModel % 8 == 0)
+		{
+			//m_NN.Print();
+			Replay();
+		}
 	}
 	else
 	{
+		//This is the first frame of the game so create a new memory starting now
+		m_CurrentMemory = MemorySlice();
 		m_ResetBool = false;
 	}
 
-	//reset the memory and start this current frames data
-	m_CurrentMemory = MemorySlice();
+	//start this current frames data
 	m_CurrentMemory.state = currentState;
-	m_CurrentMemory.reward = 1;
+	m_CurrentMemory.reward = .1f;
 	m_CurrentMemory.action = Act(currentState);
 
-	if (m_CurrentMemory.action == 0) m_PhysicsComponent->Jump();
-
-	////Temp policy
+	if (m_CurrentMemory.action == 0)
+	{
+		m_PhysicsComponent->Jump();
+	}
+	//Temp policy
 	//if (Random::Random01() > 0.95f)
 	//{
 	//	m_PhysicsComponent->Jump();
@@ -99,10 +113,29 @@ void DQNAgentComponent::Done()
 	Application& app = Application::GetInstance();
 	app.SetResetBool(true);
 	m_CurrentMemory.done = true;
-	m_CurrentMemory.reward = -10;
+	m_CurrentMemory.reward = -1;
+	m_LastLoss = Replay();
+	m_EpisodeNum = app.GetEpisodeCount();
+	m_LastReward = m_TotalReward;
 
-	std::cout << "Episode: " << app.GetEpisodeCount() << ", Reward: " << m_TotalReward << std::endl 
-		<< "Epsilon: " << m_Epsilon << std::endl;
+	if (m_EpisodeNum % 100 == 0)
+	{
+		std::cout << "\n\n" << "EPISODE: " << m_EpisodeNum << "\n\n";
+		m_NN.Print();
+	}
+
+	if (m_EpisodeNum % 2500 == 0)
+	{
+		std::string fileName = "Weights-Episode-" + std::to_string(app.GetEpisodeCount()) + ".txt";
+		SaveWeights(fileName);
+	}
+
+	/*std::cout << "Episode: " << app.GetEpisodeCount() << ", Reward: " << m_TotalReward << std::endl
+		<< "Epsilon: " << m_Epsilon << std::endl << "Loss: " << m_LastLoss << std::endl;*/
+
+	if (m_Epsilon > EPSILON_MIN) m_Epsilon *= EPSILON_DECAY;
+
+	Reset();
 }
 void DQNAgentComponent::Remember(const MemorySlice& memory)
 {
@@ -119,45 +152,89 @@ void DQNAgentComponent::Remember(const MemorySlice& memory)
 
 int DQNAgentComponent::Act(const Eigen::VectorXf state)
 {
+	//std::cout << "Q values for state: " << state << ": " << m_NN.GetQs(state) << std::endl;
+
 	if (Random::Random01() <= m_Epsilon)
 	{
 		int action = Random::Random0n(m_ActionSize - 1);
-		std::cout << "Randomly selecting: " << action << std::endl;
+		//std::cout << "Randomly selecting: " << action << std::endl;
 		//0 to 1
 		return action;
 	}
 
 	int action = m_NN.Predict(state);
-	std::cout << "Using NN to choose: " << action << std::endl;
+	if (action == 0)
+		m_NumJumpsFromNN++;
+	else if (action == 1)
+		m_NumNonJumpsFromNN++;
 	return action;
 }
 
-void DQNAgentComponent::Replay(int batchSize = 44)
+float DQNAgentComponent::Replay(int batchSize)
 {
-	if (m_Memory.size() <= batchSize) return;
+	if (m_Memory.size() <= batchSize) return -1;
+
+	//std::cout << "Replaying Memories" << std::endl;
 
 	std::vector<MemorySlice> minibatch;
 	std::sample(m_Memory.begin(), m_Memory.end(),
 		std::back_inserter(minibatch), batchSize,
 		std::mt19937{ std::random_device{}() });
 
-	for (auto& memory : minibatch)
+	Eigen::MatrixXf currentStates(minibatch.size(),4);
+	Eigen::MatrixXf newCurrentStates(minibatch.size(), 4);
+
+	for (int i = 0; i < minibatch.size(); i++)
 	{
-		float target = memory.reward;
+		currentStates.row(i) = minibatch[i].state;
+		newCurrentStates.row(i) = minibatch[i].nextState;
+	}
+	Eigen::MatrixXf currentQsList = m_NN.GetQs(currentStates);
+	Eigen::MatrixXf futureQsList = m_NN.GetQs(newCurrentStates);
+
+	Eigen::MatrixXf X(minibatch.size(), 4);
+	Eigen::MatrixXf y(minibatch.size(), 2);
+	for (int i = 0; i < minibatch.size(); i++)
+	{
+		MemorySlice memory = minibatch[i];
+		float maxFutureQ = memory.reward;
 
 		if (!memory.done)
 		{
-			target = (memory.reward + GAMMA * m_NN.Predict(memory.nextState));
+			maxFutureQ = (memory.reward + GAMMA * futureQsList.row(i).maxCoeff());
 		}
 
-		Eigen::VectorXf targetQs = m_NN.GetQs(memory.state);
-		//targetQs.
-		targetQs[memory.action] = target;
+		Eigen::VectorXf currentQs = currentQsList.row(i);
+		currentQs[memory.action] = (1 - GAMMA) * currentQs[memory.action] + GAMMA * maxFutureQ;
 
-		m_NN.Fit(memory.state.transpose(), targetQs.transpose(), m_Optimizer);
+		X.row(i) = memory.state;
+		y.row(i) = currentQs;
 	}
 
-	if (m_Epsilon > EPSILON_MIN) m_Epsilon *= EPSILON_DECAY;
+	//std::cout << "X: " << X << std::endl << "y: " << y << std::endl;
+
+	m_NN.Fit(X, y, m_Optimizer);
+	float loss = m_NN.CalculateLoss(y);
+
+	//for (auto& memory : minibatch)
+	//{
+	//	/*std::cout << "state: " << memory.state << ", action: " << memory.action << ", reward: " << memory.reward
+	//		<< "next State: " << memory.nextState << ", done: " << memory.done << std::endl;*/
+	//	float target = memory.reward;
+
+	//	if (!memory.done)
+	//	{
+	//		target = (memory.reward + GAMMA * m_NN.Predict(memory.nextState));
+	//	}
+
+	//	Eigen::VectorXf targetQs = m_NN.GetQs(memory.state);
+	//	//targetQs.
+	//	targetQs[memory.action] = target;
+
+	//	m_NN.Fit(memory.state.transpose(), targetQs.transpose(), m_Optimizer);
+	//}
+
+	return loss;
 }
 
 void DQNAgentComponent::Reset()
