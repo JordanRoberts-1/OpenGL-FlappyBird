@@ -15,7 +15,7 @@ DQNAgentComponent::DQNAgentComponent(Entity* parent)
 	: Component(parent), m_TransformComponent(nullptr),
 	m_PhysicsComponent(nullptr), 
 	m_BoxColliderComponent(nullptr),
-	m_StateSize(1), m_ActionSize(1), m_NN(),
+	m_StateSize(1), m_ActionSize(1), m_QNetwork(),
 	m_Memory(), m_Optimizer(STARTING_LEARNING_RATE,LEARNING_RATE_DECAY)
 {
 }
@@ -35,9 +35,13 @@ void DQNAgentComponent::Init()
 	//Jump when created
 	m_PhysicsComponent->Jump();
 
-	m_NN.AddLayer(m_StateSize, 8);
-	m_NN.AddLayer(8, 4);
-	m_NN.AddLayer(4, m_ActionSize);
+	m_QNetwork.AddLayer(m_StateSize, 8);
+	m_QNetwork.AddLayer(8, 4);
+	m_QNetwork.AddLayer(4, m_ActionSize);
+
+	m_TargetNetwork.AddLayer(m_StateSize, 8);
+	m_TargetNetwork.AddLayer(8, 4);
+	m_TargetNetwork.AddLayer(4, m_ActionSize);
 }
 
 void DQNAgentComponent::Update()
@@ -71,11 +75,17 @@ void DQNAgentComponent::Update()
 		m_CurrentMemory = MemorySlice();
 
 		//Update the model every 8 steps
-		m_StepsToUpdateTargetModel++;
-		if (m_StepsToUpdateTargetModel % 8 == 0)
+		m_Steps++;
+		if (m_Steps % 8 == 0)
 		{
-			//m_NN.Print();
+			//m_QNetwork.Print();
 			Replay();
+		}
+
+		if (m_Steps % 100 == 0)
+		{
+			//copy the values to the target network
+			CopyNN(m_QNetwork, m_TargetNetwork);
 		}
 	}
 	else
@@ -122,13 +132,13 @@ void DQNAgentComponent::Done()
 	m_EpisodeNum = app.GetEpisodeCount();
 	m_LastReward = m_TotalReward;
 
-	std::cout << "Q values for state: " << m_CurrentMemory.state << ": " << m_NN.GetQs(m_CurrentMemory.state) << std::endl;
+	std::cout << "Q values for state: " << m_CurrentMemory.state << ": " << m_QNetwork.GetQs(m_CurrentMemory.state) << std::endl;
 
-	if (m_EpisodeNum % 100 == 0)
-	{
-		std::cout << "\n\n" << "EPISODE: " << m_EpisodeNum << "\n\n";
-		m_NN.Print();
-	}
+	//if (m_EpisodeNum % 100 == 0)
+	//{
+	//	std::cout << "\n\n" << "EPISODE: " << m_EpisodeNum << "\n\n";
+	//	m_QNetwork.Print();
+	//}
 
 	if (m_EpisodeNum % 2500 == 0)
 	{
@@ -156,7 +166,7 @@ void DQNAgentComponent::Remember(const MemorySlice& memory)
 
 int DQNAgentComponent::Act(const Eigen::VectorXf state)
 {
-	//std::cout << "Q values for state: " << state << ": " << m_NN.GetQs(state) << std::endl;
+	//std::cout << "Q values for state: " << state << ": " << m_QNetwork.GetQs(state) << std::endl;
 
 	if (Random::Random01() <= m_Epsilon)
 	{
@@ -166,7 +176,7 @@ int DQNAgentComponent::Act(const Eigen::VectorXf state)
 		return action;
 	}
 
-	int action = m_NN.Predict(state);
+	int action = m_QNetwork.Predict(state);
 	if (action == 0)
 		m_NumJumpsFromNN++;
 	else if (action == 1)
@@ -196,8 +206,8 @@ float DQNAgentComponent::Replay(int batchSize)
 		currentStates.row(i) = minibatch[i].state;
 		newCurrentStates.row(i) = minibatch[i].nextState;
 	}
-	Eigen::MatrixXf currentQsList = m_NN.GetQs(currentStates);
-	Eigen::MatrixXf futureQsList = m_NN.GetQs(newCurrentStates);
+	Eigen::MatrixXf currentQsList = m_QNetwork.GetQs(currentStates);
+	Eigen::MatrixXf futureQsList = m_QNetwork.GetQs(newCurrentStates);
 
 	Eigen::MatrixXf X(minibatch.size(), 4);
 	Eigen::MatrixXf y(minibatch.size(), 2);
@@ -220,8 +230,8 @@ float DQNAgentComponent::Replay(int batchSize)
 
 	//std::cout << "X: " << X << std::endl << "y: " << y << std::endl;
 
-	m_NN.Fit(X, y, m_Optimizer);
-	float loss = m_NN.CalculateLoss(y);
+	m_QNetwork.Fit(X, y, m_Optimizer);
+	float loss = m_QNetwork.CalculateLoss(y);
 
 	if (m_Epsilon > EPSILON_MIN) m_Epsilon *= EPSILON_DECAY;
 	
@@ -234,14 +244,14 @@ float DQNAgentComponent::Replay(int batchSize)
 
 	//	if (!memory.done)
 	//	{
-	//		target = (memory.reward + GAMMA * m_NN.Predict(memory.nextState));
+	//		target = (memory.reward + GAMMA * m_QNetwork.Predict(memory.nextState));
 	//	}
 
-	//	Eigen::VectorXf targetQs = m_NN.GetQs(memory.state);
+	//	Eigen::VectorXf targetQs = m_QNetwork.GetQs(memory.state);
 	//	//targetQs.
 	//	targetQs[memory.action] = target;
 
-	//	m_NN.Fit(memory.state.transpose(), targetQs.transpose(), m_Optimizer);
+	//	m_QNetwork.Fit(memory.state.transpose(), targetQs.transpose(), m_Optimizer);
 	//}
 
 	return loss;
@@ -283,10 +293,23 @@ void DQNAgentComponent::RenderUI()
 
 void DQNAgentComponent::SaveWeights(const std::string& fileName)
 {
-	m_NN.SaveWeights(fileName);
+	m_QNetwork.SaveWeights(fileName);
 }
 
 void DQNAgentComponent::LoadWeights(const std::string& fileName)
 {
-	m_NN.LoadWeights(fileName);
+	m_QNetwork.LoadWeights(fileName);
+}
+
+void DQNAgentComponent::CopyNN(NeuralNetwork& source, NeuralNetwork& dest)
+{
+	std::cout << "Copying weights to Target Network" << std::endl;
+
+	for (int i = 0; i < source.GetNumLayers(); i++)
+	{
+		const Layer& sourceLayer = source.GetLayer(i);
+		Layer& destLayer = dest.GetLayer(i);
+		Eigen::MatrixXf weights = sourceLayer.GetWeights();
+		destLayer.SetWeightMatrix(weights);
+	}
 }

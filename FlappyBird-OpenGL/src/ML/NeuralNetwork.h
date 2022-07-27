@@ -21,6 +21,7 @@ public:
 	void AddLayer(unsigned int numInputs, unsigned int size);
 	inline Layer& GetLayer(unsigned int index) { return m_Layers[index]; }
 	inline Eigen::MatrixXf GetOutput() const { return m_CurrentOutput; }
+	inline int GetNumLayers() const { return m_Layers.size(); }
 
 	void ForwardProp(Eigen::MatrixXf* input);
 	void BackwardProp(const Eigen::MatrixXf& yTrue);

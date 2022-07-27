@@ -61,7 +61,7 @@ private:
 	BoxColliderComponent* m_BoxColliderComponent;
 
 	bool m_ResetBool = true;
-	int m_StepsToUpdateTargetModel = 0;
+	int m_Steps = 0;
 
 	int m_StateSize, m_ActionSize;
 	const float GAMMA = 0.99f;
@@ -74,7 +74,8 @@ private:
 	const float STARTING_LEARNING_RATE = 0.1f;
 	const float LEARNING_RATE_DECAY = 0.001f;
 
-	NeuralNetwork m_NN;
+	NeuralNetwork m_QNetwork;
+	NeuralNetwork m_TargetNetwork;
 	std::deque<MemorySlice> m_Memory;
 	const int MEMORY_MAX = 50000;
 	Optimizer_SGD m_Optimizer;
@@ -88,5 +89,8 @@ private:
 	int m_WeightFileNumber = 0;
 	std::string m_SaveString { "Weights.txt" };
 	std::string m_LoadString { "Weights.txt" };
+
+private:
+	void CopyNN(NeuralNetwork& source, NeuralNetwork& dest);
 };
 
