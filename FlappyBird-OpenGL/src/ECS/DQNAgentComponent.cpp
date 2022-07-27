@@ -33,9 +33,9 @@ void DQNAgentComponent::Init()
 	//Jump when created
 	m_PhysicsComponent->Jump();
 
-	m_NN.AddLayer(m_StateSize, 16);
-	m_NN.AddLayer(16, 16);
-	m_NN.AddLayer(16, m_ActionSize);
+	m_NN.AddLayer(m_StateSize, 8);
+	m_NN.AddLayer(8, 4);
+	m_NN.AddLayer(4, m_ActionSize);
 }
 
 void DQNAgentComponent::Update()
@@ -46,13 +46,15 @@ void DQNAgentComponent::Update()
 		Done();
 	}
 
+
 	Eigen::VectorXf currentState(m_StateSize);
-	currentState[0] = m_TransformComponent->GetPosition().y;
+	currentState[0] = m_TransformComponent->GetPosition().y / 960.0f;
 
 	SceneManager& sc = SceneManager::GetInstance();
 	glm::vec2 nearestPipe = sc.GetNearestPipeGap();
-	currentState[1] = nearestPipe.x;
-	currentState[2] = nearestPipe.y;
+	currentState[1] = nearestPipe.x / 975.0f;
+	currentState[2] = nearestPipe.y / 960.0f;
+	currentState[3] = m_PhysicsComponent->GetVelocity().y / 10.0f;
 
 	//If we haven't just reset then continue as normal, otherwise skip updating the
 	//previous frames data because there was no previous frame

@@ -74,7 +74,7 @@ void SceneManager::BuildTrainingScene()
 
 		//States: Height off ground, position of center of pipe gap
 		//Actions: Jump or don't jump
-		aiComponent->SetStateSize(3);
+		aiComponent->SetStateSize(4);
 		aiComponent->SetActionSize(2);
 
 		PipeGenerator::SpawnPipes();

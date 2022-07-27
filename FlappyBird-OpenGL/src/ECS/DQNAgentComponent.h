@@ -61,20 +61,21 @@ private:
 	BoxColliderComponent* m_BoxColliderComponent;
 
 	bool m_ResetBool = true;
+	int m_StepsToUpdateTargetModel = 0;
 
 	int m_StateSize, m_ActionSize;
-	const float GAMMA = 0.95;
+	const float GAMMA = 0.99f;
 	float m_Epsilon = 1.0f;
-	int m_TotalReward = 0;
+	float m_TotalReward = 0;
 	MemorySlice m_CurrentMemory;
-	const float EPSILON_DECAY = 0.995f;
-	const float EPSILON_MIN = 0.01f;
+	const float EPSILON_DECAY = 0.99995f;
+	const float EPSILON_MIN = 0.1f;
 
 	const float LEARNING_RATE = 0.01f;
 
 	NeuralNetwork m_NN;
 	std::deque<MemorySlice> m_Memory;
-	const int MEMORY_MAX = 2000;
+	const int MEMORY_MAX = 50000;
 	Optimizer_SGD m_Optimizer;
 
 	//DEBUG
