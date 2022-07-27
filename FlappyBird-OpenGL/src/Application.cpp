@@ -41,6 +41,7 @@ void Application::ShowMenu()
 	if (ImGui::Button("Play"))
 	{
 		m_Choice = PLAY;
+		SceneManager::GetInstance().BuildPlayScene();
 		ImGui::End();
 		return;
 	}
@@ -101,7 +102,6 @@ void Application::Run()
 
 void Application::UserPlayLoop(double& prev, double& lag)
 {
-	SceneManager::GetInstance().BuildPlayScene();
 	Score::ResetScore();
 	m_ShouldReset = false;
 
@@ -119,7 +119,7 @@ void Application::UserPlayLoop(double& prev, double& lag)
 		//std::cout << "Frametime: " << elapsed << "ms" << std::endl;
 
 		//Keep constant update time regardless of rendering speed
-		while (lag >= MS_PER_UPDATE)
+		while (!m_ShouldReset && lag >= MS_PER_UPDATE)
 		{
 			Update();
 			lag -= MS_PER_UPDATE;
@@ -252,12 +252,15 @@ void Application::Update()
 	sc.ResetCleanupVector();
 
 	const std::vector<std::unique_ptr<Entity>>& objects = sc.GetObjects();
+	std::cout << "There are " << objects.size() << " Objects";
 
 	//Update all the objects
 	for (const std::unique_ptr<Entity>& entity : objects)
 	{
 		entity->Update();
 	}
+
+	PipeGenerator::Update();
 
 	//Check for collisions
 	const std::vector<BoxColliderComponent*> colliders = sc.GetColliders();

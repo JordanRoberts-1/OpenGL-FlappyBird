@@ -3,12 +3,12 @@
 #include "../ECS/Entity.h"
 #include "SceneManager.h"
 #include "../ECS/PhysicsComponent.h"
-#include "../ECS/PipeComponent.h"
+#include "../ECS/Pipes.h"
 #include "../ECS/TransformComponent.h"
 #include "../ECS/BoxColliderComponent.h"
-#include "../ECS/ScoreTrackingComponent.h"
 #include <iostream>
 
+int PipeGenerator::s_UpdateCounter = 0;
 const float PipeGenerator::PIPE_SPAWN_X = 600.0f;
 const float PipeGenerator::PIPE_SPACING_X = 375.0f;
 const float PipeGenerator::PIPE_OFFSET_Y = 300.0f;
@@ -19,52 +19,72 @@ void PipeGenerator::SpawnPipes()
 {
 	std::cout << "Spawning Pipes" << std::endl;
 
-	SpawnPipeSet(PIPE_SPAWN_X);
-	SpawnPipeSet(PIPE_SPAWN_X + PIPE_SPACING_X);
+	SpawnPipeSet();
+	SpawnPipeSet();
+	SpawnPipeSet();
 }
 
-void PipeGenerator::SpawnPipeSet(float pipeSpawnX)
+void PipeGenerator::SpawnPipeSet()
 {
-	glm::vec2 gapPosition = glm::vec2(pipeSpawnX, std::rand() % PIPE_RANDOM_SPAWN_Y + PIPE_OFFSET_Y);
-
+	//Setup Top pipe
 	std::unique_ptr<Entity> topPipe = std::make_unique<Entity>(
 		std::string("top_pipe.png"), std::string("Basic.glsl"), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(PIPE_SCALE)
 		);
 
-	glm::vec3 topPosition = glm::vec3(gapPosition.x, gapPosition.y + GAP_RADIUS, 1);
-	topPipe->GetTransform()->SetPosition(topPosition);
-
-	//Setup components for the top pipes
+	//Setup the components for the Top Pipe
 	PhysicsComponent* topPipePhysics = topPipe->AddComponent<PhysicsComponent>(topPipe.get());
-	topPipePhysics->SetBoolGravity(false);
 	topPipe->AddComponent<BoxColliderComponent>(topPipe.get());
-	topPipe->AddComponent<ScoreTrackingComponent>(topPipe.get());
+	TopPipeComponent* topPipeComponent = topPipe->AddComponent<TopPipeComponent>(topPipe.get());
+	topPipePhysics->SetBoolGravity(false);
 
-	PipeComponent* topPipeComponent = topPipe->AddComponent<PipeComponent>(topPipe.get());
-	topPipeComponent->SetGapPosition(gapPosition);
-
+	//Setup Bottom Pipe
 	std::unique_ptr<Entity> bottomPipe = std::make_unique<Entity>(
 		std::string("bottom_pipe.png"), std::string("Basic.glsl"), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(PIPE_SCALE)
 		);
 
-	glm::vec3 bottomPosition = glm::vec3(gapPosition.x, gapPosition.y - GAP_RADIUS - bottomPipe->GetTransform()->GetScaledSize().y, 1);
-	bottomPipe->GetTransform()->SetPosition(bottomPosition);
-
-	//Set up the components for the bottom pipes
+	//Set up the components for the Bottom Pipes
 	PhysicsComponent* bottomPipePhysics = bottomPipe->AddComponent<PhysicsComponent>(bottomPipe.get());
-	bottomPipePhysics->SetBoolGravity(false);
 	bottomPipe->AddComponent<BoxColliderComponent>(bottomPipe.get());
+	BottomPipeComponent* bottomPipeComponent = bottomPipe->AddComponent<BottomPipeComponent>(bottomPipe.get());
+	bottomPipePhysics->SetBoolGravity(false);
 
-	PipeComponent* bottomPipeComponent = bottomPipe->AddComponent<PipeComponent>(bottomPipe.get());
-	bottomPipeComponent->SetGapPosition(gapPosition);
-
-	//Add the new objects to the scene
-	SceneManager& instance = SceneManager::GetInstance();
-	topPipeComponent->SetChildPipe(bottomPipeComponent);
+	//Initialize the components
 	bottomPipeComponent->Init();
 	topPipeComponent->Init();
+	topPipeComponent->SetBottomPipe(bottomPipeComponent);
+	
+	//Add the new objects to the scene
+	SceneManager& instance = SceneManager::GetInstance();
 	instance.AddObject(std::move(topPipe));
 	instance.AddObject(std::move(bottomPipe));
+}
+
+void PipeGenerator::Update()
+{
+	if (s_UpdateCounter % UPDATES_PER_GENERATION == 0)
+	{
+		MovePipeSet();
+	}
+	s_UpdateCounter++;
+}
+
+void PipeGenerator::MovePipeSet()
+{
+	SceneManager& scene = SceneManager::GetInstance();
+
+	std::cout << "Moving pipe set" << std::endl;
+	
+	//Find the furthest left pipe that can be reset and reset it
+	for (const auto& object : scene.GetObjects())
+	{
+		TopPipeComponent* topPipe = object->GetComponent<TopPipeComponent>(TOPPIPECOMPONENT);
+
+		if (topPipe && topPipe->CheckReset())
+		{
+			topPipe->ResetLocation();
+			return;
+		}
+	}
 }
 
 

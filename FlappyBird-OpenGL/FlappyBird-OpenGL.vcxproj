@@ -161,8 +161,7 @@
   <ItemGroup>
     <ClCompile Include="src\Util\Random.cpp" />
     <ClCompile Include="src\ECS\DQNAgentComponent.cpp" />
-    <ClCompile Include="src\ECS\PipeComponent.cpp" />
-    <ClCompile Include="src\ECS\ScoreTrackingComponent.cpp" />
+    <ClCompile Include="src\ECS\Pipes.cpp" />
     <ClCompile Include="src\Game\PipeGenerator.cpp" />
     <ClCompile Include="src\ECS\BoxColliderComponent.cpp" />
     <ClCompile Include="src\ECS\PlayerComponent.cpp" />
@@ -197,8 +196,7 @@
   <ItemGroup>
     <ClInclude Include="src\Util\Random.h" />
     <ClInclude Include="src\ECS\DQNAgentComponent.h" />
-    <ClInclude Include="src\ECS\PipeComponent.h" />
-    <ClInclude Include="src\ECS\ScoreTrackingComponent.h" />
+    <ClInclude Include="src\ECS\Pipes.h" />
     <ClInclude Include="src\Game\PipeGenerator.h" />
     <ClInclude Include="src\ECS\BoxColliderComponent.h" />
     <ClInclude Include="src\ECS\PlayerComponent.h" />

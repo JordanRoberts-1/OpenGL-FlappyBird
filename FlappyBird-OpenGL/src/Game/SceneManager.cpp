@@ -11,10 +11,10 @@
 #include "../ECS/PlayerComponent.h"
 #include "../ECS/BoxColliderComponent.h"
 #include "../ECS/DQNAgentComponent.h"
-#include "../ECS/PipeComponent.h"
 
 #include <algorithm>
 #include "PipeGenerator.h"
+#include "../ECS/Pipes.h"
 
 void SceneManager::BuildPlayScene()
 {
@@ -39,6 +39,8 @@ void SceneManager::BuildPlayScene()
 		PlayerComponent* playerComponent = player->AddComponent<PlayerComponent>(player);
 		PhysicsComponent* playerPhysics = player->AddComponent<PhysicsComponent>(player);
 		BoxColliderComponent* playerCollider = player->AddComponent<BoxColliderComponent>(player);
+
+		PipeGenerator::SpawnPipes();
 	}
 	catch (...) { std::cerr << "Failed to make objects"; }
 
@@ -117,7 +119,7 @@ glm::vec2 SceneManager::GetNearestPipeGap() const
 	glm::vec2 closest = glm::vec2(std::numeric_limits<float>::max());
 	for (const auto& object : m_Objects)
 	{
-		PipeComponent* pipe = object->GetComponent<PipeComponent>(PIPECOMPONENT);
+		TopPipeComponent* pipe = object->GetComponent<TopPipeComponent>(TOPPIPECOMPONENT);
 
 		if (!pipe)
 			continue;
@@ -174,9 +176,14 @@ void SceneManager::ResetCleanupVector()
 
 void SceneManager::ResetScene()
 {
-	m_Objects.clear();
-	m_IDsToRemove.clear();
-	m_CurrentSceneID = 0;
+	for (const auto& object : m_Objects)
+	{
+		TopPipeComponent* pipe = object->GetComponent<TopPipeComponent>(TOPPIPECOMPONENT);
+		if (pipe)
+		{
+			pipe->Reset();
+		}
+	}
 }
 
 void SceneManager::ResetTrainingScene()
@@ -186,7 +193,8 @@ void SceneManager::ResetTrainingScene()
 
 	for (const auto& object : m_Objects)
 	{
-		PipeComponent* pipe = object->GetComponent<PipeComponent>(PIPECOMPONENT);
+		TopPipeComponent* pipe = object->GetComponent<TopPipeComponent>(TOPPIPECOMPONENT);
+
 		if (pipe)
 		{
 			pipe->Reset();

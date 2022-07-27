@@ -219,7 +219,7 @@ float DQNAgentComponent::Replay(int batchSize)
 
 		if (!memory.done)
 		{
-			newQ = (memory.reward + GAMMA * futureQsList.row(i).maxCoeff());
+			newQ = (memory.reward - GAMMA * futureQsList.row(i).maxCoeff());
 		}
 
 		Eigen::VectorXf currentQs = currentQsList.row(i);

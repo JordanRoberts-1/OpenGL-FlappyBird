@@ -93,10 +93,7 @@
     <ClCompile Include="src\Game\PipeGenerator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ECS\PipeComponent.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ECS\ScoreTrackingComponent.cpp">
+    <ClCompile Include="src\ECS\Pipes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Game\Score.cpp">
@@ -1058,13 +1055,10 @@
     <ClInclude Include="src\Game\PipeGenerator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\ECS\PipeComponent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\Game\Score.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\ECS\ScoreTrackingComponent.h">
+    <ClInclude Include="src\ECS\Pipes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Game\UI.h">
