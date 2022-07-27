@@ -9,6 +9,8 @@
 #include "../Game/SceneManager.h"
 #include "ImGUI/imgui_stdlib.h"
 
+#include <algorithm>
+
 DQNAgentComponent::DQNAgentComponent(Entity* parent)
 	: Component(parent), m_TransformComponent(nullptr),
 	m_PhysicsComponent(nullptr), 
@@ -178,10 +180,13 @@ float DQNAgentComponent::Replay(int batchSize)
 
 	//std::cout << "Replaying Memories" << std::endl;
 
+	auto& rng = Random::RandomDevice();
 	std::vector<MemorySlice> minibatch;
 	std::sample(m_Memory.begin(), m_Memory.end(),
 		std::back_inserter(minibatch), batchSize,
-		std::mt19937{ std::random_device{}() });
+		std::mt19937{ rng()});
+
+	std::shuffle(std::begin(minibatch), std::end(minibatch), rng);
 
 	Eigen::MatrixXf currentStates(minibatch.size(),4);
 	Eigen::MatrixXf newCurrentStates(minibatch.size(), 4);

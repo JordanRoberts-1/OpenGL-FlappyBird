@@ -15,6 +15,7 @@ public:
 		return distribution(e2);
 	}
 
+	static std::random_device& RandomDevice() { return rd; }
 private:
 	static std::random_device rd;
 	static std::mt19937 e2;

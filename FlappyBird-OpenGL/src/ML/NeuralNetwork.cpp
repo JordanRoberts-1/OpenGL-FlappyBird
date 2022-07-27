@@ -281,5 +281,6 @@ void Optimizer_SGD::UpdateParams(Layer& layer)
 {
 	layer.UpdateParams(m_LearningRate);
 	m_LearningRate = 1.0f / (1.0f + m_LearningRateDecay * m_IterationCount);
+	m_LearningRate = std::min(0.01f, m_LearningRate);
 	m_IterationCount++;
 }
