@@ -54,7 +54,7 @@ void DQNAgentComponent::Update()
 	glm::vec2 nearestPipe = sc.GetNearestPipeGap();
 	currentState[1] = nearestPipe.x / 975.0f;
 	currentState[2] = nearestPipe.y / 960.0f;
-	currentState[3] = m_PhysicsComponent->GetVelocity().y / 10.0f;
+	currentState[3] = m_PhysicsComponent->GetVelocity().y / 15.0f;
 
 	//If we haven't just reset then continue as normal, otherwise skip updating the
 	//previous frames data because there was no previous frame
@@ -115,10 +115,12 @@ void DQNAgentComponent::Done()
 	Application& app = Application::GetInstance();
 	app.SetResetBool(true);
 	m_CurrentMemory.done = true;
-	m_CurrentMemory.reward = -1;
+	m_CurrentMemory.reward = -5.0f;
 	m_LastLoss = Replay();
 	m_EpisodeNum = app.GetEpisodeCount();
 	m_LastReward = m_TotalReward;
+
+	std::cout << "Q values for state: " << m_CurrentMemory.state << ": " << m_NN.GetQs(m_CurrentMemory.state) << std::endl;
 
 	if (m_EpisodeNum % 100 == 0)
 	{

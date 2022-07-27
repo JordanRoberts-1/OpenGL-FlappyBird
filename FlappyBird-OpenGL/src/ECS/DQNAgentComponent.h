@@ -45,7 +45,7 @@ public:
 	void Remember(const MemorySlice& memory);
 
 	int Act(const Eigen::VectorXf state);
-	float Replay(int batchSize = 32);
+	float Replay(int batchSize = 64);
 
 	void Reset();
 
