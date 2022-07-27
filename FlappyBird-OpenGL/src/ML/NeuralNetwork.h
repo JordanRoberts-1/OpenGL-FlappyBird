@@ -29,6 +29,9 @@ public:
 
 	Eigen::VectorXf GetQs(const Eigen::VectorXf& input);
 	int Predict(const Eigen::VectorXf& input);
+	void Print();
+	void SaveWeights(const std::string& fileName = "Weights.txt");
+	void LoadWeights(const std::string& fileName = "Weights.txt");
 
 private:
 	std::vector<Layer> m_Layers;

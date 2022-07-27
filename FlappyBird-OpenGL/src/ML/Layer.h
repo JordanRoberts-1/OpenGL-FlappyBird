@@ -97,18 +97,20 @@ public:
 
 	void UpdateParams(float learningRate);
 
-	Eigen::MatrixXf GetdInputs() { return m_dInputs; }
-	Eigen::MatrixXf GetdBiases() { return m_dBiases; }
-	Eigen::MatrixXf GetdWeights() { return m_dWeights; }
-	Eigen::MatrixXf GetOutput() { return m_Output; }
+	Eigen::MatrixXf GetdInputs() const { return m_dInputs; }
+	Eigen::MatrixXf GetdBiases() const { return m_dBiases; }
+	Eigen::MatrixXf GetdWeights() const { return m_dWeights; }
+	Eigen::MatrixXf GetOutput() const { return m_Output; }
+	Eigen::MatrixXf GetWeights() const { return m_WeightMatrix; }
+	void Print() const;
 
 	//Used for debugging
-	void SetWeightMatrix(Eigen::MatrixXf input)
+	void SetWeightMatrix(const Eigen::MatrixXf& input)
 	{
 		m_WeightMatrix = input;
 	}
 
-	void SetBiasVector(Eigen::VectorXf input)
+	void SetBiasVector(const Eigen::VectorXf& input)
 	{
 		m_BiasVector = input;
 	}

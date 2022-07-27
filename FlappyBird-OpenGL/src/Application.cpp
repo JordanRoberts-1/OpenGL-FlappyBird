@@ -166,6 +166,7 @@ void Application::Train(double& prev, double& lag)
 		}
 
 		UI::RenderScore();
+		SceneManager::GetInstance().GetAgent().RenderUI();
 		Renderer::Render();
 
 		if (glfwWindowShouldClose(m_Window.get()))

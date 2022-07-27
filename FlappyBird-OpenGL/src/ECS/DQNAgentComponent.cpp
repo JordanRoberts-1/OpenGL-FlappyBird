@@ -7,6 +7,7 @@
 #include "../Application.h"
 #include "../Util/Random.h"
 #include "../Game/SceneManager.h"
+#include "ImGUI/imgui_stdlib.h"
 
 DQNAgentComponent::DQNAgentComponent(Entity* parent)
 	: Component(parent), m_TransformComponent(nullptr),
@@ -165,4 +166,40 @@ void DQNAgentComponent::Reset()
 	m_PhysicsComponent->Jump();
 	m_TotalReward = 0;
 	m_ResetBool = true;
+}
+
+void DQNAgentComponent::RenderUI()
+{
+	ImGui::Begin("Training Info");
+	ImGui::Text("Episode: %d", m_EpisodeNum);
+	ImGui::Text("Epsilon: %f, Decay: %f, Min: %f", m_Epsilon, EPSILON_DECAY, EPSILON_MIN);
+	ImGui::Text("Learning Rate: %f", LEARNING_RATE);
+	ImGui::Text("Memory Size: %d/%d", m_Memory.size(), MEMORY_MAX);
+	ImGui::Text("Num Jumps: %d, Num NON Jumps: %d", m_NumJumpsFromNN, m_NumNonJumpsFromNN);
+	ImGui::Text("Last Reward: %f, Last Loss: %f", m_LastReward, m_LastLoss);
+
+	if (ImGui::Button("Save Weights"))
+	{
+		SaveWeights(m_SaveString);
+	}
+	ImGui::SameLine();
+	ImGui::InputText("Save Weights Input", &m_SaveString);
+
+	if (ImGui::Button("Load Weights")) 
+	{
+		LoadWeights(m_LoadString);
+	}
+	ImGui::SameLine();
+	ImGui::InputText("Load Weights Input", &m_LoadString);
+	ImGui::End();
+}
+
+void DQNAgentComponent::SaveWeights(const std::string& fileName)
+{
+	m_NN.SaveWeights(fileName);
+}
+
+void DQNAgentComponent::LoadWeights(const std::string& fileName)
+{
+	m_NN.LoadWeights(fileName);
 }

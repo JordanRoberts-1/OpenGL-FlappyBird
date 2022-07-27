@@ -45,9 +45,14 @@ public:
 	void Remember(const MemorySlice& memory);
 
 	int Act(const Eigen::VectorXf state);
-	void Replay(int batchSize);
+	float Replay(int batchSize = 32);
 
 	void Reset();
+
+	void RenderUI();
+	
+	void SaveWeights(const std::string& fileName);
+	void LoadWeights(const std::string& fileName);
 
 
 private:
@@ -71,5 +76,15 @@ private:
 	std::deque<MemorySlice> m_Memory;
 	const int MEMORY_MAX = 2000;
 	Optimizer_SGD m_Optimizer;
+
+	//DEBUG
+	int m_NumJumpsFromNN = 0;
+	int m_NumNonJumpsFromNN = 0;
+	float m_LastLoss = 0.0f;
+	int m_EpisodeNum = 0;
+	float m_LastReward = 0.0f;
+	int m_WeightFileNumber = 0;
+	std::string m_SaveString { "Weights.txt" };
+	std::string m_LoadString { "Weights.txt" };
 };
 

@@ -120,6 +120,67 @@ int NeuralNetwork::Predict(const Eigen::VectorXf& input)
 	return maxIndex;
 }
 
+void NeuralNetwork::Print()
+{
+	for (const auto& layer : m_Layers)
+	{
+		layer.Print();
+	}
+}
+
+void NeuralNetwork::SaveWeights(const std::string& fileName)
+{
+	std::ofstream outputFile(fileName);
+
+	if (!outputFile.is_open()) return;
+
+	for (const auto& layer : m_Layers)
+	{
+		outputFile << layer.GetWeights() << std::endl;
+	}
+
+	outputFile.close();
+}
+
+void NeuralNetwork::LoadWeights(const std::string& fileName)
+{
+	std::ifstream inputFile(fileName);
+	if (!inputFile.is_open()) return;
+
+	for (auto& layer : m_Layers)
+	{
+		int rows = layer.GetWeights().rows();
+		int cols = layer.GetWeights().cols();
+
+		Eigen::MatrixXf weights(rows, cols);
+		std::string temp;
+		//Read in each row
+		for (int i = 0; i < rows; i++)
+		{
+			if (std::getline(inputFile, temp))
+			{
+				float val;
+				std::stringstream s(temp);
+				
+				int j = 0;
+				while ((s >> val))
+				{
+					if (j > cols)
+					{
+						std::cout << "MISMATCHED FILE SIZE WHILE LOADING WEIGHTS" << std::endl;
+						return;
+					}
+
+					weights(i, j) = val;
+					j++;
+				}
+			}
+		}
+		layer.SetWeightMatrix(weights);
+	}
+	inputFile.close();
+}
+
 float NeuralNetwork::CalculateLoss(const Eigen::MatrixXf& yTrue)
 {
 	return m_Layers[m_Layers.size() - 1].GetMSE().CalculateLoss(m_CurrentOutput, yTrue);

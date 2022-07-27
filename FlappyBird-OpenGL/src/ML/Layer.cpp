@@ -46,6 +46,12 @@ void Layer::UpdateParams(float learningRate)
 	m_BiasVector += -learningRate * m_dBiases.row(0);
 }
 
+void Layer::Print() const
+{
+	std::cout << "Weights for layer of " << m_WeightMatrix.rows() << "x" << m_WeightMatrix.cols()
+		<< " is: " << m_WeightMatrix << std::endl;
+}
+
 Eigen::MatrixXf* Activation_ReLU::Forward(const Eigen::MatrixXf& input)
 {
 	//Apply F(x) = max(0, x) to every element in the input
