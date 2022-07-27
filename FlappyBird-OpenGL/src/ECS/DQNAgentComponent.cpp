@@ -14,7 +14,7 @@ DQNAgentComponent::DQNAgentComponent(Entity* parent)
 	m_PhysicsComponent(nullptr), 
 	m_BoxColliderComponent(nullptr),
 	m_StateSize(1), m_ActionSize(1), m_NN(),
-	m_Memory(), m_Optimizer(LEARNING_RATE)
+	m_Memory(), m_Optimizer(STARTING_LEARNING_RATE,LEARNING_RATE_DECAY)
 {
 }
 
@@ -135,8 +135,6 @@ void DQNAgentComponent::Done()
 	/*std::cout << "Episode: " << app.GetEpisodeCount() << ", Reward: " << m_TotalReward << std::endl
 		<< "Epsilon: " << m_Epsilon << std::endl << "Loss: " << m_LastLoss << std::endl;*/
 
-	if (m_Epsilon > EPSILON_MIN) m_Epsilon *= EPSILON_DECAY;
-
 	Reset();
 }
 void DQNAgentComponent::Remember(const MemorySlice& memory)
@@ -218,6 +216,9 @@ float DQNAgentComponent::Replay(int batchSize)
 	m_NN.Fit(X, y, m_Optimizer);
 	float loss = m_NN.CalculateLoss(y);
 
+	if (m_Epsilon > EPSILON_MIN) m_Epsilon *= EPSILON_DECAY;
+	
+
 	//for (auto& memory : minibatch)
 	//{
 	//	/*std::cout << "state: " << memory.state << ", action: " << memory.action << ", reward: " << memory.reward
@@ -252,7 +253,7 @@ void DQNAgentComponent::RenderUI()
 	ImGui::Begin("Training Info");
 	ImGui::Text("Episode: %d", m_EpisodeNum);
 	ImGui::Text("Epsilon: %f, Decay: %f, Min: %f", m_Epsilon, EPSILON_DECAY, EPSILON_MIN);
-	ImGui::Text("Learning Rate: %f", LEARNING_RATE);
+	ImGui::Text("Learning Rate: %f", m_Optimizer.GetLearningRate());
 	ImGui::Text("Memory Size: %d/%d", m_Memory.size(), MEMORY_MAX);
 	ImGui::Text("Num Jumps: %d, Num NON Jumps: %d", m_NumJumpsFromNN, m_NumNonJumpsFromNN);
 	ImGui::Text("Last Reward: %f, Last Loss: %f", m_LastReward, m_LastLoss);

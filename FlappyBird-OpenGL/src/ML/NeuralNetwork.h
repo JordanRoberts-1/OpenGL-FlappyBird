@@ -5,10 +5,13 @@
 class Optimizer_SGD
 {
 public:
-	Optimizer_SGD(float learningRate);
-	void UpdateParams(Layer& layer) const;
+	Optimizer_SGD(float startingLearningRate, float learningRateDecay);
+	void UpdateParams(Layer& layer);
+	float GetLearningRate() const { return m_LearningRate; }
 private:
 	float m_LearningRate;
+	float m_LearningRateDecay;
+	int m_IterationCount;
 };
 
 class NeuralNetwork
@@ -21,9 +24,9 @@ public:
 
 	void ForwardProp(Eigen::MatrixXf* input);
 	void BackwardProp(const Eigen::MatrixXf& yTrue);
-	void Fit(Eigen::MatrixXf input, const Eigen::MatrixXf& y, const Optimizer_SGD& optimizer);
+	void Fit(Eigen::MatrixXf input, const Eigen::MatrixXf& y, Optimizer_SGD& optimizer);
 
-	void Optimize(const Optimizer_SGD& optimizer);
+	void Optimize(Optimizer_SGD& optimizer);
 	float CalculateLoss(const Eigen::MatrixXf& yTrue);
 	float CalculateAccuracy(Eigen::VectorXf yTrue);
 

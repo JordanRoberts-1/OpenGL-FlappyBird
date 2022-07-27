@@ -71,7 +71,8 @@ private:
 	const float EPSILON_DECAY = 0.99995f;
 	const float EPSILON_MIN = 0.1f;
 
-	const float LEARNING_RATE = 0.01f;
+	const float STARTING_LEARNING_RATE = 0.1f;
+	const float LEARNING_RATE_DECAY = 0.001f;
 
 	NeuralNetwork m_NN;
 	std::deque<MemorySlice> m_Memory;
