@@ -159,13 +159,12 @@ void Application::Train(double& prev, double& lag)
 		//std::cout << "Frametime: " << elapsed << "ms" << std::endl;
 
 		//Keep constant update time regardless of rendering speed
-		while (lag >= TRAIN_MS_PER_UPDATE)
+		while (!m_ShouldReset && lag >= TRAIN_MS_PER_UPDATE)
 		{
 			Update();
 			lag -= TRAIN_MS_PER_UPDATE;
 		}
 
-		UI::RenderScore();
 		SceneManager::GetInstance().GetAgent().RenderUI();
 		Renderer::Render();
 
@@ -178,7 +177,6 @@ void Application::Train(double& prev, double& lag)
 
 	//This round is over, Learn from the data and reset
 	DQNAgentComponent& agent = SceneManager::GetInstance().GetAgent();
-	agent.Replay(32);
 
 	SceneManager::GetInstance().ResetTrainingScene();
 }
@@ -242,9 +240,10 @@ std::unique_ptr<GLFWwindow, DestroyglfwWin> Application::SetupWindow()
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+	glfwSetKeyCallback(window.get(), InputManager::Callback);
+	
 	SetupImGui(window.get());
 
-	glfwSetKeyCallback(window.get(), InputManager::Callback);
 
 	Debug::SetupDebug();
 	return window;

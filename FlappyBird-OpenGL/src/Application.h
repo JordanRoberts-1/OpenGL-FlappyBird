@@ -69,6 +69,6 @@ private:
 	const int m_WindowHeight;
 
 	const double MS_PER_UPDATE = 16.66666666666666;
-	const double TRAIN_MS_PER_UPDATE = 5.0f;
+	const double TRAIN_MS_PER_UPDATE = 3.0;
 	const int NUM_EPISODES = 500;
 };
