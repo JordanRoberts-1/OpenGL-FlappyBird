@@ -12,6 +12,7 @@ private:
 	float m_LearningRate;
 	float m_LearningRateDecay;
 	int m_IterationCount;
+	float m_MaxLearningRate;
 };
 
 class NeuralNetwork

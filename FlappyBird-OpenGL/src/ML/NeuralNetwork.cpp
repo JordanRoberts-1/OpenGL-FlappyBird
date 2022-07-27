@@ -273,7 +273,7 @@ Eigen::MatrixXf NeuralNetwork::GetQs(const Eigen::MatrixXf& input)
 
 Optimizer_SGD::Optimizer_SGD(float startingLearningRate, float learningRateDecay)
 	: m_LearningRate(startingLearningRate), m_LearningRateDecay(learningRateDecay),
-	m_IterationCount(0)
+	m_IterationCount(0), m_MaxLearningRate(startingLearningRate)
 {
 }
 
@@ -281,6 +281,6 @@ void Optimizer_SGD::UpdateParams(Layer& layer)
 {
 	layer.UpdateParams(m_LearningRate);
 	m_LearningRate = 1.0f / (1.0f + m_LearningRateDecay * m_IterationCount);
-	m_LearningRate = std::min(0.1f, m_LearningRate);
+	m_LearningRate = std::min(m_MaxLearningRate, m_LearningRate);
 	m_IterationCount++;
 }
