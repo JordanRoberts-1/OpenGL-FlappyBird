@@ -11,6 +11,7 @@
 #include "../ECS/PlayerComponent.h"
 #include "../ECS/BoxColliderComponent.h"
 #include "../ECS/DQNAgentComponent.h"
+#include "../ECS/TransformComponent.h"
 
 #include <algorithm>
 #include "PipeGenerator.h"
@@ -181,6 +182,13 @@ void SceneManager::ResetScene()
 		if (pipe)
 		{
 			pipe->Reset();
+		}
+
+		PlayerComponent* player = object->GetComponent<PlayerComponent>(PLAYERCOMPONENT);
+		if (player)
+		{
+			player->GetParent()->GetTransform()->SetPosition(PLAYER_POSITION);
+			player->GetParent()->GetComponent<PhysicsComponent>(PHYSICSCOMPONENT)->Jump();
 		}
 	}
 }

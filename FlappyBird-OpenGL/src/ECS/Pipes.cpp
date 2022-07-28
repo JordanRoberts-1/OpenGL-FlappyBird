@@ -6,7 +6,7 @@
 #include "../Game/PipeGenerator.h"
 
 TopPipeComponent::TopPipeComponent(Entity* parent)
-	: Component(parent), m_HasScored(false), m_GapPosition(0.0f),
+	: Component(parent), m_HasScored(true), m_GapPosition(0.0f),
 	m_StartingX(), m_PhysicsComponent(nullptr), m_TransformComponent(nullptr),
 	m_BottomPipe(nullptr)
 {
@@ -18,6 +18,8 @@ void TopPipeComponent::Init()
 	m_PhysicsComponent = m_Parent->GetComponent<PhysicsComponent>(PHYSICSCOMPONENT);
 	m_TransformComponent = m_Parent->GetTransform();
 	m_PhysicsComponent->SetVelocity(glm::vec2(PIPE_VELOCITY));
+
+	m_HasScored = true;
 
 	//Move it out of the way so that it can be used later
 	m_TransformComponent->SetPosition(glm::vec3(-2000.0f));
@@ -45,6 +47,7 @@ void TopPipeComponent::ResetLocation()
 {
 	glm::vec2 m_GapPosition = glm::vec2(PipeGenerator::PIPE_SPAWN_X, std::rand() % PipeGenerator::PIPE_RANDOM_SPAWN_Y + PipeGenerator::PIPE_OFFSET_Y);
 	m_TransformComponent->SetPosition(glm::vec3(m_GapPosition.x, m_GapPosition.y + PipeGenerator::GAP_RADIUS, 1));
+	m_HasScored = false;
 
 	if (!m_BottomPipe)
 	{
@@ -58,9 +61,9 @@ void TopPipeComponent::ResetLocation()
 //When a round is over, just move this out of the way
 void TopPipeComponent::Reset()
 {
-	m_TransformComponent->SetPosition(glm::vec3(-2000.0f));
-	m_BottomPipe->Reset();
-	m_HasScored = false;
+	Init();
+	m_BottomPipe->Init();
+	//m_HasScored = false;
 }
 
 //----------------Bottom Pipe-------------------------------------------
@@ -85,9 +88,4 @@ void BottomPipeComponent::SetLocation(glm::vec2 gapPosition)
 {
 	glm::vec3 bottomPosition = glm::vec3(gapPosition.x, gapPosition.y - PipeGenerator::GAP_RADIUS - m_TransformComponent->GetScaledSize().y, 1);
 	m_TransformComponent->SetPosition(bottomPosition);
-}
-
-void BottomPipeComponent::Reset()
-{
-	m_TransformComponent->SetPosition(glm::vec3(-2000.0f));
 }

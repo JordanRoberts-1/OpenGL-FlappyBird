@@ -19,7 +19,6 @@ public:
 	virtual inline ComponentType GetType() const { return BOTTOMPIPECOMPONENT; };
 
 	void SetLocation(glm::vec2 gapPosition);
-	void Reset();
 
 private:
 	PhysicsComponent* m_PhysicsComponent;
