@@ -13,7 +13,7 @@
 #include "Game/UI.h"
 
 Application::Application()
-	: m_isRunning(false), m_WindowWidth(540), m_WindowHeight(960), m_Choice(NONE)
+	: m_isRunning(false), m_WindowWidth(540), m_WindowHeight(960), m_Choice(NONE), m_Lag(0.0), m_Prev(0.0)
 {
 	m_Window = SetupWindow();
 }
@@ -35,6 +35,7 @@ void Application::ShowMenu()
 	{
 		m_Choice = TRAIN;
 		SceneManager::GetInstance().BuildTrainingScene();
+		m_Prev = Clock::CurrTimeInMillis();
 		ImGui::End();
 		return;
 	}
@@ -42,6 +43,7 @@ void Application::ShowMenu()
 	{
 		m_Choice = PLAY;
 		SceneManager::GetInstance().BuildPlayScene();
+		m_Prev = Clock::CurrTimeInMillis();
 		ImGui::End();
 		return;
 	}
@@ -74,8 +76,8 @@ void Application::Run()
 {
 	m_isRunning = true;
 
-	double prev = Clock::CurrTimeInMillis();
-	double lag = 0.0;
+	m_Prev = Clock::CurrTimeInMillis();
+	m_Lag = 0.0;
 
 	//Application loop
 	while (m_isRunning)
@@ -86,11 +88,11 @@ void Application::Run()
 		}
 		else if (m_Choice == TRAIN)
 		{
-			Train(prev, lag);
+			Train();
 		}
 		else if(m_Choice == PLAY)
 		{
-			UserPlayLoop(prev, lag);
+			UserPlayLoop();
 		}
 		else if (m_Choice == AIPLAY)
 		{
@@ -100,7 +102,7 @@ void Application::Run()
 	}
 }
 
-void Application::UserPlayLoop(double& prev, double& lag)
+void Application::UserPlayLoop()
 {
 	Score::ResetScore();
 	m_ShouldReset = false;
@@ -112,20 +114,22 @@ void Application::UserPlayLoop(double& prev, double& lag)
 		glfwPollEvents();
 
 		double curr = Clock::CurrTimeInMillis();
-		double elapsed = curr - prev;
-		prev = curr;
-		lag += elapsed;
+		double elapsed = curr - m_Prev;
+		m_Prev = curr;
+		m_Lag += elapsed;
 
 		//std::cout << "Frametime: " << elapsed << "ms" << std::endl;
 
 		//Keep constant update time regardless of rendering speed
-		while (!m_ShouldReset && lag >= MS_PER_UPDATE)
+		while (m_Lag >= MS_PER_UPDATE)
 		{
 			Update();
-			lag -= MS_PER_UPDATE;
+
+			m_Lag -= MS_PER_UPDATE;
 		}
 
 		UI::RenderScore();
+
 		Renderer::Render();
 
 		if (glfwWindowShouldClose(m_Window.get()))
@@ -139,7 +143,7 @@ void Application::UserPlayLoop(double& prev, double& lag)
 	SceneManager::GetInstance().ResetScene();
 }
 
-void Application::Train(double& prev, double& lag)
+void Application::Train()
 {
 	Score::ResetScore();
 	m_ShouldReset = false;
@@ -151,17 +155,17 @@ void Application::Train(double& prev, double& lag)
 		glfwPollEvents();
 
 		double curr = Clock::CurrTimeInMillis();
-		double elapsed = curr - prev;
-		prev = curr;
-		lag += elapsed;
+		double elapsed = curr - m_Prev;
+		m_Prev = curr;
+		m_Lag += elapsed;
 
 		//std::cout << "Frametime: " << elapsed << "ms" << std::endl;
 
 		//Keep constant update time regardless of rendering speed
-		while (!m_ShouldReset && lag >= TRAIN_MS_PER_UPDATE)
+		while (!m_ShouldReset && m_Lag >= TRAIN_MS_PER_UPDATE)
 		{
 			Update();
-			lag -= TRAIN_MS_PER_UPDATE;
+			m_Lag -= TRAIN_MS_PER_UPDATE;
 		}
 
 		SceneManager::GetInstance().GetAgent().RenderUI();
@@ -252,7 +256,6 @@ void Application::Update()
 	sc.ResetCleanupVector();
 
 	const std::vector<std::unique_ptr<Entity>>& objects = sc.GetObjects();
-	std::cout << "There are " << objects.size() << " Objects";
 
 	//Update all the objects
 	for (const std::unique_ptr<Entity>& entity : objects)

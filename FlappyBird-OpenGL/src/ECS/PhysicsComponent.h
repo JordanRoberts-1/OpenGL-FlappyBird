@@ -23,7 +23,7 @@ public:
 private:
 	TransformComponent* m_TransformComponent;
 
-	const float GRAVITY = -1.0f;
+	const float GRAVITY = -0.5f;
 	bool m_GravityAffects = true;
 
 	float m_Mass;

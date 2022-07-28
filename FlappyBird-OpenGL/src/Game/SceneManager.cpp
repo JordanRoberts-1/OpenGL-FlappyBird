@@ -32,13 +32,12 @@ void SceneManager::BuildPlayScene()
 		ground->AddComponent<BoxColliderComponent>(ground.get());
 		AddObject(std::move(ground));
 
-
 		//Setup player
 		std::unique_ptr<Entity> playerEntity = std::make_unique<Entity>(std::string("flappy_bird.png"), std::string("Basic.glsl"), PLAYER_POSITION, PLAYER_SCALE);
-		Entity* player = AddObject(std::move(playerEntity));
-		PlayerComponent* playerComponent = player->AddComponent<PlayerComponent>(player);
-		PhysicsComponent* playerPhysics = player->AddComponent<PhysicsComponent>(player);
-		BoxColliderComponent* playerCollider = player->AddComponent<BoxColliderComponent>(player);
+		PlayerComponent* playerComponent = playerEntity->AddComponent<PlayerComponent>(playerEntity.get());
+		PhysicsComponent* playerPhysics = playerEntity->AddComponent<PhysicsComponent>(playerEntity.get());
+		BoxColliderComponent* playerCollider = playerEntity->AddComponent<BoxColliderComponent>(playerEntity.get());
+		AddObject(std::move(playerEntity));
 
 		PipeGenerator::SpawnPipes();
 	}
