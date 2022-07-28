@@ -68,10 +68,10 @@ private:
 	float m_Epsilon = 1.0f;
 	float m_TotalReward = 0;
 	MemorySlice m_CurrentMemory;
-	const float EPSILON_DECAY = 0.99995f;
-	const float EPSILON_MIN = 0.1f;
+	const float EPSILON_DECAY = 0.999995f;
+	const float EPSILON_MIN = 0.025f;
 
-	const float STARTING_LEARNING_RATE = 0.1f;
+	const float STARTING_LEARNING_RATE = 0.5f;
 	const float LEARNING_RATE_DECAY = 0.001f;
 
 	NeuralNetwork m_QNetwork;

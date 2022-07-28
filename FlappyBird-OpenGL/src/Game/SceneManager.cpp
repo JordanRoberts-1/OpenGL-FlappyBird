@@ -88,6 +88,8 @@ void SceneManager::BuildTrainingScene()
 	{
 		entity->Init();
 	}
+
+	PipeGenerator::MovePipeSet();
 }
 
 DQNAgentComponent& SceneManager::GetAgent() const
@@ -117,6 +119,7 @@ std::vector<BoxColliderComponent*> SceneManager::GetColliders() const
 glm::vec2 SceneManager::GetNearestPipeGap() const
 {
 	glm::vec2 closest = glm::vec2(std::numeric_limits<float>::max());
+	std::cout << "Getting nearest Pipe" << std::endl;
 	for (const auto& object : m_Objects)
 	{
 		TopPipeComponent* pipe = object->GetComponent<TopPipeComponent>(TOPPIPECOMPONENT);
@@ -135,7 +138,7 @@ glm::vec2 SceneManager::GetNearestPipeGap() const
 
 Entity* SceneManager::AddObject(std::unique_ptr<Entity> object)
 {
-	object->Init();
+	//object->Init();
 
 	//Set the scene ID for each object
 	object->SetSceneID(m_CurrentSceneID);
@@ -207,4 +210,7 @@ void SceneManager::ResetTrainingScene()
 			pipe->Reset();
 		}
 	}
+
+	PipeGenerator::s_UpdateCounter = 1;
+	PipeGenerator::MovePipeSet();
 }

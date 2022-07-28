@@ -8,7 +8,7 @@
 #include "../ECS/BoxColliderComponent.h"
 #include <iostream>
 
-int PipeGenerator::s_UpdateCounter = 0;
+int PipeGenerator::s_UpdateCounter = 1;
 const float PipeGenerator::PIPE_SPAWN_X = 600.0f;
 const float PipeGenerator::PIPE_SPACING_X = 375.0f;
 const float PipeGenerator::PIPE_OFFSET_Y = 300.0f;
@@ -48,9 +48,6 @@ void PipeGenerator::SpawnPipeSet()
 	BottomPipeComponent* bottomPipeComponent = bottomPipe->AddComponent<BottomPipeComponent>(bottomPipe.get());
 	bottomPipePhysics->SetBoolGravity(false);
 
-	//Initialize the components
-	bottomPipeComponent->Init();
-	topPipeComponent->Init();
 	topPipeComponent->SetBottomPipe(bottomPipeComponent);
 	
 	//Add the new objects to the scene
@@ -81,6 +78,7 @@ void PipeGenerator::MovePipeSet()
 
 		if (topPipe && topPipe->CheckReset())
 		{
+			std::cout << "Moving Pipe" << std::endl;
 			topPipe->ResetLocation();
 			return;
 		}

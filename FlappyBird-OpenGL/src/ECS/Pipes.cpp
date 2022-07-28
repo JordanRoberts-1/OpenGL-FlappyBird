@@ -23,6 +23,7 @@ void TopPipeComponent::Init()
 
 	//Move it out of the way so that it can be used later
 	m_TransformComponent->SetPosition(glm::vec3(-2000.0f));
+	//m_GapPosition = m_TransformComponent->GetPosition();
 }
 
 void TopPipeComponent::Update()
@@ -45,7 +46,7 @@ bool TopPipeComponent::CheckReset() const
 
 void TopPipeComponent::ResetLocation()
 {
-	glm::vec2 m_GapPosition = glm::vec2(PipeGenerator::PIPE_SPAWN_X, std::rand() % PipeGenerator::PIPE_RANDOM_SPAWN_Y + PipeGenerator::PIPE_OFFSET_Y);
+	m_GapPosition = glm::vec2(PipeGenerator::PIPE_SPAWN_X, std::rand() % PipeGenerator::PIPE_RANDOM_SPAWN_Y + PipeGenerator::PIPE_OFFSET_Y);
 	m_TransformComponent->SetPosition(glm::vec3(m_GapPosition.x, m_GapPosition.y + PipeGenerator::GAP_RADIUS, 1));
 	m_HasScored = false;
 
@@ -61,7 +62,9 @@ void TopPipeComponent::ResetLocation()
 //When a round is over, just move this out of the way
 void TopPipeComponent::Reset()
 {
-	Init();
+	m_TransformComponent->SetPosition(glm::vec3(-2000.0f));
+	m_GapPosition = m_TransformComponent->GetPosition();
+	m_HasScored = true;
 	m_BottomPipe->Init();
 	//m_HasScored = false;
 }

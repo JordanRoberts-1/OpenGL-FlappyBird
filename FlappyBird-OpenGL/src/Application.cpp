@@ -255,6 +255,8 @@ void Application::Update()
 	SceneManager& sc = SceneManager::GetInstance();
 	sc.ResetCleanupVector();
 
+	PipeGenerator::Update();
+
 	const std::vector<std::unique_ptr<Entity>>& objects = sc.GetObjects();
 
 	//Update all the objects
@@ -263,7 +265,6 @@ void Application::Update()
 		entity->Update();
 	}
 
-	PipeGenerator::Update();
 
 	//Check for collisions
 	const std::vector<BoxColliderComponent*> colliders = sc.GetColliders();
