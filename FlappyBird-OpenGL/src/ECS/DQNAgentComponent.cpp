@@ -132,7 +132,11 @@ void DQNAgentComponent::Done()
 	m_EpisodeNum = app.GetEpisodeCount();
 	m_LastReward = m_TotalReward;
 
-	std::cout << "Q values for state: " << m_CurrentMemory.state << ": " << m_QNetwork.GetQs(m_CurrentMemory.state) << std::endl;
+	if (m_LastReward > m_MaxReward)
+	{
+		m_MaxReward = m_LastReward;
+	}
+	//std::cout << "Q values for state: " << m_CurrentMemory.state << ": " << m_QNetwork.GetQs(m_CurrentMemory.state) << std::endl;
 
 	//if (m_EpisodeNum % 100 == 0)
 	//{
@@ -190,13 +194,14 @@ float DQNAgentComponent::Replay(int batchSize)
 
 	//std::cout << "Replaying Memories" << std::endl;
 
-	auto& rng = Random::RandomDevice();
 	std::vector<MemorySlice> minibatch;
-	std::sample(m_Memory.begin(), m_Memory.end(),
-		std::back_inserter(minibatch), batchSize,
-		std::mt19937{ rng()});
+	minibatch.reserve(batchSize);
 
-	std::shuffle(std::begin(minibatch), std::end(minibatch), rng);
+	Random::random_unique(m_Memory.begin(), m_Memory.end(), batchSize);
+	for (int i = 0; i < batchSize; i++)
+	{
+		minibatch.push_back(m_Memory[i]);
+	}
 
 	Eigen::MatrixXf currentStates(minibatch.size(),4);
 	Eigen::MatrixXf newCurrentStates(minibatch.size(), 4);
@@ -275,6 +280,7 @@ void DQNAgentComponent::RenderUI()
 	ImGui::Text("Memory Size: %d/%d", m_Memory.size(), MEMORY_MAX);
 	ImGui::Text("Num Jumps: %d, Num NON Jumps: %d", m_NumJumpsFromNN, m_NumNonJumpsFromNN);
 	ImGui::Text("Last Reward: %f, Last Loss: %f", m_LastReward, m_LastLoss);
+	ImGui::Text("Max Reward Achieved: %f", m_MaxReward);
 
 	if (ImGui::Button("Save Weights"))
 	{
@@ -289,6 +295,14 @@ void DQNAgentComponent::RenderUI()
 	}
 	ImGui::SameLine();
 	ImGui::InputText("Load Weights Input", &m_LoadString);
+
+	ImGui::SliderFloat("Epsilon Min", &EPSILON_MIN, 0.0f, 1.0f);
+	ImGui::SliderFloat("Epsilon Decay", &EPSILON_DECAY, 0.9f, 1.0f);
+	ImGui::SliderFloat("Gamma", &GAMMA, 0.5f, 1.0f);
+	if (ImGui::SliderFloat("Frametime", &m_TrainingFrametime, 1.0f, 16.66666f))
+	{
+		Application::GetInstance().SetTrainingSpeed(m_TrainingFrametime);
+	}
 	ImGui::End();
 }
 

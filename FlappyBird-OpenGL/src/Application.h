@@ -49,6 +49,7 @@ public:
 	inline float GetWindowHeight() const { return (float)m_WindowHeight; }
 	inline int GetEpisodeCount() const { return m_EpisodeCount; }
 	void SetResetBool(bool value);
+	inline void SetTrainingSpeed(float value) { m_TrainingFrametime = value; }
 private:
 	Application();
 	void CreateContext();
@@ -71,6 +72,6 @@ private:
 	double m_Lag, m_Prev;
 
 	const double MS_PER_UPDATE = 16.66666666666666;
-	const double TRAIN_MS_PER_UPDATE = 1.0;
+	double m_TrainingFrametime = 1.0;
 	const int NUM_EPISODES = 500;
 };

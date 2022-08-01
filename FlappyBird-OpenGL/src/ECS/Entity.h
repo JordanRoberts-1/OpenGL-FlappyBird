@@ -41,7 +41,8 @@ public:
 	template <typename T>
 	T* AddComponent(Entity* parent)
 	{
-		return 	(T*)m_Components.emplace_back(new T(parent)).get();
+		m_Components.emplace_back(new T(parent));
+		return 	(T*)m_Components.back().get();
 	}
 
 	void Init();

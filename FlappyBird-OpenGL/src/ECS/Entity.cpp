@@ -13,7 +13,8 @@ Entity::Entity(const std::string& texture, const std::string& shader, glm::vec3 
 	size.y = (float)m_Texture->GetHeight();
 
 	//Add the transform component to each entity
-	m_Transform = (TransformComponent*)m_Components.emplace_back(std::make_unique<TransformComponent>(this, pos, size, scale)).get();
+	m_Components.emplace_back(std::make_unique<TransformComponent>(this, pos, size, scale));
+	m_Transform = (TransformComponent*)m_Components.back().get();
 }
 
 void Entity::SetSceneID(int id)

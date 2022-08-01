@@ -12,7 +12,7 @@ int PipeGenerator::s_UpdateCounter = 1;
 const float PipeGenerator::PIPE_SPAWN_X = 600.0f;
 const float PipeGenerator::PIPE_SPACING_X = 375.0f;
 const float PipeGenerator::PIPE_OFFSET_Y = 300.0f;
-const float PipeGenerator::GAP_RADIUS = 100.0f;
+const float PipeGenerator::GAP_RADIUS = 200.0f;
 const float PipeGenerator::PIPE_SCALE = 4.0f;
 
 void PipeGenerator::SpawnPipes()

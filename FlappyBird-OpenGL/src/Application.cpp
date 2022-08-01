@@ -1,4 +1,5 @@
 #include "Application.h"
+
 #include "Game/SceneManager.h"
 #include "Util/Clock.h"
 
@@ -11,6 +12,7 @@
 #include "Game/PipeGenerator.h"
 #include "Game/Score.h"
 #include "Game/UI.h"
+
 
 Application::Application()
 	: m_isRunning(false), m_WindowWidth(540), m_WindowHeight(960), m_Choice(NONE), m_Lag(0.0), m_Prev(0.0)
@@ -162,10 +164,10 @@ void Application::Train()
 		//std::cout << "Frametime: " << elapsed << "ms" << std::endl;
 
 		//Keep constant update time regardless of rendering speed
-		while (!m_ShouldReset && m_Lag >= TRAIN_MS_PER_UPDATE)
+		while (!m_ShouldReset && m_Lag >= m_TrainingFrametime)
 		{
 			Update();
-			m_Lag -= TRAIN_MS_PER_UPDATE;
+			m_Lag -= m_TrainingFrametime;
 		}
 
 		SceneManager::GetInstance().GetAgent().RenderUI();

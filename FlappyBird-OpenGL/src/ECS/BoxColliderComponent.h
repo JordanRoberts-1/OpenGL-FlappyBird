@@ -1,6 +1,7 @@
 #pragma once
 #include "Component.h"
 #include <functional>
+#include <vector>
 
 class TransformComponent;
 

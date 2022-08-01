@@ -1,5 +1,6 @@
 #pragma once
 #include <random>
+#include <iterator>
 
 class Random
 {
@@ -15,9 +16,22 @@ public:
 		return distribution(e2);
 	}
 
-	static std::random_device& RandomDevice() { return rd; }
+	template<class BidiIter >
+	static BidiIter random_unique(BidiIter begin, BidiIter end, size_t num_random)
+	{
+		size_t left = std::distance(begin, end);
+		while (num_random--)
+		{
+			BidiIter r = begin;
+			std::advance(r, rand() % left);
+			std::swap(*begin, *r);
+			++begin;
+			--left;
+		}
+		return begin;
+	}
+
 private:
-	static std::random_device rd;
 	static std::mt19937 e2;
 	static std::uniform_real_distribution<> dist;
 };

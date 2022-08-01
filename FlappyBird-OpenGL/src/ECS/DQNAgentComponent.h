@@ -64,15 +64,15 @@ private:
 	int m_Steps = 0;
 
 	int m_StateSize, m_ActionSize;
-	const float GAMMA = 0.99f;
+	float GAMMA = 0.99f;
 	float m_Epsilon = 1.0f;
 	float m_TotalReward = 0;
 	MemorySlice m_CurrentMemory;
-	const float EPSILON_DECAY = 0.999995f;
-	const float EPSILON_MIN = 0.025f;
+	float EPSILON_DECAY = 0.9999f;
+	float EPSILON_MIN = 0.01f;
 
-	const float STARTING_LEARNING_RATE = 0.5f;
-	const float LEARNING_RATE_DECAY = 0.001f;
+	const float STARTING_LEARNING_RATE = 1.0f;
+	const float LEARNING_RATE_DECAY = 0.0001f;
 
 	NeuralNetwork m_QNetwork;
 	NeuralNetwork m_TargetNetwork;
@@ -87,6 +87,8 @@ private:
 	int m_EpisodeNum = 0;
 	float m_LastReward = 0.0f;
 	int m_WeightFileNumber = 0;
+	float m_MaxReward = 0.0f;
+	float m_TrainingFrametime = 1.0f;
 	std::string m_SaveString { "Weights.txt" };
 	std::string m_LoadString { "Weights.txt" };
 
