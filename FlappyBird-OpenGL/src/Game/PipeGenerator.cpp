@@ -69,8 +69,6 @@ void PipeGenerator::MovePipeSet()
 {
 	SceneManager& scene = SceneManager::GetInstance();
 
-	std::cout << "Moving pipe set" << std::endl;
-	
 	//Find the furthest left pipe that can be reset and reset it
 	for (const auto& object : scene.GetObjects())
 	{
@@ -78,7 +76,6 @@ void PipeGenerator::MovePipeSet()
 
 		if (topPipe && topPipe->CheckReset())
 		{
-			std::cout << "Moving Pipe" << std::endl;
 			topPipe->ResetLocation();
 			return;
 		}
